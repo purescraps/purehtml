@@ -19,7 +19,7 @@ If you wish, you can use the same `cheerio.Root` for multiple configs without ne
 call `load(html)` again and again.  
   
 ## Configuration
-* `selector` is **required** in all configurations and **must** not be empty.  
+* `selector` is **required** in all configurations except `union` configurations and **must** not be empty.  
 * `type` can be `string`, `object` and `array` **explicitly**.
 * `type` might become `number`, `boolean`, `object` and `array` **implicitly** by the `transform` parameter.
 * `transform` can be either:
@@ -28,3 +28,5 @@ call `load(html)` again and again.
   - array of above
 * `properties: { [key: string]: Config }` implicitly sets `type` to `object`.
 * `items: Config` defines the configuration that will be used to extract data for every match of the selector.
+* `union: ConfigWithSelector[]` extracts data for the first matching configuration only. Extracts `null` if
+  none of the given configurations match.

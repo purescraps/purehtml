@@ -1,6 +1,7 @@
 import { Config } from './config';
+import ConfigWithSelector from './with-selector';
 
-export class ObjectConfig extends Config {
+export class ObjectConfig extends ConfigWithSelector {
   properties: {
     [key: string]: Config
   } = {};

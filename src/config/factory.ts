@@ -3,6 +3,7 @@ import { ArrayConfig } from './array';
 import { Config } from './config';
 import { ObjectConfig } from './object';
 import { PrimitiveValueConfig } from './primitive';
+import UnionConfig from './union';
 import { ConfigValidator } from './validator';
 
 export class ConfigFactory {
@@ -23,14 +24,17 @@ export class ConfigFactory {
       transform,
       properties,
       items,
+      union,
     } = plain;
 
     const expectedType =
-      properties || type === 'object'
+      (properties || type === 'object')
       ? 'object'
-      : items || type === 'array'
+      : (items || type === 'array')
         ? 'array'
-        : 'primitive';
+        : union
+          ? 'union'
+          : 'primitive';
 
     switch (expectedType) {
       case 'object':
@@ -47,6 +51,8 @@ export class ConfigFactory {
         return ObjectConfig.generate(selector, propConfigs);
       case 'array':
         return ArrayConfig.generate(selector, items, transform);
+      case 'union':
+        return UnionConfig.generate(union.map(cfg => this.generate(cfg)));
       default:
         return PrimitiveValueConfig.generate(selector, transform);
     }

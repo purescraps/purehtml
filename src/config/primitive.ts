@@ -1,10 +1,11 @@
 import { Transformer } from '../core/transformer';
 import { Transformers } from '../transformers';
 import { Config } from './config'
+import ConfigWithSelector from './with-selector';
 
 export type Transform = (string | Transformer) | (string | Transformer)[]
 
-export class PrimitiveValueConfig extends Config {
+export class PrimitiveValueConfig extends ConfigWithSelector {
   private transform?: Transform;
 
   private constructor() {

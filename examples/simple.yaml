@@ -11,3 +11,7 @@ properties:
   exists:
     selector: .non-existent
     transform: exists
+  union:
+    union:
+      - selector: .first
+      - selector: .second

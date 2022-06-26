@@ -1,7 +1,8 @@
-import { Config, SELECTOR_SELF } from './config';
+import { Config } from './config';
 import { PrimitiveValueConfig, Transform } from './primitive';
+import ConfigWithSelector, { SELECTOR_SELF } from './with-selector';
 
-export class ArrayConfig extends Config {
+export class ArrayConfig extends ConfigWithSelector {
   transform?: Transform
   items?: Config
 

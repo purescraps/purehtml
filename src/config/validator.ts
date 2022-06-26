@@ -1,4 +1,5 @@
 import assert from 'assert';
+import { has } from 'cheerio/lib/api/traversing';
 import { argTypeToStr } from '../core/argument-types';
 import { Transformer } from '../core/transformer';
 import { Transformers } from '../transformers';
@@ -12,8 +13,9 @@ export class ConfigValidator {
       selector: boolean,
       type: boolean,
       transform: boolean,
+      union: boolean,
     },
-    expectedType: 'primitive' | 'array' | 'object',
+    expectedType: 'primitive' | 'array' | 'object' | 'union',
     plain: any,
     path: string,
   };
@@ -25,6 +27,7 @@ export class ConfigValidator {
       selector: Object.prototype.hasOwnProperty.call(plain, 'selector'),
       type: Object.prototype.hasOwnProperty.call(plain, 'type'),
       transform: Object.prototype.hasOwnProperty.call(plain, 'transform'),
+      union: Object.prototype.hasOwnProperty.call(plain, 'union'),
     };
 
     this.meta = {
@@ -33,13 +36,19 @@ export class ConfigValidator {
         ? 'array'
         : (plain.type === 'object' || has.properties)
           ? 'object'
-          : 'primitive',
+          : has.union
+            ? 'union'
+            : 'primitive',
       plain,
       path,
     };
   }
 
   validate(path = this.meta.path) {
+    if (this.meta.has.union) {
+      return this.validateUnion(`${path}.union`);
+    }
+
     this.validateSelector();
     this.validateTransform(path);
     this.validateProperties(path);
@@ -119,6 +128,58 @@ export class ConfigValidator {
     validator.validate();
   }
 
+  private validateConfigProperties(path: string) {
+    const meta = this.meta;
+
+    switch (meta.expectedType) {
+      case 'object':
+        if (meta.has.items) {
+          throw new Error(this.prefixPath(path, 'objects cannot contain "items" property.'));
+        }
+
+        break;
+
+      case 'array':
+        if (meta.has.properties) {
+          throw new Error(this.prefixPath(path, 'arrays cannot contain "properties" property.'));
+        }
+
+        if (meta.has.transform && meta.has.items) {
+          throw new Error(this.prefixPath(path, 'arrays cannot contain "transform" and "items" together.'));
+        }
+
+        break;
+    }
+  }
+
+  private validateUnion(path: string) {
+    const meta = this.meta;
+    const { union, ...rest } = meta.plain;
+    const restKeys = Object.keys(rest);
+
+    if (!meta.has.union) {
+      return;
+    }
+
+    if (restKeys.length > 0) {
+      throw new Error(this.prefixPath(path, `cannot contain any other properties alongside "union". saw: ${restKeys}`));
+    }
+
+    if (!Array.isArray(union)) {
+      throw new Error(this.prefixPath(path, 'must be an array.'))
+    }
+
+    if (union.length === 0) {
+      throw new Error(this.prefixPath(path, 'must not be an empty array.'));
+    }
+
+    union.forEach((plain, i) => {
+      const validator = new ConfigValidator(plain, `${path}[${i}]`);
+
+      validator.validate();
+    });
+  }
+
   private validateType(path: string) {
     const meta = this.meta;
     const { expectedType } = meta;
@@ -147,30 +208,6 @@ export class ConfigValidator {
       const outputTypeStr = argTypeToStr(outputType);
 
       assert(type === outputTypeStr, this.prefixPath(typePath, `type must match the transform output type. expected ${outputTypeStr}, got ${type}`));
-    }
-  }
-
-  private validateConfigProperties(path: string) {
-    const meta = this.meta;
-
-    switch (meta.expectedType) {
-      case 'object':
-        if (meta.has.items) {
-          throw new Error(this.prefixPath(path, 'objects cannot contain "items" property.'));
-        }
-
-        break;
-
-      case 'array':
-        if (meta.has.properties) {
-          throw new Error(this.prefixPath(path, 'arrays cannot contain "properties" property.'));
-        }
-
-        if (meta.has.transform && meta.has.items) {
-          throw new Error(this.prefixPath(path, 'arrays cannot contain "transform" and "items" together.'));
-        }
-
-        break;
     }
   }
 
