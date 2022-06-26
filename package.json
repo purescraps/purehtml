@@ -1,0 +1,21 @@
+{
+  "name": "configurable-html-parser",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Fatih Kaya <1994274@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/cheerio": "^0.22.31",
+    "@types/node": "^18.0.0",
+    "tsup": "^6.1.2"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.11",
+    "yaml": "^2.1.1"
+  }
+}

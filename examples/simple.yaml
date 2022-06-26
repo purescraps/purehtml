@@ -1,0 +1,13 @@
+selector: 'body'
+
+properties:
+  arr:
+    selector: ul.array li
+    type: array
+    transform: trim
+  arrMatches:
+    selector: ul.array li
+    transform: match-count
+  exists:
+    selector: .non-existent
+    transform: exists
