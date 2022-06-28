@@ -1,4 +1,4 @@
-import { Config } from './config';
+import { Config } from '../config';
 import ConfigWithSelector, { ConfigWithSelectorExtractParams } from './with-selector';
 
 export default class UnionConfig extends Config {

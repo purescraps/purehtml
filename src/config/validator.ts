@@ -2,7 +2,7 @@ import assert from 'assert';
 import { argTypeToStr } from '../core/argument-types';
 import { Transformer } from '../core/transformer';
 import { Transformers } from '../transformers';
-import { Transform } from './primitive';
+import { Transform } from './types/primitive';
 
 export class ConfigValidator {
   private readonly meta: {
