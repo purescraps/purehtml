@@ -5,6 +5,7 @@ import { ObjectConfig } from './types/object';
 import { PrimitiveValueConfig } from './types/primitive';
 import UnionConfig from './types/union';
 import { ConfigValidator } from './validator';
+import ConstantConfig from './types/constant';
 
 export class ConfigFactory {
   static fromYAML(yaml: string): Config {
@@ -22,6 +23,7 @@ export class ConfigFactory {
     }
 
     const {
+      constant,
       selector: selectorOrig,
       type,
       transform,
@@ -41,9 +43,13 @@ export class ConfigFactory {
         ? 'array'
         : union
           ? 'union'
-          : 'primitive';
+          : constant
+            ? 'constant'
+            : 'primitive';
 
     switch (expectedType) {
+      case 'constant':
+        return ConstantConfig.generate(constant);
       case 'object':
         let propConfigs: ObjectConfig['properties'] | undefined = undefined;
 
