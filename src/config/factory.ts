@@ -15,8 +15,11 @@ export class ConfigFactory {
 
   private static generate(plain: any): Config {
     const validator = new ConfigValidator(plain);
+    const errors = validator.validate();
 
-    validator.validate();
+    if (errors) {
+      throw new Error(`Invalid config provided. Got validation errors: ${JSON.stringify(errors)}`);
+    }
 
     const {
       selector: selectorOrig,
