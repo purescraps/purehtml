@@ -10,7 +10,7 @@ export const schema: SomeJSONSchema = {
     {
       $comment: 'WithSelector',
       properties: {
-        selector: { type: 'string' },
+        selector: { type: 'string', minLength: 1 },
         type: {
           type: 'string',
           enum: ['string', 'object', 'array', 'union'],
