@@ -1,7 +1,5 @@
 import { SomeJSONSchema } from 'ajv/dist/types/json-schema';
-import { Transformers } from './transformers';
-
-const validTransformers = Transformers.transformers.map(tr => tr.getName());
+import { TRANSFORMER_DEFINITION_REGEX } from './transformers/factory';
 
 export const schema: SomeJSONSchema = {
   type: 'object',
@@ -34,12 +32,12 @@ export const schema: SomeJSONSchema = {
         transform: {
           oneOf: [{
             type: 'string',
-            enum: validTransformers,
+            pattern: TRANSFORMER_DEFINITION_REGEX,
           }, {
             type: 'array',
             items: {
               type: 'string',
-              enum: validTransformers,
+              pattern: TRANSFORMER_DEFINITION_REGEX,
             },
             minItems: 1,
           }],
