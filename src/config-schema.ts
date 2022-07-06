@@ -22,7 +22,7 @@ export const schema: SomeJSONSchema = {
           type: 'string',
           enum: ['string', 'object', 'array', 'union'],
         },
-        items: { $ref: '#/' },
+        items: { $ref: '#/' } as any,
         properties: {
           type: 'object',
           additionalProperties: {
@@ -129,7 +129,7 @@ export const schema: SomeJSONSchema = {
           type: 'array',
           items: {
             $ref: '#/',
-          },
+          } as any,
           minItems: 1,
         },
       },
@@ -141,7 +141,7 @@ export const schema: SomeJSONSchema = {
       $comment: 'Constant',
       type: 'object',
       properties: {
-        constant: {},
+        constant: {} as any,
       },
       required: ['constant'],
       additionalProperties: false,
