@@ -36,7 +36,7 @@ export class ConfigFactory {
 
     const selector = Array.isArray(selectorOrig)
       ? selectorOrig.join(', ')
-      : selectorOrig;
+      : (selectorOrig || null);
 
     const expectedType =
       (properties || type === 'object')
@@ -49,7 +49,7 @@ export class ConfigFactory {
             ? 'constant'
             : 'primitive';
     const transform = transformOrig && ConfigFactory.generateTransform(transformOrig);
- 
+
     switch (expectedType) {
       case 'constant':
         return ConstantConfig.generate(constant);

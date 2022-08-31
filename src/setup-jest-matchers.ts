@@ -16,4 +16,11 @@ expect.extend({
       pass: result,
     };
   },
+
+  toExtract() {
+    return {
+      message: () => '',
+      pass: true,
+    }
+  },
 });

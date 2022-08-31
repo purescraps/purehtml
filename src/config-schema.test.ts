@@ -1,5 +1,5 @@
 describe('Base', () => {
-  it('NoEmptyConfigs', () => expect({}).not.toBeValidConfig());
+  it('AllowEmptyConfigs', () => expect({}).toBeValidConfig());
   it('NoAdditionalProperties', () =>
     expect({ foo: 'bar' }).not.toBeValidConfig()
   );
