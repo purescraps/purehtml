@@ -1,4 +1,3 @@
-import { SELECTOR_SELF } from '../../constants';
 import { Config, ExtractParams } from '../config';
 
 export interface ConfigWithSelectorExtractParams extends ExtractParams {
@@ -6,7 +5,7 @@ export interface ConfigWithSelectorExtractParams extends ExtractParams {
 }
 
 export default abstract class ConfigWithSelector extends Config {
-  protected selector: string;
+  protected selector: string | null = null;
 
   abstract extract($: cheerio.Root, $el: cheerio.Cheerio, opts?: ConfigWithSelectorExtractParams): any;
 
@@ -15,7 +14,7 @@ export default abstract class ConfigWithSelector extends Config {
       return $;
     }
 
-    if (this.selector === SELECTOR_SELF) {
+    if (this.selector === null) {
       return $;
     }
 

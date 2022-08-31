@@ -10,7 +10,7 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
     super();
   }
 
-  extract($: cheerio.Root, $parent: cheerio.Cheerio, opts?: ConfigWithSelectorExtractParams) {
+  extract(_$: cheerio.Root, $parent: cheerio.Cheerio, opts?: ConfigWithSelectorExtractParams) {
     let val: any = null;
     let $el = this.getSelectorMatches($parent, (opts && opts.elementAlreadyMatched) || false);
 

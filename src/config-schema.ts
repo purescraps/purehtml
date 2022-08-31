@@ -43,7 +43,7 @@ export const schema: SomeJSONSchema = {
           }],
         },
       },
-      required: ['selector'],
+      required: [],
       additionalProperties: false,
       allOf: [
         {

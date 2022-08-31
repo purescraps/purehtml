@@ -1,15 +1,14 @@
 import { load } from "cheerio";
-import { SELECTOR_SELF } from "../../constants";
 import ConfigWithSelector, { ConfigWithSelectorExtractParams } from "./with-selector";
 
 class FakeWithSelector extends ConfigWithSelector {
-  constructor(selector: string) {
+  constructor(selector: ConfigWithSelector['selector']) {
     super();
 
     this.selector = selector;
   }
 
-  extract($: cheerio.Root, $el: cheerio.Cheerio, opts?: ConfigWithSelectorExtractParams | undefined) {
+  extract(_$: cheerio.Root, _$el: cheerio.Cheerio, _opts?: ConfigWithSelectorExtractParams) {
     return '';
   }
 }
@@ -26,7 +25,7 @@ describe('ConfigWithSelector', () => {
   it('ReturnSelf', () => {
     const $ = load(html);
     const $el = $.root();
-    const conf = new FakeWithSelector(SELECTOR_SELF);
+    const conf = new FakeWithSelector(null);
     const $match = conf.getSelectorMatches($el, false);
     const expected = $el;
 
