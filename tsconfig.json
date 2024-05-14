@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "resolveJsonModule": true,
+    "outDir": "dist"
+  }
+}
