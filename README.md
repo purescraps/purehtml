@@ -7,7 +7,7 @@ This tool aims to let you convert your HTMLs to structured JSONs.
 Using this module is as simple as:
 
 ```ts
-import { ConfigFactory, extract } from 'purehtml';
+import { ConfigFactory, extract } from '@purescraps/purehtml';
 
 const yaml = '...';
 const html = '...';
