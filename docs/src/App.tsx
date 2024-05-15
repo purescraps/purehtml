@@ -1,10 +1,19 @@
-import { AppShell, Burger, Grid, Group, NavLink } from '@mantine/core';
+import {
+  Anchor,
+  AppShell,
+  Burger,
+  Code,
+  Grid,
+  Group,
+  NavLink,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Arrays } from './components/Arrays';
 import { Basics } from './components/Basics';
 import { GettingStarted } from './components/GettingStarted';
 import { Intro } from './components/Intro';
 import { Objects } from './components/Objects';
+import { Transformers } from './components/Transformers/Transformers';
 
 function App() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -28,7 +37,9 @@ function App() {
               hiddenFrom="sm"
               size="sm"
             />
-            PureHTML Documentation
+            <Anchor href="/">
+              PureHTML <Code>Documentation</Code>
+            </Anchor>
           </Group>
         </AppShell.Header>
         <AppShell.Navbar p="md">
@@ -37,6 +48,7 @@ function App() {
           <NavLink label="Basics" href="#basics" />
           <NavLink label="Arrays" href="#arrays" />
           <NavLink label="Objects" href="#objects" />
+          <NavLink label="Transformers" href="#transformers" />
         </AppShell.Navbar>
         <AppShell.Main>
           <Grid>
@@ -46,6 +58,7 @@ function App() {
               <Basics />
               <Arrays />
               <Objects />
+              <Transformers />
             </Grid.Col>
           </Grid>
         </AppShell.Main>

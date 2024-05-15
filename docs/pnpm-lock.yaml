@@ -21,8 +21,8 @@ importers:
         specifier: ^4.6.0
         version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@purescraps/purehtml':
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: ^0.1.6
+        version: 0.1.6
       '@tabler/icons-react':
         specifier: ^3.3.0
         version: 3.3.0(react@18.3.1)
@@ -433,8 +433,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@purescraps/purehtml@0.1.1':
-    resolution: {integrity: sha512-N5CN/5XbW9p1RmHfaaW20UBen4AFoTA/VZbek0EkeJU3zb8kXnEYWp6Cpc8NFW+clafgWCnhWCZqSQr70dXPFQ==}
+  '@purescraps/purehtml@0.1.6':
+    resolution: {integrity: sha512-BjFWi5ePoG+3FFU6c0eLfEfBIycnqc8yj+svrlD+mm6mjgwQMo6T9g/6D6QMNQHN7cwTVWEoxSbJ06u9Q2iZlQ==}
 
   '@tabler/icons-react@3.3.0':
     resolution: {integrity: sha512-Qn1Po+0gErh1zCWlaOdoVoGqeonWfSuiboYgwZBs6PIJNsj7yr3bIa4BkHmgJgtlXLT9LvCzt/RvwlgjxLfjjg==}
@@ -1699,7 +1699,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
 
-  '@purescraps/purehtml@0.1.1':
+  '@purescraps/purehtml@0.1.6':
     dependencies:
       cheerio: 1.0.0-rc.12
       yaml: 2.4.2

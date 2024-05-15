@@ -25,6 +25,7 @@ export function GettingStarted() {
         Install the{' '}
         <Anchor
           href="https://npmjs.com/package/@purescraps/purehtml"
+          rel="nofollow"
           target="_blank"
         >
           @purescraps/purehtml

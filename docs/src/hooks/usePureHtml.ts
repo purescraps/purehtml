@@ -18,7 +18,12 @@ export function usePureHtml({
   );
 
   return useMemo(
-    () => JSON.stringify(extract(inputHtml, config, 'https://example.com')),
+    () =>
+      JSON.stringify(
+        extract(inputHtml, config, 'https://example.com'),
+        null,
+        '  '
+      ),
     [inputHtml, config]
   );
 }
