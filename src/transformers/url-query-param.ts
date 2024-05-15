@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import { STRING } from '../core/primitive-types';
 import { TransformParams, Transformer } from '../core/transformer';
 
