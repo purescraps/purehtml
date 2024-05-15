@@ -1,5 +1,5 @@
-import { Box, Code, Text, Title, rem } from '@mantine/core';
 import { CodeHighlight, CodeHighlightTabs } from '@mantine/code-highlight';
+import { Anchor, Box, Text, Title, rem } from '@mantine/core';
 import {
   IconBrandNpm,
   IconBrandPnpm,
@@ -22,8 +22,14 @@ export function GettingStarted() {
       <Title order={3}>Getting Started</Title>
 
       <Text>
-        Install the <Code>@purescraps/purehtml</Code> with the package manager
-        of your choice:
+        Install the{' '}
+        <Anchor
+          href="https://npmjs.com/package/@purescraps/purehtml"
+          target="_blank"
+        >
+          @purescraps/purehtml
+        </Anchor>{' '}
+        with the package manager of your choice:
       </Text>
 
       <CodeHighlightTabs
