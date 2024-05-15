@@ -18,7 +18,7 @@ const result = extract(inputHtml, config, 'https://example.com');`;
 
 export function GettingStarted() {
   return (
-    <Box id="getting-started">
+    <Box id="getting-started" mt="md">
       <Title order={3}>Getting Started</Title>
 
       <Text>

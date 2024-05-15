@@ -1,4 +1,5 @@
-import { Box, Code, Text, Title } from '@mantine/core';
+import { Alert, Box, Code, Text, Title } from '@mantine/core';
+import { IconInfoCircle } from '@tabler/icons-react';
 import { PureHtmlSnippet } from './PureHtmlSnippet';
 
 const basic = {
@@ -28,7 +29,7 @@ items:
 
 export function Arrays() {
   return (
-    <Box mt="md">
+    <Box id="arrays" mt="md">
       <Title order={3}>Arrays</Title>
 
       <Text>
@@ -53,6 +54,11 @@ export function Arrays() {
         inputHtml={transformer.html}
         configYaml={transformer.config}
       />
+
+      <Alert icon={<IconInfoCircle />} mt="sm">
+        It's possible to omit <Code>type: array</Code> part if provide{' '}
+        <Code>items</Code>
+      </Alert>
     </Box>
   );
 }
