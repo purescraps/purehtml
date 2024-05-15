@@ -23,6 +23,9 @@ importers:
       '@purescraps/purehtml':
         specifier: ^0.1.6
         version: 0.1.6
+      '@react-nano/router':
+        specifier: ^0.13.0
+        version: 0.13.0(react@18.3.1)
       '@tabler/icons-react':
         specifier: ^3.3.0
         version: 3.3.0(react@18.3.1)
@@ -435,6 +438,11 @@ packages:
 
   '@purescraps/purehtml@0.1.6':
     resolution: {integrity: sha512-BjFWi5ePoG+3FFU6c0eLfEfBIycnqc8yj+svrlD+mm6mjgwQMo6T9g/6D6QMNQHN7cwTVWEoxSbJ06u9Q2iZlQ==}
+
+  '@react-nano/router@0.13.0':
+    resolution: {integrity: sha512-CkjQsCpZdjZMMHIb/mQ9N864gq5r1KKTp9BdZ8L0agwwjBIzedmz8l6qWUT2peWaYKQ/FGziBpybQNClqJH49g==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   '@tabler/icons-react@3.3.0':
     resolution: {integrity: sha512-Qn1Po+0gErh1zCWlaOdoVoGqeonWfSuiboYgwZBs6PIJNsj7yr3bIa4BkHmgJgtlXLT9LvCzt/RvwlgjxLfjjg==}
@@ -1703,6 +1711,10 @@ snapshots:
     dependencies:
       cheerio: 1.0.0-rc.12
       yaml: 2.4.2
+
+  '@react-nano/router@0.13.0(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
 
   '@tabler/icons-react@3.3.0(react@18.3.1)':
     dependencies:
