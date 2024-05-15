@@ -6,5 +6,6 @@
     "target": "ESNext",
     "resolveJsonModule": true,
     "outDir": "dist"
-  }
+  },
+  "exclude": ["dist", "docs"]
 }
