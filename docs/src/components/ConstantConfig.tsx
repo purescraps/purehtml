@@ -14,7 +14,7 @@ export function ConstantConfig() {
         and other languages.
       </Text>
 
-      <Accordion>
+      <Accordion multiple>
         <Accordion.Item value="example">
           <Accordion.Control h={rem(35)}>Example</Accordion.Control>
           <Accordion.Panel>

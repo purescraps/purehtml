@@ -11,7 +11,7 @@ export function LengthTransformer() {
         Returns the length of the <Code>string</Code> and <Code>array</Code>{' '}
         values.
       </Text>
-      <Accordion mt="sm">
+      <Accordion mt="sm" multiple>
         <Accordion.Item value="string">
           <Accordion.Control h={rem(35)}>
             Length of the string

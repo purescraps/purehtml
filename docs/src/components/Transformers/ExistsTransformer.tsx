@@ -8,7 +8,7 @@ export function ExistsTransformer() {
         <Code>exists</Code> transformer
       </Title>
       <Text>Returns true if the given selector returned any elements.</Text>
-      <Accordion>
+      <Accordion multiple>
         <Accordion.Item value="example">
           <Accordion.Control h={rem(35)}>Example</Accordion.Control>
           <Accordion.Panel>

@@ -26,7 +26,7 @@ export function ResolveTransformer() {
         Resolves URLs by the given values with the URL given to
         <Code>extract()</Code> call.
       </Text>
-      <Accordion>
+      <Accordion multiple>
         <Accordion.Item value="example">
           <Accordion.Control h={rem(35)}>Example</Accordion.Control>
           <Accordion.Panel>

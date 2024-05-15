@@ -11,7 +11,7 @@ export function TrimTransformer() {
         Trims all the subsequent whitespaces/newlines from start and end of the
         string.
       </Text>
-      <Accordion>
+      <Accordion multiple>
         <Accordion.Item value="withoud trim">
           <Accordion.Control h={rem(35)}>
             Example without trim

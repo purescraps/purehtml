@@ -39,7 +39,9 @@ function App() {
               hiddenFrom="sm"
               size="sm"
             />
-            <Anchor href="/">
+            <Anchor
+              href={process.env.NODE_ENV === 'production' ? '/purehtml' : '/'}
+            >
               PureHTML <Code>Documentation</Code>
             </Anchor>
           </Group>

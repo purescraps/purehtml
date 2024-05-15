@@ -8,7 +8,7 @@ export function NumberTransformer() {
         <Code>number</Code> transformer
       </Title>
       <Text>Casts the output to a number.</Text>
-      <Accordion>
+      <Accordion multiple>
         <Accordion.Item value="withoud number">
           <Accordion.Control h={rem(35)}>
             Example without number
