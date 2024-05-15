@@ -1,8 +1,12 @@
 {
   "name": "@purescraps/purehtml",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "dist/src/index.js",
+  "files": [
+    "dist/**",
+    "src/config-schema.json"
+  ],
   "scripts": {
     "build": "tsc --noEmit && tsup",
     "build:fast": "tsup",
