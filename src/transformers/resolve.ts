@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import { PrimitiveTypes, STRING } from '../core/primitive-types';
 import { TransformParams, Transformer } from '../core/transformer';
 import { InvalidParseInputError } from '../errors/invalid-parse-input-error';
