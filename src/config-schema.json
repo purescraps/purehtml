@@ -109,14 +109,12 @@
           "then": { "properties": { "type": { "const": "array" } } }
         },
         {
-          "$comment": "when the \"type\" is \"array\", then the \"properties\" MUST be defined.",
+          "$comment": "when the \"type\" is \"array\", then the \"items\" MUST be defined.",
           "if": {
             "properties": { "type": { "const": "array" } },
             "required": ["type"]
           },
-          "then": {
-            "oneOf": [{ "required": ["items"] }, { "required": ["transform"] }]
-          }
+          "then": { "required": ["items"] }
         }
       ]
     },
