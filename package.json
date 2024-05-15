@@ -12,7 +12,7 @@
     "build:fast": "tsup",
     "lint": "eslint .",
     "test": "jest",
-    "prepublish": "build",
+    "prepublishOnly": "npm run build",
     "deploy": "cd docs && npm run build && cd .. && gh-pages -d docs/dist"
   },
   "keywords": [],
