@@ -1,4 +1,4 @@
-import { Anchor, Box, Code, Title, rem } from '@mantine/core';
+import { Anchor, Box, Code, Title } from '@mantine/core';
 import { IconExternalLink } from '@tabler/icons-react';
 import { AttrTransformer } from './AttrTransformer';
 import { ExistsTransformer } from './ExistsTransformer';
@@ -18,7 +18,7 @@ export function Transformers() {
         rel="nofollow"
         target="_blank"
       >
-        Selectors <IconExternalLink size={rem(16)} />
+        Selectors <IconExternalLink size={16} />
       </Anchor>
       give us <Code>string</Code> values of the{' '}
       <Anchor

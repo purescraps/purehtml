@@ -14,9 +14,8 @@ export function UrlQueryParamTransformer() {
       <Text>Examples:</Text>
       <Accordion multiple>
         <Accordion.Item value="single">
-          <Accordion.Control h={rem(35)}>
-            Extract a single query parameter's value:{' '}
-            <Code>urlQueryParam(q)</Code>
+          <Accordion.Control h={{ md: rem(35), sm: rem(50) }}>
+            Extract a single query parameter's value
           </Accordion.Control>
           <Accordion.Panel>
             <PureHtmlSnippet
@@ -26,9 +25,8 @@ export function UrlQueryParamTransformer() {
           </Accordion.Panel>
         </Accordion.Item>
         <Accordion.Item value="all">
-          <Accordion.Control h={rem(35)}>
-            Extract all query parameters: <Code>urlQueryParam</Code> or{' '}
-            <Code>urlQueryParam()</Code>
+          <Accordion.Control h={{ md: rem(35), sm: rem(50) }}>
+            Extract all query parameters
           </Accordion.Control>
           <Accordion.Panel>
             <PureHtmlSnippet
@@ -38,9 +36,8 @@ export function UrlQueryParamTransformer() {
           </Accordion.Panel>
         </Accordion.Item>
         <Accordion.Item value="subset">
-          <Accordion.Control h={rem(35)}>
-            Extract subset of the query parameters:{' '}
-            <Code>urlQueryParam(q, utm_source)</Code>
+          <Accordion.Control h={{ md: rem(35), sm: rem(50) }}>
+            Extract subset of the query parameters
           </Accordion.Control>
           <Accordion.Panel>
             <PureHtmlSnippet
