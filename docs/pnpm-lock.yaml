@@ -23,6 +23,9 @@ importers:
       '@purescraps/purehtml':
         specifier: ^0.1.1
         version: 0.1.1
+      '@tabler/icons-react':
+        specifier: ^3.3.0
+        version: 3.3.0(react@18.3.1)
       monaco-editor:
         specifier: ^0.48.0
         version: 0.48.0
@@ -432,6 +435,14 @@ packages:
 
   '@purescraps/purehtml@0.1.1':
     resolution: {integrity: sha512-N5CN/5XbW9p1RmHfaaW20UBen4AFoTA/VZbek0EkeJU3zb8kXnEYWp6Cpc8NFW+clafgWCnhWCZqSQr70dXPFQ==}
+
+  '@tabler/icons-react@3.3.0':
+    resolution: {integrity: sha512-Qn1Po+0gErh1zCWlaOdoVoGqeonWfSuiboYgwZBs6PIJNsj7yr3bIa4BkHmgJgtlXLT9LvCzt/RvwlgjxLfjjg==}
+    peerDependencies:
+      react: '>= 16'
+
+  '@tabler/icons@3.3.0':
+    resolution: {integrity: sha512-PLVe9d7b59sKytbx00KgeGhQG3N176Ezv8YMmsnSz4s0ifDzMWlp/h2wEfQZ0ZNe8e377GY2OW6kovUe3Rnd0g==}
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -1692,6 +1703,13 @@ snapshots:
     dependencies:
       cheerio: 1.0.0-rc.12
       yaml: 2.4.2
+
+  '@tabler/icons-react@3.3.0(react@18.3.1)':
+    dependencies:
+      '@tabler/icons': 3.3.0
+      react: 18.3.1
+
+  '@tabler/icons@3.3.0': {}
 
   '@types/babel__core@7.20.5':
     dependencies:

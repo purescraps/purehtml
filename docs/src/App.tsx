@@ -2,6 +2,7 @@ import { AppShell, Burger, Grid, Group, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Intro } from './components/Intro';
 import { Basics } from './components/Basics';
+import { GettingStarted } from './components/GettingStarted';
 
 function App() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -30,6 +31,7 @@ function App() {
         </AppShell.Header>
         <AppShell.Navbar p="md">
           <NavLink label="Introduction" href="#intro" />
+          <NavLink label="Getting Started" href="#getting-started" />
           <NavLink label="Basics" href="#basics" />
           <NavLink label="Arrays" />
           <NavLink label="Objects" />
@@ -39,6 +41,7 @@ function App() {
         <AppShell.Main>
           <Grid>
             <Grid.Col span={{ md: 8, sm: 12 }}>
+              <GettingStarted />
               <Intro />
               <Basics />
             </Grid.Col>
