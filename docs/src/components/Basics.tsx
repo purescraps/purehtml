@@ -144,7 +144,12 @@ export function Basics() {
         Combining Transformers
       </Title>
 
-      <Text>What if we want to apply several transformers to our output?</Text>
+      <Text>
+        What if we want to apply several transformers to our output? If we want
+        to <Code>trim</Code> and cast to <Code>number</Code>, we just add{' '}
+        <Code>transform: [trim, number]</Code> to our configuration. Then the
+        selector's output will be first trimmed, then casted to number.
+      </Text>
 
       <PureHtmlSnippet
         inputHtml={multipleTransformersExample.html}
