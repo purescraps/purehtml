@@ -72,7 +72,7 @@ export function Basics() {
 
   return (
     <Box id="basics" mt="md">
-      <Title order={2}>Basics</Title>
+      <Title order={3}>Basics</Title>
 
       <Text>Let's consider the this HTML:</Text>
 
@@ -89,7 +89,7 @@ export function Basics() {
 
       <JsonSnippet code={result1} />
 
-      <Title mt="md" order={4}>
+      <Title mt="md" order={5}>
         Extracting numbers
       </Title>
 
@@ -100,7 +100,7 @@ export function Basics() {
         configYaml={numberExample.config}
       />
 
-      <Title mt="md" order={4}>
+      <Title mt="md" order={5}>
         Type Casts (<Code>number</Code> transformer)
       </Title>
 
@@ -116,7 +116,7 @@ export function Basics() {
         configYaml={numberCastExample.config}
       />
 
-      <Title mt="md" order={4}>
+      <Title mt="md" order={5}>
         Trimming Text (<Code>trim</Code> transformer)
       </Title>
 
@@ -140,7 +140,7 @@ export function Basics() {
         configYaml={spacesTrimExample.config}
       />
 
-      <Title mt="md" order={4}>
+      <Title mt="md" order={5}>
         Combining Transformers
       </Title>
 

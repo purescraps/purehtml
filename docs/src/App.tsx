@@ -3,6 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { Intro } from './components/Intro';
 import { Basics } from './components/Basics';
 import { GettingStarted } from './components/GettingStarted';
+import { Arrays } from './components/Arrays';
 
 function App() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -33,10 +34,8 @@ function App() {
           <NavLink label="Introduction" href="#intro" />
           <NavLink label="Getting Started" href="#getting-started" />
           <NavLink label="Basics" href="#basics" />
-          <NavLink label="Arrays" />
-          <NavLink label="Objects" />
-          <NavLink label="Basics" />
-          <NavLink label="Basics" />
+          <NavLink label="Arrays" href="#arrays" />
+          <NavLink label="Objects" href="#objects" />
         </AppShell.Navbar>
         <AppShell.Main>
           <Grid>
@@ -44,6 +43,7 @@ function App() {
               <GettingStarted />
               <Intro />
               <Basics />
+              <Arrays />
             </Grid.Col>
           </Grid>
         </AppShell.Main>
