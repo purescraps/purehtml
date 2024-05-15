@@ -9,8 +9,9 @@ export function ConstantConfig() {
       <Text>
         This configuration accepts only <Code>constant</Code> property and
         returns its value. This transformer is really useful as the in the{' '}
-        <Anchor href="#union">union</Anchor> config as <Code>default</Code>{' '}
-        case, similar to switch/case statement JavaScript and other languages.
+        <Anchor href="#union-config">union config</Anchor> as{' '}
+        <Code>default</Code> case, similar to switch/case statement JavaScript
+        and other languages.
       </Text>
 
       <Accordion>
