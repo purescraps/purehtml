@@ -1,7 +1,8 @@
 import { ConfigFactory, extract } from '@purescraps/purehtml';
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 
-export interface PureHtml {
+export interface UsePureHtml {
+  configIsValid: boolean;
   result: string;
 }
 
@@ -11,19 +12,44 @@ export function usePureHtml({
 }: {
   inputHtml: string;
   configYaml: string;
-}): string {
-  const config = useMemo(
-    () => ConfigFactory.fromYAML(configYaml),
-    [configYaml]
-  );
+}): UsePureHtml {
+  const [state, setState] = useState<UsePureHtml>({
+    configIsValid: true,
+    result: '',
+  });
+  const [config, setConfig] = useState<unknown>(null);
 
-  return useMemo(
-    () =>
-      JSON.stringify(
-        extract(inputHtml, config, 'https://example.com'),
+  useEffect(() => {
+    if (!configYaml) {
+      setState((s) => ({ ...s, configIsValid: true }));
+      return;
+    }
+
+    try {
+      setConfig(ConfigFactory.fromYAML(configYaml));
+      setState((s) => ({ ...s, configIsValid: true }));
+    } catch (err) {
+      setState((s) => ({ ...s, configIsValid: false }));
+    }
+  }, [configYaml]);
+
+  useEffect(() => {
+    if (!config || !inputHtml) {
+      setState((s) => ({ ...s, result: '' }));
+      return;
+    }
+
+    try {
+      const result = JSON.stringify(
+        extract(inputHtml, config as any, 'https://example.com'),
         null,
         '  '
-      ),
-    [inputHtml, config]
-  );
+      );
+      setState((s) => ({ ...s, result }));
+    } catch (err) {
+      setState((s) => ({ ...s, result: '' }));
+    }
+  }, [config, inputHtml]);
+
+  return state;
 }

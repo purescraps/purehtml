@@ -1,6 +1,6 @@
 import { AppShell, Burger, Code, Grid, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Route, Switch } from '@react-nano/router';
+import { Route, Switch, useRouter } from '@react-nano/router';
 import { useCallback } from 'react';
 import { Home } from './Home';
 import { Playground } from './Playground';
@@ -23,6 +23,8 @@ function App() {
     },
     [toggleMobile]
   );
+  const router = useRouter();
+  const inPlayground = router.path.endsWith('playground');
 
   return (
     <>
@@ -31,7 +33,7 @@ function App() {
         navbar={{
           width: 300,
           breakpoint: 'sm',
-          collapsed: { mobile: !mobileOpened, desktop: false },
+          collapsed: { mobile: !mobileOpened, desktop: inPlayground || false },
         }}
         padding="md"
       >
@@ -62,6 +64,7 @@ function App() {
             </DocsAnchor>
           </Group>
         </AppShell.Header>
+
         <AppShell.Navbar p="md">
           <DocsNavLink
             label="Introduction"
@@ -104,14 +107,13 @@ function App() {
             onClick={makeClickHandler('union-config')}
           />
         </AppShell.Navbar>
+
         <AppShell.Main>
           <Grid>
-            <Grid.Col span={{ md: 8, sm: 12 }}>
-              <Switch>
-                <Route path="/" component={Home} />
-                <Route path="/playground" component={Playground} />
-              </Switch>
-            </Grid.Col>
+            <Switch>
+              <Route path="/" component={Home} />
+              <Route path="/playground" component={Playground} />
+            </Switch>
           </Grid>
         </AppShell.Main>
       </AppShell>

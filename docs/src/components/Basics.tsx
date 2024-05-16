@@ -68,7 +68,7 @@ transform: [trim, number]`,
 };
 
 export function Basics() {
-  const result1 = usePureHtml({ inputHtml: html1, configYaml: yaml1 });
+  const { result } = usePureHtml({ inputHtml: html1, configYaml: yaml1 });
 
   return (
     <Box id="basics" mt="md">
@@ -87,7 +87,7 @@ export function Basics() {
 
       <Text>The parser output will be exactly:</Text>
 
-      <JsonSnippet code={result1} />
+      <JsonSnippet code={result} />
 
       <Title mt="md" order={5}>
         Extracting numbers

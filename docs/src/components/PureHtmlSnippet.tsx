@@ -8,14 +8,14 @@ export function PureHtmlSnippet({
   inputHtml: string;
   configYaml: string;
 }) {
-  const outputJson = usePureHtml({ inputHtml, configYaml });
+  const { configIsValid, result } = usePureHtml({ inputHtml, configYaml });
 
   return (
     <CodeHighlightTabs
       code={[
         { fileName: 'input.html', code: inputHtml, language: 'html' },
         { fileName: 'config.yaml', code: configYaml, language: 'yaml' },
-        { fileName: 'output.json', code: outputJson, language: 'json' },
+        { fileName: 'output.json', code: result, language: 'json' },
       ]}
       mt="md"
     />
