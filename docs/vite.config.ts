@@ -6,7 +6,7 @@ export default defineConfig({
   server:
     process.env.NODE_ENV === 'production'
       ? {
-          origin: 'https://purescraps.github.com/',
+          origin: 'https://purescraps.github.com',
         }
       : undefined,
   base: process.env.NODE_ENV === 'production' ? '/purehtml' : undefined,
