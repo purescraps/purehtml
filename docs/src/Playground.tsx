@@ -51,7 +51,8 @@ export function Playground() {
             value={selectedExample?.name}
           />
         </Grid.Col>
-        <Grid mt="md">
+
+        <Grid>
           <Grid.Col span={{ sm: 12, md: 6 }}>
             <Accordion multiple defaultValue={['html', 'config']}>
               <Accordion.Item value="html">
@@ -106,7 +107,7 @@ export function Playground() {
             </Accordion>
           </Grid.Col>
           <Grid.Col span={{ sm: 12, md: 6 }}>
-            <Title order={4} mb="md">
+            <Title order={4} mb="sm">
               <IconJson size="1.1em" /> Result
             </Title>
 

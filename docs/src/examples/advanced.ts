@@ -12,8 +12,7 @@ export const advanced: Example[] = [
     config: `selector: a
 type: array
 items:
-  transform: urlQueryParam(q)
-transform: attr(href)
+  transform: [attr(href), urlQueryParam(q)]
 `,
   },
   {
