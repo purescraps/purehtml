@@ -6,6 +6,7 @@ import { Home } from './Home';
 import { Playground } from './Playground';
 import { DocsAnchor } from './components/DocsAnchor';
 import { DocsNavLink } from './components/DocsNavLink';
+import { basePath } from './constants';
 
 function App() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -45,17 +46,14 @@ function App() {
               hiddenFrom="sm"
               size="sm"
             />
-            <DocsAnchor
-              href={process.env.NODE_ENV === 'production' ? '/purehtml' : '/'}
-              size="sm"
-            >
+            <DocsAnchor href={`${basePath}/`} size="sm">
               <>
                 PureHTML <Code>Documentation</Code>
               </>
             </DocsAnchor>
 
             <DocsAnchor
-              href="/playground"
+              href={`${basePath}/playground`}
               pos={{ sm: 'relative', md: 'absolute' }}
               right={{ sm: '', md: '1em' }}
               size="sm"
@@ -111,8 +109,8 @@ function App() {
         <AppShell.Main>
           <Grid>
             <Switch>
-              <Route path="/" component={Home} />
-              <Route path="/playground" component={Playground} />
+              <Route path={`${basePath}/`} component={Home} />
+              <Route path={`${basePath}/playground`} component={Playground} />
             </Switch>
           </Grid>
         </AppShell.Main>
