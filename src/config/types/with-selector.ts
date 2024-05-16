@@ -21,6 +21,11 @@ export default abstract class ConfigWithSelector extends Config {
       return $;
     }
 
+    // check if the element *itself* matches the given selector
+    if ($.is(this.selector)) {
+      return $;
+    }
+
     return $.find(this.selector);
   }
 }
