@@ -8,7 +8,7 @@ export function PureHtmlSnippet({
   inputHtml: string;
   configYaml: string;
 }) {
-  const { configIsValid, result } = usePureHtml({ inputHtml, configYaml });
+  const { result } = usePureHtml({ inputHtml, configYaml });
 
   return (
     <CodeHighlightTabs
