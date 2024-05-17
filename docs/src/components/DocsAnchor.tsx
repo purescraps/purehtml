@@ -1,5 +1,5 @@
 import { Anchor, AnchorProps } from '@mantine/core';
-import { useRouteLink } from '@react-nano/router';
+import Link from 'next/link';
 
 export function DocsAnchor({
   children,
@@ -9,10 +9,8 @@ export function DocsAnchor({
   children: string | JSX.Element;
   href: string;
 } & Omit<AnchorProps, 'href'>) {
-  const props = useRouteLink(href);
-
   return (
-    <Anchor {...props} {...rest}>
+    <Anchor component={Link} href={href} {...rest}>
       {children}
     </Anchor>
   );

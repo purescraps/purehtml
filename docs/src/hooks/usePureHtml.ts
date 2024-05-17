@@ -1,3 +1,5 @@
+'use client';
+
 import { ConfigFactory, extract } from '@purescraps/purehtml';
 import { useEffect, useState } from 'react';
 
