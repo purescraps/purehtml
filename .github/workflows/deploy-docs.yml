@@ -1,4 +1,4 @@
-name: Deploy Next.js site to Pages
+name: Deploy Documentation site to Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -48,7 +48,7 @@ jobs:
             exit 1
           fi
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: ${{ steps.detect-package-manager.outputs.manager }}
