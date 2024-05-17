@@ -1,6 +1,12 @@
 import { MantineProvider } from '@mantine/core';
+import type { Metadata } from 'next';
 
 import { theme } from './theme';
+
+// either Static metadata
+export const metadata: Metadata = {
+  title: "PureHTML's Documentation",
+};
 
 export default function RootLayout({
   children,
