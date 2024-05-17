@@ -6,6 +6,7 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   assetPrefix: './',
+  basePath: process.env.NODE_ENV === 'production' ? '/purehtml' : '',
 };
 
 export default nextConfig;
