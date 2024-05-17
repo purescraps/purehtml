@@ -1,7 +1,15 @@
 'use client';
 
-import { Accordion, Alert, Grid, Paper, Select, Title } from '@mantine/core';
-import { Editor } from '@monaco-editor/react';
+import {
+  Accordion,
+  Alert,
+  Grid,
+  Paper,
+  Select,
+  Title,
+  useMantineColorScheme,
+} from '@mantine/core';
+import { Editor, useMonaco } from '@monaco-editor/react';
 import {
   IconHtml,
   IconJson,
@@ -12,6 +20,8 @@ import { Example, exampleToComboboxItem, examples } from './examples';
 import { usePureHtml } from './hooks/usePureHtml';
 
 export function Playground() {
+  const { colorScheme } = useMantineColorScheme();
+  const monaco = useMonaco();
   const [selectedExample, setSelectedExample] = useState<Example | null>(
     examples.basic[0]
   );
@@ -30,6 +40,11 @@ export function Playground() {
     setHtml(selectedExample.html);
     setConfig(selectedExample.config);
   }, [selectedExample]);
+
+  // adjust the vscode theme to the color mantine theme
+  useEffect(() => {
+    monaco?.editor.setTheme(colorScheme === 'dark' ? 'vs-dark' : 'vs');
+  }, [monaco, colorScheme]);
 
   return (
     <>
@@ -74,6 +89,7 @@ export function Playground() {
                     }}
                     onChange={(val) => setHtml(val ?? '')}
                     value={html}
+                    theme="vs-dark"
                   />
                 </Paper>
               </Accordion.Panel>
@@ -96,6 +112,7 @@ export function Playground() {
                     }}
                     onChange={(val) => setConfig(val ?? '')}
                     value={config}
+                    theme="vs-dark"
                   />
 
                   {configIsValid === false && (
@@ -124,6 +141,7 @@ export function Playground() {
                 insertSpaces: true,
                 readOnly: true,
                 minimap: { enabled: false },
+                theme: 'vs-dark',
               }}
             />
           </Paper>
