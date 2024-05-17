@@ -1,4 +1,4 @@
-import { MantineProvider } from '@mantine/core';
+import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import type { Metadata } from 'next';
 
 import { theme } from './theme';
@@ -15,6 +15,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <ColorSchemeScript />
+      </head>
       <body>
         <MantineProvider theme={theme}>{children}</MantineProvider>
       </body>

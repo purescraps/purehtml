@@ -5,6 +5,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { usePathname } from 'next/navigation';
 import { DocsAnchor } from '../src/components/DocsAnchor';
 import { DocsNavLink } from '../src/components/DocsNavLink';
+import { ColorSchemeToggle } from '../src/components/ColorSchemeToggle';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -35,6 +36,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 PureHTML <Code>Documentation</Code>
               </>
             </DocsAnchor>
+
+            <ColorSchemeToggle />
 
             <DocsAnchor
               href="/playground"
