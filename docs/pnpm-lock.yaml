@@ -29,6 +29,9 @@ importers:
       '@tabler/icons-react':
         specifier: ^3.4.0
         version: 3.4.0(react@18.3.1)
+      cheerio:
+        specifier: 1.0.0-rc.12
+        version: 1.0.0-rc.12
       monaco-editor:
         specifier: ^0.48.0
         version: 0.48.0
@@ -45,6 +48,9 @@ importers:
         specifier: ^2.4.2
         version: 2.4.2
     devDependencies:
+      '@types/cheerio':
+        specifier: ^0.22.35
+        version: 0.22.35
       '@types/json-schema':
         specifier: ^7.0.15
         version: 7.0.15
@@ -268,6 +274,9 @@ packages:
 
   '@tabler/icons@3.4.0':
     resolution: {integrity: sha512-6gYHXG0xAJgt2KPcTYDqhe3xYoJMTgz/ZfYup4EUHsxzYsz6rBlt8WgavHsGaWckaqH7ApR/epYslfXZjK27yw==}
+
+  '@types/cheerio@0.22.35':
+    resolution: {integrity: sha512-yD57BchKRvTV+JD53UZ6PD8KWY5g5rvvMLRnZR3EQBCZXiDT/HR+pKpMzFGlWNhFrXlo7VPZXtKvIEwZkAWOIA==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -1191,6 +1200,10 @@ snapshots:
       react: 18.3.1
 
   '@tabler/icons@3.4.0': {}
+
+  '@types/cheerio@0.22.35':
+    dependencies:
+      '@types/node': 20.12.12
 
   '@types/json-schema@7.0.15': {}
 

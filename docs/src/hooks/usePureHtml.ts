@@ -1,7 +1,8 @@
 'use client';
 
 import { ConfigFactory, extract } from '@purescraps/purehtml';
-import { useEffect, useState } from 'react';
+import { load } from 'cheerio';
+import { useEffect, useMemo, useState } from 'react';
 
 export interface UsePureHtml {
   configIsValid: boolean;
@@ -9,16 +10,21 @@ export interface UsePureHtml {
 }
 
 export function usePureHtml({
-  inputHtml,
+  inputHTML,
   configYaml,
 }: {
-  inputHtml: string;
+  inputHTML: string;
   configYaml: string;
 }): UsePureHtml {
   const [state, setState] = useState<UsePureHtml>({
     configIsValid: true,
     result: '',
   });
+  // cache cheerio.load call for handling big HTMLs
+  const input = useMemo<cheerio.Root | null>(
+    () => (inputHTML ? load(inputHTML) : null),
+    [inputHTML]
+  );
   const [config, setConfig] = useState<unknown>(null);
 
   useEffect(() => {
@@ -36,22 +42,24 @@ export function usePureHtml({
   }, [configYaml]);
 
   useEffect(() => {
-    if (!config || !inputHtml) {
+    if (!config || !input) {
       setState((s) => ({ ...s, result: '' }));
       return;
     }
 
     try {
       const result = JSON.stringify(
-        extract(inputHtml, config as any, 'https://example.com'),
+        extract(input, config as any, 'https://example.com'),
         null,
         '  '
       );
       setState((s) => ({ ...s, result }));
     } catch (err) {
+      console.error('cannot extract data:', err);
+
       setState((s) => ({ ...s, result: '' }));
     }
-  }, [config, inputHtml]);
+  }, [config, input]);
 
   return state;
 }

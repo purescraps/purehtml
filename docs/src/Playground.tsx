@@ -3,6 +3,10 @@
 import {
   Accordion,
   Alert,
+  Code,
+  Collapse,
+  Divider,
+  FileInput,
   Grid,
   Paper,
   Select,
@@ -15,7 +19,7 @@ import {
   IconJson,
   IconSettingsAutomation,
 } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Example, exampleToComboboxItem, examples } from './examples';
 import { usePureHtml } from './hooks/usePureHtml';
 
@@ -27,10 +31,27 @@ export function Playground() {
   );
   const [config, setConfig] = useState('');
   const [html, setHtml] = useState('');
+  const [htmlFileContents, setHtmlFileContents] = useState<string | null>(null);
   const { configIsValid, result } = usePureHtml({
-    inputHtml: html,
+    inputHTML: htmlFileContents ?? html,
     configYaml: config,
   });
+  const onHtmlFileChange = useCallback(
+    (file: File | null) => {
+      if (!file) {
+        return setHtmlFileContents(null);
+      }
+
+      file
+        .text()
+        .then((contents) => setHtmlFileContents(contents))
+        .catch((err) => {
+          console.error('Cannot read selected html file contents:', err);
+          alert('Cannot read the HTML contents. Please try again.');
+        });
+    },
+    [setHtmlFileContents]
+  );
 
   useEffect(() => {
     if (!selectedExample) {
@@ -78,18 +99,35 @@ export function Playground() {
               </Accordion.Control>
               <Accordion.Panel>
                 <Paper shadow="sm" pt="sm" withBorder>
-                  <Editor
-                    height="25vh"
-                    language="html"
-                    options={{
-                      formatOnType: true,
-                      tabSize: 2,
-                      insertSpaces: true,
-                      minimap: { enabled: false },
-                    }}
-                    onChange={(val) => setHtml(val ?? '')}
-                    value={html}
-                    theme="vs-dark"
+                  <Collapse in={htmlFileContents === null}>
+                    <Editor
+                      height="25vh"
+                      language="html"
+                      options={{
+                        formatOnType: true,
+                        tabSize: 2,
+                        insertSpaces: true,
+                        minimap: { enabled: false },
+                      }}
+                      onChange={(val) => setHtml(val ?? '')}
+                      value={html}
+                      theme="vs-dark"
+                    />
+                  </Collapse>
+
+                  <Collapse in={htmlFileContents !== null} p="sm">
+                    <Code>Deselect HTML file to re-open the editor.</Code>
+                  </Collapse>
+
+                  <Divider mt="sm" label="or upload html" />
+
+                  <FileInput
+                    accept="text/html"
+                    clearable
+                    label="Select an HTML file"
+                    m="sm"
+                    mt="0"
+                    onChange={onHtmlFileChange}
                   />
                 </Paper>
               </Accordion.Panel>

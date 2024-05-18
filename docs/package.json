@@ -17,6 +17,7 @@
     "@purescraps/purehtml": "^0.2.0",
     "@react-nano/router": "^0.13.0",
     "@tabler/icons-react": "^3.4.0",
+    "cheerio": "1.0.0-rc.12",
     "monaco-editor": "^0.48.0",
     "next": "^14.2.3",
     "react": "^18.3.1",
@@ -24,6 +25,7 @@
     "yaml": "^2.4.2"
   },
   "devDependencies": {
+    "@types/cheerio": "^0.22.35",
     "@types/json-schema": "^7.0.15",
     "@types/node": "^20.12.12",
     "@types/react": "^18.3.2",
