@@ -10,10 +10,10 @@ export interface UsePureHtml {
 }
 
 export function usePureHtml({
-  inputHTML,
+  inputHtml,
   configYaml,
 }: {
-  inputHTML: string;
+  inputHtml: string;
   configYaml: string;
 }): UsePureHtml {
   const [state, setState] = useState<UsePureHtml>({
@@ -22,8 +22,8 @@ export function usePureHtml({
   });
   // cache cheerio.load call for handling big HTMLs
   const input = useMemo<cheerio.Root | null>(
-    () => (inputHTML ? load(inputHTML) : null),
-    [inputHTML]
+    () => (inputHtml ? load(inputHtml) : null),
+    [inputHtml]
   );
   const [config, setConfig] = useState<unknown>(null);
 

@@ -15,6 +15,7 @@ import {
 } from '@mantine/core';
 import { Editor, useMonaco } from '@monaco-editor/react';
 import {
+  IconFileExport,
   IconHtml,
   IconJson,
   IconSettingsAutomation,
@@ -33,7 +34,7 @@ export function Playground() {
   const [html, setHtml] = useState('');
   const [htmlFileContents, setHtmlFileContents] = useState<string | null>(null);
   const { configIsValid, result } = usePureHtml({
-    inputHTML: htmlFileContents ?? html,
+    inputHtml: htmlFileContents ?? html,
     configYaml: config,
   });
   const onHtmlFileChange = useCallback(
@@ -124,9 +125,10 @@ export function Playground() {
                   <FileInput
                     accept="text/html"
                     clearable
-                    label="Select an HTML file"
+                    placeholder="Select a file"
                     m="sm"
-                    mt="0"
+                    mt="xs"
+                    leftSection={<IconFileExport />}
                     onChange={onHtmlFileChange}
                   />
                 </Paper>
