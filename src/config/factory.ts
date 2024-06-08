@@ -48,7 +48,7 @@ export class ConfigFactory {
 
     switch (expectedType) {
       case 'constant':
-        return ConstantConfig.generate(constant);
+        return ConstantConfig.generate(constant) as Config<T>;
       case 'object': {
         let propConfigs: ObjectConfig['properties'] | undefined = undefined;
 
@@ -60,18 +60,20 @@ export class ConfigFactory {
           }, {} as Record<string, Config>);
         }
 
-        return ObjectConfig.generate(selector, propConfigs);
+        return ObjectConfig.generate(selector, propConfigs) as Config<T>;
       }
       case 'array':
         return ArrayConfig.generate(
           selector,
           items && this.generate(items),
           transform
-        );
+        ) as Config<T>;
       case 'union':
-        return UnionConfig.generate(union!.map((cfg) => this.generate(cfg)));
+        return UnionConfig.generate(
+          union!.map((cfg) => this.generate(cfg))
+        ) as Config<T>;
       default:
-        return PrimitiveValueConfig.generate(selector, transform);
+        return PrimitiveValueConfig.generate(selector, transform) as Config<T>;
     }
   }
 

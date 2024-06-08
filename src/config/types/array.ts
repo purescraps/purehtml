@@ -33,7 +33,7 @@ export class ArrayConfig extends ConfigWithSelector {
     super();
   }
 
-  extract(params: ConfigWithSelectorExtractParams) {
+  extract(params: ConfigWithSelectorExtractParams): unknown {
     const $el = this.getSelectorMatches(
       params.$el,
       params.elementAlreadyMatched ?? false
