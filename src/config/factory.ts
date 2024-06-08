@@ -12,13 +12,13 @@ import ConfigWithSelector from './types/with-selector';
 import { ConfigValidator } from './validator';
 
 export class ConfigFactory {
-  static fromYAML(yaml: string): Config {
+  static fromYAML<T>(yaml: string): Config<T> {
     const plain = parse(yaml);
 
     return this.generate(plain);
   }
 
-  private static generate(plain: PlainConfigObject): Config {
+  private static generate<T>(plain: PlainConfigObject): Config<T> {
     const validator = new ConfigValidator(plain);
     const errors = validator.validate();
 
@@ -47,31 +47,31 @@ export class ConfigFactory {
       : undefined;
 
     switch (expectedType) {
-    case 'constant':
-      return ConstantConfig.generate(constant);
-    case 'object': {
-      let propConfigs: ObjectConfig['properties'] | undefined = undefined;
+      case 'constant':
+        return ConstantConfig.generate(constant);
+      case 'object': {
+        let propConfigs: ObjectConfig['properties'] | undefined = undefined;
 
-      if (properties) {
-        propConfigs = Object.keys(properties).reduce((acc, key) => {
-          acc[key] = this.generate(properties[key]);
+        if (properties) {
+          propConfigs = Object.keys(properties).reduce((acc, key) => {
+            acc[key] = this.generate(properties[key]);
 
-          return acc;
-        }, {} as Record<string, Config>);
+            return acc;
+          }, {} as Record<string, Config>);
+        }
+
+        return ObjectConfig.generate(selector, propConfigs);
       }
-
-      return ObjectConfig.generate(selector, propConfigs);
-    }
-    case 'array':
-      return ArrayConfig.generate(
-        selector,
-        items && this.generate(items),
-        transform
-      );
-    case 'union':
-      return UnionConfig.generate(union!.map((cfg) => this.generate(cfg)));
-    default:
-      return PrimitiveValueConfig.generate(selector, transform);
+      case 'array':
+        return ArrayConfig.generate(
+          selector,
+          items && this.generate(items),
+          transform
+        );
+      case 'union':
+        return UnionConfig.generate(union!.map((cfg) => this.generate(cfg)));
+      default:
+        return PrimitiveValueConfig.generate(selector, transform);
     }
   }
 

@@ -6,6 +6,8 @@ import { rootProp } from './core/property';
 
 export { ConfigFactory } from './config';
 
+export { Config };
+
 export function extract<T = unknown>(
   $: cheerio.Root | string,
   config: Config<T>,
