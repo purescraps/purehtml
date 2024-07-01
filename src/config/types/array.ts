@@ -42,10 +42,12 @@ export class ArrayConfig extends ConfigWithSelector {
       this.items || PrimitiveValueConfig.generate(null, this.transform);
     const extractOpts = { ...params } satisfies ExtractParams;
 
-    return $el.toArray().map((el, i) => {
+    const els = Array.isArray($el) ? $el : [$el];
+
+    return els.map((el, i) => {
       return conf.extract({
         ...extractOpts,
-        $el: params.$(el),
+        $el: el,
         property: this.makeProperty(params.property, i),
       });
     });

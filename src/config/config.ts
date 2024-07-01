@@ -1,8 +1,9 @@
+import { PureHTMLDocument, PureHTMLMatches } from '../core/backend';
 import { Property } from '../core/property';
 
 export interface ExtractParams {
-  $: cheerio.Root;
-  $el: cheerio.Cheerio;
+  $: PureHTMLDocument;
+  $el: PureHTMLMatches;
   url: string;
   property: Property;
 }

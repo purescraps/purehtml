@@ -1,3 +1,4 @@
+import { PureHTMLMatches } from '../../core/backend';
 import { Config, ExtractParams } from '../config';
 
 export interface ConfigWithSelectorExtractParams extends ExtractParams {
@@ -10,9 +11,9 @@ export default abstract class ConfigWithSelector extends Config {
   abstract extract(params: ConfigWithSelectorExtractParams): unknown;
 
   getSelectorMatches(
-    $: cheerio.Cheerio,
+    $: PureHTMLMatches,
     alreadyMatched: boolean
-  ): cheerio.Cheerio {
+  ): PureHTMLMatches {
     if (alreadyMatched) {
       return $;
     }

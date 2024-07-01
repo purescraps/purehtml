@@ -1,5 +1,4 @@
-import { load } from 'cheerio';
-import { ConfigFactory } from '../../src';
+import { ConfigFactory, cheerio } from '../../src';
 import { rootProp } from '../../src/core/property';
 
 const yaml = `
@@ -8,7 +7,7 @@ constant: foo
 
 describe('ConstantConfig', () => {
   it('Basic', () => {
-    const $ = load('');
+    const $ = cheerio.load('');
     const conf = ConfigFactory.fromYAML(yaml);
     const result = conf.extract({
       $,

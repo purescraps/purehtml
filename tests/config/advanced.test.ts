@@ -1,5 +1,4 @@
-import { load } from 'cheerio';
-import { ConfigFactory } from '../../src';
+import { ConfigFactory, cheerio } from '../../src';
 import { rootProp } from '../../src/core/property';
 
 const html = `<div>
@@ -22,7 +21,7 @@ items:
 
 describe('Advanced', () => {
   it('Basic', () => {
-    const $ = load(html);
+    const $ = cheerio.load(html);
     const conf = ConfigFactory.fromYAML(yaml);
     const result = conf.extract({
       $,

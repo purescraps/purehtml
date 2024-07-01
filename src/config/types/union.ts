@@ -23,7 +23,7 @@ export default class UnionConfig extends Config {
           elementAlreadyMatched: true,
         });
       } else {
-        return config.extract({ ...params, $el: params.$('') });
+        return config.extract({ ...params, $el: params.$.$('') });
       }
     }
 
