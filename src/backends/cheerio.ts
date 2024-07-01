@@ -64,6 +64,12 @@ export class PureHTMLCheerioMatches extends PureHTMLMatches {
     return this.#el.is(selector);
   }
 
+  override map<T>(cb: (matches: PureHTMLMatches, index: number) => T): T[] {
+    return this.#el
+      .toArray()
+      .map((el, i) => cb(new PureHTMLCheerioMatches(this.#$, this.#$(el)), i));
+  }
+
   override text(): string {
     return this.#el.text();
   }

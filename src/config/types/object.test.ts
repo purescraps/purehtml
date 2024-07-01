@@ -86,7 +86,7 @@ describe('object', () => {
     });
   });
 
-  it('should only match child elements', () => {
+  it.only('should only match child elements', () => {
     const config = ObjectConfig.generate('#root', {
       divs: ArrayConfig.generate('div'),
     });

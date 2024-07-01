@@ -5,6 +5,11 @@ export interface ConfigWithSelectorExtractParams extends ExtractParams {
   elementAlreadyMatched?: boolean;
 }
 
+export interface GetSelectorMatchesParams {
+  alreadyMatched: boolean;
+  includeRoot: boolean;
+}
+
 export default abstract class ConfigWithSelector extends Config {
   protected selector: string | null = null;
 
@@ -12,7 +17,7 @@ export default abstract class ConfigWithSelector extends Config {
 
   getSelectorMatches(
     $: PureHTMLMatches,
-    alreadyMatched: boolean
+    { alreadyMatched, includeRoot }: GetSelectorMatchesParams
   ): PureHTMLMatches {
     if (alreadyMatched) {
       return $;
@@ -23,7 +28,7 @@ export default abstract class ConfigWithSelector extends Config {
     }
 
     // check if the element *itself* matches the given selector
-    if ($.is(this.selector)) {
+    if (includeRoot && $.is(this.selector)) {
       return $;
     }
 

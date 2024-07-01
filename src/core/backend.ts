@@ -19,6 +19,7 @@ export abstract class PureHTMLMatches {
   abstract html(): string | null;
   abstract is(selector: string): boolean;
   abstract text(): string;
+  abstract map<T>(cb: (matches: PureHTMLMatches, index: number) => T): T[];
 }
 
 export type PureHTMLNodeAttributes = Record<string, string | null>;

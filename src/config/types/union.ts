@@ -11,7 +11,10 @@ export default class UnionConfig extends Config {
 
     for (const config of this.configs) {
       if (config instanceof ConfigWithSelector) {
-        const $el = config.getSelectorMatches($parent, false);
+        const $el = config.getSelectorMatches($parent, {
+          alreadyMatched: false,
+          includeRoot: true,
+        });
 
         if ($el.length === 0) {
           continue;
