@@ -7,6 +7,17 @@ const cheerio = new PureHTMLCheerioBackend();
 
 export { ConfigFactory } from './config';
 
+/**
+ * For custom html parsing backend implementors
+ */
+export {
+  PureHTMLBackend,
+  PureHTMLDocument,
+  PureHTMLMatches,
+  PureHTMLNode,
+  PureHTMLNodeAttributes,
+} from './core/backend';
+
 export { Config, cheerio };
 
 export function extract<T = unknown>(
