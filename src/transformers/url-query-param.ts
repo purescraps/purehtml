@@ -48,17 +48,4 @@ export default class UrlQueryParamTransformer extends Transformer {
       return acc;
     }, {} as Record<string, string | null>);
   }
-
-  private static getAttrValue(
-    $el: cheerio.Cheerio,
-    attr: string
-  ): string | null {
-    const val = $el.attr(attr);
-
-    if (val === undefined) {
-      return null;
-    }
-
-    return val;
-  }
 }
