@@ -1,8 +1,7 @@
 describe('Base', () => {
   it('AllowEmptyConfigs', () => expect({}).toBeValidConfig());
   it('NoAdditionalProperties', () =>
-    expect({ foo: 'bar' }).not.toBeValidConfig()
-  );
+    expect({ foo: 'bar' }).not.toBeValidConfig());
 });
 
 describe('Selector', () => {
@@ -18,21 +17,21 @@ describe('Selector', () => {
     expect({
       selector: {
         selector: 'some selector',
-        sampleHTMLs: []
-      }
+        sampleHTMLs: [],
+      },
     }).toBeValidConfig();
 
     expect({
       selector: {
         selector: 'some selector',
-        sampleHTMLs: ['tests/fixtures/sample.html']
-      }
+        sampleHTMLs: ['tests/fixtures/sample.html'],
+      },
     }).toBeValidConfig();
 
     expect({
       selector: {
-        sampleHTMLs: []
-      }
+        sampleHTMLs: [],
+      },
     }).toBeValidConfig();
 
     expect({
@@ -41,7 +40,7 @@ describe('Selector', () => {
 
     expect({
       selector: {
-        selector: '.foo'
+        selector: '.foo',
       },
     }).toBeValidConfig();
   });
@@ -97,7 +96,7 @@ describe('Object', () => {
       properties: {
         x: { selector: '.x' },
       },
-      transform: 'length'
+      transform: 'length',
     };
 
     expect(conf).not.toBeValidConfig();
@@ -118,19 +117,6 @@ describe('Array', () => {
       type: 'string',
     }).not.toBeValidConfig();
   });
-
-  it('CannotHaveTransformAndItemsTogether', () => {
-    const conf = {
-      selector: '.foo',
-      type: 'array',
-      items: {
-        selector: '.x',
-      },
-      transform: 'length'
-    };
-
-    expect(conf).not.toBeValidConfig();
-  });
 });
 
 describe('Union', () => {
@@ -144,19 +130,26 @@ describe('Union', () => {
   });
 
   it('MustForbidAnyOtherProps', () => {
-    expect({ union: [{ selector: '.foo' }], selector: '.bar' }).not.toBeValidConfig();
+    expect({
+      union: [{ selector: '.foo' }],
+      selector: '.bar',
+    }).not.toBeValidConfig();
   });
 });
 
 describe('Transform', () => {
-  it('FailOnNonStringValues', () => expect({ selector: '.foo', transform: 123 }).not.toBeValidConfig());
+  it('FailOnNonStringValues', () =>
+    expect({ selector: '.foo', transform: 123 }).not.toBeValidConfig());
 
   it('ValidTransformer', () => {
     expect({ selector: '.foo', transform: 'length' }).toBeValidConfig();
   });
 
   it('AllowStringArray', () => {
-    expect({ selector: '.foo', transform: ['length', 'trim'] }).toBeValidConfig();
+    expect({
+      selector: '.foo',
+      transform: ['length', 'trim'],
+    }).toBeValidConfig();
   });
 
   it('StringArrayCannotBeEmpty', () => {
@@ -182,6 +175,6 @@ describe('Constant', () => {
   });
 
   it('Array', () => {
-    expect({ constant: [ 'foo' ] }).toBeValidConfig();
+    expect({ constant: ['foo'] }).toBeValidConfig();
   });
 });

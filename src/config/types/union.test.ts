@@ -1,6 +1,6 @@
-import { load } from 'cheerio';
-import ConfigWithSelector from './with-selector';
+import { cheerio } from '../..';
 import UnionConfig from './union';
+import ConfigWithSelector from './with-selector';
 
 class FakeWithSelector extends ConfigWithSelector {
   constructor(
@@ -25,7 +25,7 @@ const html = `
 
 describe('UnionConfig', () => {
   it('ReturnSelf', () => {
-    const $ = load(html);
+    const $ = cheerio.load(html);
     const $el = $.root();
     const conf = UnionConfig.generate([
       new FakeWithSelector('#foo', 'first'),

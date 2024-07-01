@@ -1,7 +1,13 @@
+import { PureHTMLMatches } from '../../core/backend';
 import { Config, ExtractParams } from '../config';
 
 export interface ConfigWithSelectorExtractParams extends ExtractParams {
   elementAlreadyMatched?: boolean;
+}
+
+export interface GetSelectorMatchesParams {
+  alreadyMatched: boolean;
+  includeRoot: boolean;
 }
 
 export default abstract class ConfigWithSelector extends Config {
@@ -10,9 +16,9 @@ export default abstract class ConfigWithSelector extends Config {
   abstract extract(params: ConfigWithSelectorExtractParams): unknown;
 
   getSelectorMatches(
-    $: cheerio.Cheerio,
-    alreadyMatched: boolean
-  ): cheerio.Cheerio {
+    $: PureHTMLMatches,
+    { alreadyMatched, includeRoot }: GetSelectorMatchesParams
+  ): PureHTMLMatches {
     if (alreadyMatched) {
       return $;
     }
@@ -22,7 +28,7 @@ export default abstract class ConfigWithSelector extends Config {
     }
 
     // check if the element *itself* matches the given selector
-    if ($.is(this.selector)) {
+    if (includeRoot && $.is(this.selector)) {
       return $;
     }
 

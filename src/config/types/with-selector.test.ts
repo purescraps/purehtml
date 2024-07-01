@@ -1,4 +1,4 @@
-import { load } from 'cheerio';
+import { cheerio } from '../..';
 import ConfigWithSelector from './with-selector';
 
 class FakeWithSelector extends ConfigWithSelector {
@@ -21,10 +21,13 @@ const html = `
 
 describe('ConfigWithSelector', () => {
   it('ReturnSelf', () => {
-    const $ = load(html);
+    const $ = cheerio.load(html);
     const $el = $.root();
     const conf = new FakeWithSelector(null);
-    const $match = conf.getSelectorMatches($el, false);
+    const $match = conf.getSelectorMatches($el, {
+      alreadyMatched: false,
+      includeRoot: false,
+    });
     const expected = $el;
 
     expect($match).toBe(expected);

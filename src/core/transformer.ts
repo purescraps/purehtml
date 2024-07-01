@@ -1,9 +1,10 @@
+import { PureHTMLMatches } from './backend';
 import { PrimitiveTypes } from './primitive-types';
 import { Property } from './property';
 
 export interface TransformParams {
   val: unknown;
-  $el: cheerio.Cheerio;
+  $el: PureHTMLMatches;
   url: string;
   property: Property;
 }

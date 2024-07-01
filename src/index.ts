@@ -1,22 +1,35 @@
-/// <reference types="@types/cheerio/index.d.ts" />
-
-import { load } from 'cheerio';
 import { Config } from './config';
 import { rootProp } from './core/property';
+import { PureHTMLBackend, PureHTMLDocument } from './core/backend';
+import { PureHTMLCheerioBackend } from './backends/cheerio';
+
+const cheerio = new PureHTMLCheerioBackend();
 
 export { ConfigFactory } from './config';
 
-export { Config };
+/**
+ * For custom html parsing backend implementors
+ */
+export {
+  PureHTMLBackend,
+  PureHTMLDocument,
+  PureHTMLMatches,
+  PureHTMLNode,
+  PureHTMLNodeAttributes,
+} from './core/backend';
+
+export { Config, cheerio };
 
 export function extract<T = unknown>(
-  $: cheerio.Root | string,
+  backend: PureHTMLBackend,
+  $: PureHTMLDocument | string,
   config: Config<T>,
   url: string
 ): T {
   let $root = $;
 
   if (typeof $root === 'string') {
-    $root = load($root);
+    $root = backend.load($root);
   }
 
   return config.extract({

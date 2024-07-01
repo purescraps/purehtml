@@ -1,6 +1,5 @@
-import { load } from 'cheerio';
 import { readFileSync } from 'fs';
-import { ConfigFactory } from '../../src';
+import { ConfigFactory, cheerio } from '../../src';
 import { rootProp } from '../../src/core/property';
 
 const yaml = `
@@ -10,7 +9,9 @@ transform: html
 
 describe('HTML', () => {
   it('CorrectlyExtractHTML', () => {
-    const $ = load(readFileSync('tests/fixtures/basic.html').toString());
+    const $ = cheerio.load(
+      readFileSync('tests/fixtures/basic.html').toString()
+    );
     const config = ConfigFactory.fromYAML(yaml);
     const result = config.extract({
       $,
@@ -18,7 +19,7 @@ describe('HTML', () => {
       url: 'https://example.com',
       property: rootProp,
     });
-    const expected = $('.foo').html();
+    const expected = $.$('.foo').html();
 
     expect(result).toBe(expected);
   });

@@ -1,5 +1,4 @@
-import { load } from 'cheerio';
-import { ConfigFactory, extract } from '../src';
+import { ConfigFactory, cheerio, extract } from '../src';
 
 const SAMPLE = `<div>
   some
@@ -11,9 +10,9 @@ describe('Extract', () => {
   // The extract() must start from the $.root() so we'll get
   // the outer-most element at beginning
   it('SelectRootElement', () => {
-    const $ = load(SAMPLE);
+    const $ = cheerio.load(SAMPLE);
     const config = ConfigFactory.fromYAML('{}');
-    const result = extract($, config, 'https://example.com');
+    const result = extract(cheerio, $, config, 'https://example.com');
     const expected = $.root().text();
 
     expect(result).toBe(expected);

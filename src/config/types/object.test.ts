@@ -1,12 +1,12 @@
-import { load } from 'cheerio';
+import assert from 'assert';
+import { cheerio } from '../..';
 import { PrimitiveTypes, STRING } from '../../core/primitive-types';
 import { rootProp } from '../../core/property';
 import { TransformParams, Transformer } from '../../core/transformer';
 import { ExtractParams } from '../config';
+import { ArrayConfig } from './array';
 import { ObjectConfig } from './object';
 import { PrimitiveValueConfig } from './primitive';
-import { ArrayConfig } from './array';
-import assert from 'assert';
 
 const html = `
 <div id="outside"></div>
@@ -34,7 +34,7 @@ describe('object', () => {
   let params: ExtractParams;
 
   beforeAll(() => {
-    const $ = load(html);
+    const $ = cheerio.load(html);
     const $el = $.root();
 
     params = { $, $el, property: rootProp, url: 'https://example.com' };
@@ -86,7 +86,7 @@ describe('object', () => {
     });
   });
 
-  it('should only match child elements', () => {
+  it.only('should only match child elements', () => {
     const config = ObjectConfig.generate('#root', {
       divs: ArrayConfig.generate('div'),
     });

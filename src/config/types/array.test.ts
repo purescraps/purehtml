@@ -1,4 +1,4 @@
-import { load } from 'cheerio';
+import { cheerio } from '../..';
 import { PrimitiveTypes, STRING } from '../../core/primitive-types';
 import { rootProp } from '../../core/property';
 import { TransformParams, Transformer } from '../../core/transformer';
@@ -30,7 +30,7 @@ describe('array', () => {
   let params: ExtractParams;
 
   beforeAll(() => {
-    const $ = load(html);
+    const $ = cheerio.load(html);
     const $el = $.root();
 
     params = { $, $el, property: rootProp, url: 'https://example.com' };
@@ -57,7 +57,7 @@ describe('array', () => {
 
     const result = config.extract({
       ...params,
-      $el: params.$('#root div'),
+      $el: params.$.$('#root div'),
       elementAlreadyMatched: true,
     });
 
