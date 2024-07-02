@@ -14,12 +14,12 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
 
   extract(params: ConfigWithSelectorExtractParams) {
     let val: unknown = null;
-    const $el = this.getSelectorMatches(params.$el, {
+    const $el = this.getFirstMatch(params.$el, {
       alreadyMatched: params.elementAlreadyMatched ?? false,
       includeRoot: false,
     });
 
-    if ($el.length > 0) {
+    if ($el) {
       val = $el.text();
     }
 

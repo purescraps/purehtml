@@ -21,22 +21,21 @@ export default class AttributeTransformer extends Transformer {
 
   transform({ $el }: TransformParams): PureHTMLNodeAttributes | string | null {
     const { args } = this;
-    const node = $el.first();
 
-    if (!node) {
+    if (!$el) {
       return null;
     }
 
     if (args.length === 0) {
-      return node.attr();
+      return $el.attr();
     }
 
     if (args.length === 1) {
-      return AttributeTransformer.getAttrValue(node, args[0]);
+      return AttributeTransformer.getAttrValue($el, args[0]);
     }
 
     return args.reduce((acc, arg) => {
-      acc[arg] = AttributeTransformer.getAttrValue(node, arg);
+      acc[arg] = AttributeTransformer.getAttrValue($el, arg);
 
       return acc;
     }, {} as PureHTMLNodeAttributes);

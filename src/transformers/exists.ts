@@ -15,6 +15,6 @@ export default class Exists extends Transformer {
   }
 
   transform({ $el }: TransformParams) {
-    return $el.length > 0;
+    return !!$el;
   }
 }

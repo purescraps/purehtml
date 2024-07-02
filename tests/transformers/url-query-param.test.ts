@@ -1,6 +1,6 @@
 import { ConfigFactory, cheerio } from '../../src';
 import { ExtractParams } from '../../src/config';
-import { PureHTMLDocument, PureHTMLMatches } from '../../src/core/backend';
+import { PureHTMLDocument, PureHTMLNode } from '../../src/core/backend';
 import { rootProp } from '../../src/core/property';
 
 const SAMPLE = `
@@ -15,7 +15,7 @@ const SAMPLE = `
 `;
 
 describe('UrlQueryParamTransformer', () => {
-  let $: PureHTMLDocument, $el: PureHTMLMatches;
+  let $: PureHTMLDocument, $el: PureHTMLNode;
   let extractParams: ExtractParams;
 
   beforeAll(() => {

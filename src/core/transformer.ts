@@ -1,10 +1,10 @@
-import { PureHTMLMatches } from './backend';
+import { PureHTMLNode } from './backend';
 import { PrimitiveTypes } from './primitive-types';
 import { Property } from './property';
 
 export interface TransformParams {
   val: unknown;
-  $el: PureHTMLMatches;
+  $el: PureHTMLNode | null;
   url: string;
   property: Property;
 }

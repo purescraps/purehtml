@@ -24,7 +24,7 @@ describe('ConfigWithSelector', () => {
     const $ = cheerio.load(html);
     const $el = $.root();
     const conf = new FakeWithSelector(null);
-    const $match = conf.getSelectorMatches($el, {
+    const $match = conf.getFirstMatch($el, {
       alreadyMatched: false,
       includeRoot: false,
     });

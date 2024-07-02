@@ -30,12 +30,12 @@ export class ObjectConfig extends ConfigWithSelector {
 
   extract(params: ConfigWithSelectorExtractParams) {
     const $parent = params.$el;
-    const $el = this.getSelectorMatches($parent, {
+    const $el = this.getFirstMatch($parent, {
       alreadyMatched: params.elementAlreadyMatched ?? false,
       includeRoot: false,
     });
 
-    if ($el.length === 0) {
+    if (!$el) {
       return null;
     }
 

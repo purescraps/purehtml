@@ -15,6 +15,6 @@ export default class HTMLTransformer extends Transformer {
   }
 
   transform({ $el }: TransformParams) {
-    return $el.html();
+    return $el?.html();
   }
 }

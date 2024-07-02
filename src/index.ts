@@ -1,7 +1,7 @@
-import { Config } from './config';
-import { rootProp } from './core/property';
-import { PureHTMLBackend, PureHTMLDocument } from './core/backend';
 import { PureHTMLCheerioBackend } from './backends/cheerio';
+import { Config } from './config';
+import { PureHTMLBackend, PureHTMLDocument } from './core/backend';
+import { rootProp } from './core/property';
 
 const cheerio = new PureHTMLCheerioBackend();
 
@@ -13,7 +13,6 @@ export { ConfigFactory } from './config';
 export {
   PureHTMLBackend,
   PureHTMLDocument,
-  PureHTMLMatches,
   PureHTMLNode,
   PureHTMLNodeAttributes,
 } from './core/backend';

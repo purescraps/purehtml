@@ -4,7 +4,6 @@ import { load } from 'cheerio';
 import {
   PureHTMLBackend,
   PureHTMLDocument,
-  PureHTMLMatches,
   PureHTMLNode,
   PureHTMLNodeAttributes,
 } from '../core/backend';
@@ -24,54 +23,14 @@ export class PureHTMLCheerioDocument extends PureHTMLDocument {
     this.#root = root;
   }
 
-  $(selector: string): PureHTMLMatches {
-    return new PureHTMLCheerioMatches(this.#root, this.#root(selector));
-  }
-
-  root(): PureHTMLMatches {
-    return new PureHTMLCheerioMatches(this.#root, this.#root.root());
-  }
-}
-
-export class PureHTMLCheerioMatches extends PureHTMLMatches {
-  #$: cheerio.Root;
-  #el: cheerio.Cheerio;
-
-  constructor($: cheerio.Root, el: cheerio.Cheerio) {
-    super();
-
-    this.#$ = $;
-    this.#el = el;
-  }
-
-  override get length() {
-    return this.#el.length;
-  }
-
-  override find(selector: string): PureHTMLMatches {
-    return new PureHTMLCheerioMatches(this.#$, this.#el.find(selector));
-  }
-
-  override first(): PureHTMLNode | null {
-    return new PureHTMLCheerioNode(this.#$, this.#el.first());
-  }
-
-  override html(): string | null {
-    return this.#el.html();
-  }
-
-  override is(selector: string): boolean {
-    return this.#el.is(selector);
-  }
-
-  override map<T>(cb: (matches: PureHTMLMatches, index: number) => T): T[] {
-    return this.#el
+  $(selector: string): PureHTMLCheerioNode[] {
+    return this.#root(selector)
       .toArray()
-      .map((el, i) => cb(new PureHTMLCheerioMatches(this.#$, this.#$(el)), i));
+      .map((el) => new PureHTMLCheerioNode(this.#root, this.#root(el)));
   }
 
-  override text(): string {
-    return this.#el.text();
+  root(): PureHTMLCheerioNode {
+    return new PureHTMLCheerioNode(this.#root, this.#root.root());
   }
 }
 
@@ -94,5 +53,24 @@ export class PureHTMLCheerioNode extends PureHTMLNode {
     }
 
     return this.#el.attr();
+  }
+
+  override find(selector: string): PureHTMLCheerioNode[] {
+    return this.#el
+      .find(selector)
+      .toArray()
+      .map((el) => new PureHTMLCheerioNode(this.#$, this.#$(el)));
+  }
+
+  override html(): string | null {
+    return this.#el.html();
+  }
+
+  override is(selector: string): boolean {
+    return this.#el.is(selector);
+  }
+
+  override text(): string {
+    return this.#el.text();
   }
 }

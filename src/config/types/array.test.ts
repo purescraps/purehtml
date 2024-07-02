@@ -49,22 +49,6 @@ describe('array', () => {
     expect(result).toEqual(['foo', 'bar', 'baz']);
   });
 
-  it('should respect elementAlreadyMatched', () => {
-    const config = ArrayConfig.generate(
-      'invalid-selector',
-      PrimitiveValueConfig.generate(null)
-    );
-
-    const result = config.extract({
-      ...params,
-      $el: params.$.$('#root div'),
-      elementAlreadyMatched: true,
-    });
-
-    expect(result).toBeInstanceOf(Array);
-    expect(result).toEqual(['foo', 'bar', 'baz']);
-  });
-
   describe('transform', () => {
     it('should set "property" correctly', () => {
       const transfomer = new FakeTransformer();

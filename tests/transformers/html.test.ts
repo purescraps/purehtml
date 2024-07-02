@@ -19,7 +19,7 @@ describe('HTML', () => {
       url: 'https://example.com',
       property: rootProp,
     });
-    const expected = $.$('.foo').html();
+    const expected = $.$('.foo')[0].html();
 
     expect(result).toBe(expected);
   });

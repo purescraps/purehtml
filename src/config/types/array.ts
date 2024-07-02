@@ -34,15 +34,16 @@ export class ArrayConfig extends ConfigWithSelector {
   }
 
   extract(params: ConfigWithSelectorExtractParams): unknown {
-    const $el = this.getSelectorMatches(params.$el, {
+    const $el = this.getAllMatches(params.$el, {
       alreadyMatched: params.elementAlreadyMatched ?? false,
       includeRoot: false,
     });
+    const matches = Array.isArray($el) ? $el : [$el];
     const conf =
       this.items || PrimitiveValueConfig.generate(null, this.transform);
     const extractOpts = { ...params } satisfies ExtractParams;
 
-    return $el.map((el, i) => {
+    return matches.map((el, i) => {
       return conf.extract({
         ...extractOpts,
         $el: el,
