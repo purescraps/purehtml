@@ -14,7 +14,7 @@ export abstract class PureHTMLDocument {
 export abstract class PureHTMLMatches {
   abstract length: number;
 
-  abstract first(): PureHTMLNode;
+  abstract first(): PureHTMLNode | null;
   abstract find(selector: string): PureHTMLMatches;
   abstract html(): string | null;
   abstract is(selector: string): boolean;

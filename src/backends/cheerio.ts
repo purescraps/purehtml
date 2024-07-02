@@ -52,7 +52,7 @@ export class PureHTMLCheerioMatches extends PureHTMLMatches {
     return new PureHTMLCheerioMatches(this.#$, this.#el.find(selector));
   }
 
-  override first(): PureHTMLNode {
+  override first(): PureHTMLNode | null {
     return new PureHTMLCheerioNode(this.#$, this.#el.first());
   }
 

@@ -23,6 +23,10 @@ export default class AttributeTransformer extends Transformer {
     const { args } = this;
     const node = $el.first();
 
+    if (!node) {
+      return null;
+    }
+
     if (args.length === 0) {
       return node.attr();
     }
