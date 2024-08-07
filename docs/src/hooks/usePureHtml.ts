@@ -1,7 +1,11 @@
 'use client';
 
-import { ConfigFactory, extract } from '@purescraps/purehtml';
-import { load } from 'cheerio';
+import {
+  cheerio,
+  ConfigFactory,
+  extract,
+  PureHTMLDocument,
+} from '@purescraps/purehtml';
 import { useEffect, useMemo, useState } from 'react';
 
 export interface UsePureHtml {
@@ -21,8 +25,8 @@ export function usePureHtml({
     result: '',
   });
   // cache cheerio.load call for handling big HTMLs
-  const input = useMemo<cheerio.Root | null>(
-    () => (inputHtml ? load(inputHtml) : null),
+  const input = useMemo<PureHTMLDocument | null>(
+    () => (inputHtml ? cheerio.load(inputHtml) : null),
     [inputHtml]
   );
   const [config, setConfig] = useState<unknown>(null);
@@ -49,7 +53,7 @@ export function usePureHtml({
 
     try {
       const result = JSON.stringify(
-        extract(input, config as any, 'https://example.com'),
+        extract(cheerio, input, config as any, 'https://example.com'),
         null,
         '  '
       );
