@@ -134,7 +134,7 @@
     {
       "$comment": "Constant",
       "type": "object",
-      "properties": { "constant": {} },
+      "properties": { "selector": { "type": "string" }, "constant": {} },
       "required": ["constant"],
       "additionalProperties": false
     }

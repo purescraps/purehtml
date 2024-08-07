@@ -6,8 +6,12 @@ constant: foo
 `;
 
 describe('ConstantConfig', () => {
-  it('Basic', () => {
-    const $ = cheerio.load('');
+  const $ = cheerio.load(`<div>
+    <span>experiment</span>
+    <p>experiment</p>
+  </div>`);
+
+  it('basic', () => {
     const conf = ConfigFactory.fromYAML(yaml);
     const result = conf.extract({
       $,
@@ -18,5 +22,34 @@ describe('ConstantConfig', () => {
     const expected = 'foo';
 
     expect(result).toBe(expected);
+  });
+
+  it('should return the given value if any of the nodes matches', () => {
+    const conf = ConfigFactory.fromYAML(
+      '{ selector: span, constant: { custom: "object" } }'
+    );
+    const result = conf.extract({
+      $,
+      $el: $.root(),
+      property: rootProp,
+      url: 'https://example.com',
+    });
+    const expected = { custom: 'object' };
+
+    expect(result).toStrictEqual(expected);
+  });
+
+  it('should return null if nothing matches', () => {
+    const conf = ConfigFactory.fromYAML(
+      '{ selector: a, constant: { custom: "object" } }'
+    );
+    const result = conf.extract({
+      $,
+      $el: $.root(),
+      property: rootProp,
+      url: 'https://example.com',
+    });
+
+    expect(result).toBeNull();
   });
 });

@@ -48,7 +48,7 @@ export class ConfigFactory {
 
     switch (expectedType) {
       case 'constant':
-        return ConstantConfig.generate(constant) as Config<T>;
+        return ConstantConfig.generate(constant, selector) as Config<T>;
       case 'object': {
         let propConfigs: ObjectConfig['properties'] | undefined = undefined;
 
