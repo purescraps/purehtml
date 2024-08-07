@@ -2,6 +2,7 @@
 
 import {
   cheerio,
+  Config,
   ConfigFactory,
   extract,
   PureHTMLDocument,
@@ -41,6 +42,7 @@ export function usePureHtml({
       setConfig(ConfigFactory.fromYAML(configYaml));
       setState((s) => ({ ...s, configIsValid: true }));
     } catch (err) {
+      console.log('cannot build configuration:', err);
       setState((s) => ({ ...s, configIsValid: false }));
     }
   }, [configYaml]);
@@ -53,7 +55,12 @@ export function usePureHtml({
 
     try {
       const result = JSON.stringify(
-        extract(cheerio, input, config as any, 'https://example.com'),
+        extract(
+          cheerio,
+          input,
+          config as unknown as Config<unknown>,
+          'https://example.com'
+        ),
         null,
         '  '
       );
