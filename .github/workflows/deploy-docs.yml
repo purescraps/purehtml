@@ -20,13 +20,12 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
-defaults:
-  run:
-    working-directory: docs
-
 jobs:
   # Build job
   build:
+    defaults:
+      run:
+        working-directory: docs
     runs-on: ubuntu-latest
     env:
       NEXT_TELEMETRY_DISABLED: 1
@@ -56,6 +55,7 @@ jobs:
           version: 9.0.6+sha1.648f6014eb363abb36618f2ba59282a9eeb3e879
       - name: Setup Node
         uses: actions/setup-node@v4
+        working-directory: docs
         with:
           node-version: "22"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
