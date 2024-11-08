@@ -55,7 +55,6 @@ jobs:
           version: 9.0.6+sha1.648f6014eb363abb36618f2ba59282a9eeb3e879
       - name: Setup Node
         uses: actions/setup-node@v4
-        working-directory: docs
         with:
           node-version: "22"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
