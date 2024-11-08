@@ -20,13 +20,14 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: docs
+
 jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: docs
     env:
       NEXT_TELEMETRY_DISABLED: 1
     steps:
