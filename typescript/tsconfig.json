@@ -5,7 +5,8 @@
     "moduleResolution": "node",
     "target": "ESNext",
     "resolveJsonModule": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "module": "ES2020"
   },
   "exclude": ["dist", "docs"]
 }

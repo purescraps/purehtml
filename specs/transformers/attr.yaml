@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: attr transformer
+
+specs:
+  - description: Extract attributes
+
+    input: >
+      <div>
+        <div data-foo="foo"></div>
+        <div data-bar="bar"></div>
+        <div data-baz="baz"></div>
+      </div>
+
+    configuration:
+      selector: div[data-foo], div[data-bar], div[data-baz]
+      items:
+        union:
+          - selector: "[data-foo]"
+            transform: attr(data-foo)
+          - selector: "[data-bar]"
+            transform: attr(data-bar)
+          - selector: "[data-baz]"
+            transform: attr(data-baz)
+
+    expected: ["foo", "bar", "baz"]
