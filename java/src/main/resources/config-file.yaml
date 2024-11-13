@@ -1,0 +1,1 @@
+{ selector: span, transform: 'urlQueryParam(q, utm_source)' }
