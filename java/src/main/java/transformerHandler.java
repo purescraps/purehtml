@@ -169,7 +169,7 @@ public class transformerHandler {
                     return jsonObject;
                 }
                 else {
-                    System.out.println(element.attr(item.replaceAll("[()]", ""))+"Anan");
+                    System.out.println(element.attr(item.replaceAll("[()]", "")));
                     output = element.attr(item.replaceAll("[()]", ""));
 
                 }
