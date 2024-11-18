@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-public class parseQueryString {
+public class ParseHtmlQuery {
     public static Map<String, String> parse(String query) throws UnsupportedEncodingException {
         Map<String, String> params = new HashMap<>();
         if (query != null && !query.isEmpty()) {

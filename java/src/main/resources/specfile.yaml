@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
+
+$schema: "http://json-schema.org/draft-07/schema"
+
+type: object
+required: [description, specs]
+
+properties:
+  description: { type: string }
+
+  specs:
+    type: array
+
+    items:
+      type: object
+
+      required: [configuration, description, expected, input]
+
+      properties:
+        description: { type: string }
+        configuration: {}
+        input: { type: string }
+        expected: {}
+
+      additionalProperties: false
+
+additionalProperties: false

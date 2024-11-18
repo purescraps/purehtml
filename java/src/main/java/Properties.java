@@ -8,11 +8,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-public class propertiesHandler {
-    public static void apply(String html, Map<String, ConfigSchema> properties, String selector) throws IOException {
+public class Properties {
+    public static Object apply(String htmlFile, String htmlString,  Map<String, ConfigSchema> properties, String selector) throws IOException {
 
-        File input = new File(html);
-        Document doc = Jsoup.parse(input, "UTF-8", "http://example.com/");
+        File input;
+        Document doc;
+        if(htmlString != null)
+        {
+            doc = Jsoup.parse(htmlString);
+        }
+        else {
+            input = new File(htmlFile);
+            doc = Jsoup.parse(input, "UTF-8", "http://example.com/");
+        }
 
         ConfigSchema test1;
         Object outputObject;
@@ -32,13 +40,11 @@ public class propertiesHandler {
             Elements ans = doc.select(selector);
             for ( Element elem: ans)
             {
-                // System.out.println("Element --> " + elem);
-                outputObject = transformerHandler.applyTransformers(elem.text(), doc, elem, transform);
+                outputObject = Transformer.applyTransformers(elem.text(), doc, elem, transform);
                 jsonObject.put(x.getKey(), outputObject);
             }
         }
-        writeJSON.write(jsonObject, "w");
-        System.out.println(jsonObject);
 
+        return jsonObject;
     }
 }
