@@ -1,56 +1,42 @@
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-import com.github.fge.jsonschema.main.JsonSchema;
-import com.github.fge.jsonschema.main.JsonSchemaFactory;
 import java.io.*;
-import java.net.URI;
 import java.util.List;
 @SuppressWarnings("unused")
 public class Main {
-    public static void main(String[] args) {
-        try {
-            // Step 1: Load the YAML file
-            List<Object> jsonList;
-            File yamlFile = new File("java/src/main/resources/config-file.yaml");
-            YAMLMapper yamlMapper = new YAMLMapper(new YAMLFactory());
-            JsonNode yamlJsonNode = yamlMapper.readTree(yamlFile);
+    public static void main(String[] args) throws IOException {
 
-            // Step 2: Load the JSON Schema
-            File schemaFile = new File("java/src/main/resources/config-schema.json");
+        // Step 1: Load the YAML file
+        String operation = "w";
+        List<Object> jsonList;
+        String configPath = "java/src/main/resources/config-file.yaml";
+        String schemaPath = "java/src/main/resources/config-schema.json";
 
-            // Ensure the schema file is absolute or use URI
-            URI schemaURI = schemaFile.toURI();  // Convert file to URI
+        //## JSON to Object Serialization ##\\
+        ConfigSchema config = Validator.validate(configPath, schemaPath);
 
-            // Load schema from URI (or from file directly, using file API)
-            ObjectMapper jsonMapper = new ObjectMapper();
-            JsonNode schemaNode = jsonMapper.readTree(schemaFile);
+        //jsonList is the output of parsing, will be sent to writeJSON
+        //depending on the type( array or object)
+        jsonList = Extractor.apply("java/src/main/resources/testhtml.html", null, config);
 
-            // Step 3: Initialize JSON Schema validator
-            JsonSchemaFactory schemaFactory = JsonSchemaFactory.byDefault();
-            JsonSchema schema = schemaFactory.getJsonSchema(schemaURI.toString()); // use URI as string
+        // Setting type according to properties or items //
+        String type = config.getType();
+        if (type == null) {
+            type = "object";
+        }
+        if (config.getItems() != null)
+            type = "array";
 
-            // Step 4: Validate YAML (converted to JSON) against the JSON schema
-            schema.validate(yamlJsonNode);
+        if (config.getProperties() != null)
+            type = "object";
+        //****//
 
-            System.out.println("YAML configuration is valid.");
-            //## JSON to Object Serialization ##\\
-            ConfigSchema config = YamlConfigParser.parse();
-            if (config == null)
-                System.out.println("config is null, check .yaml config file.");
-            else
-            {
-                jsonList = genericHandler.apply("java/src/main/resources/testhtml.html", config);
-                System.out.println(jsonList);
+        System.out.println("Output:");
+        if (type.contains("array")) {
+            writeJson.write(jsonList, operation);
+        } else {
+            for (Object obj : jsonList) {
+                writeJson.write(obj, operation);
+                operation = "a";
             }
-
-
-        } catch (IOException e) {
-            System.err.println("I/O Exception: " + e.getMessage());
-        } catch (ProcessingException e) {
-            System.err.println("Validation error: " + e.getMessage());
         }
     }
-    }
+}

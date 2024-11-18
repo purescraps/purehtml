@@ -1,6 +1,8 @@
+// Base class representing the common schema configuration
 import java.util.List;
 import java.util.Map;
-// Base class representing the common schema configuration
+
+//Suppress Warning is used because they all used for serialization, but we are not using them directly.
 @SuppressWarnings("unused")
 public class ConfigSchema {
     private String selector;
