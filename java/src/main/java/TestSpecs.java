@@ -41,7 +41,7 @@ public class TestSpecs {
         // Step 4: Load the JSON Schema using JSON Schema validator
         Schema schema = SchemaLoader.load(jsonSchemaObject);
         List<Object> jsonList;
-
+        Extractor extractor;
         try {
             JSONObject jsonObject = new JSONObject(jsonContent);
             schema.validate(jsonObject);  // This will throw an exception if the validation fails
@@ -57,7 +57,9 @@ public class TestSpecs {
             {
                 ObjectMapper mapper = new ObjectMapper();
                 ConfigSchema m = mapper.readValue(JSONStringer.valueToString(spc.getConfiguration()),ConfigSchema.class);
-                jsonList = Extractor.apply(null, spc.getInput(), m);
+                extractor = new Extractor(null, spc.getInput(), m);
+                extractor.apply();
+                jsonList = extractor.getJson();
                 if(jsonList.equals(spc.getExpected()))
                 {
                     System.out.println("Test succeeded.");
