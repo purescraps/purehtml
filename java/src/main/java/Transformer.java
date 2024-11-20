@@ -7,10 +7,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @SuppressWarnings (value="unchecked")
 public class Transformer {
@@ -57,6 +55,23 @@ public class Transformer {
         return null;
     }
 
+    public static Map<String, String> parse(String query) throws UnsupportedEncodingException {
+        Map<String, String> params = new HashMap<>();
+        if (query != null && !query.isEmpty()) {
+            String[] pairs = query.split("&");
+
+            for (String pair : pairs) {
+                String[] keyValue = pair.split("=");
+                if (keyValue.length == 2) {
+                    // Decode the key and value
+                    String key = URLDecoder.decode(keyValue[0], StandardCharsets.UTF_8);
+                    String value = URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8);
+                    params.put(key, value);
+                }
+            }
+        }
+        return params;
+    }
     private static Object urlQueryParam(Document doc, String item, Element element )
     {
         Object output = null;
@@ -65,7 +80,7 @@ public class Transformer {
         {
             URL parsedUrl = new URI(doc.body().text()).toURL();
             String query = parsedUrl.getQuery();
-            Map<String, String> queryParams = ParseHtmlQuery.parse(query);
+            Map<String, String> queryParams = parse(query);
 
             item = item.replace("urlQueryParam","");
             if(item.contains(",")) // more than one, split ","
@@ -129,11 +144,11 @@ public class Transformer {
         if(item.contains(",")) // more than one, split ","
         {
             String[] parts = item.split(",");
-            for(String x : parts)
+            for(String string : parts)
             {
-                x = x.replaceAll("[()]", "");
-                x = x.trim();
-                jsonObject.put(x, element.attr(x));
+                string = string.replaceAll("[()]", "");
+                    string = string.trim();
+                jsonObject.put(string, element.attr(string));
             }
             return jsonObject;
         }
@@ -154,7 +169,7 @@ public class Transformer {
 
         if (transformers == null)
         {
-            System.out.println("null");
+            //System.out.println("null");
             return input;
         }
         Object output = null;
