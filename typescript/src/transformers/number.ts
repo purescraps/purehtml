@@ -20,6 +20,10 @@ export default class NumberTransformer extends Transformer {
       return Number(val);
     }
 
+    if (val === null) {
+      return null;
+    }
+
     throw new InvalidParseInputError(
       property,
       `NumberTransformer.transform: invalid value type: ${typeof val}. value=${JSON.stringify(
