@@ -10,33 +10,34 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mantine/code-highlight": "^7.9.1",
-    "@mantine/core": "^7.9.1",
-    "@mantine/hooks": "^7.9.1",
+    "@mantine/code-highlight": "^7.14.1",
+    "@mantine/core": "^7.14.1",
+    "@mantine/hooks": "^7.14.1",
     "@monaco-editor/react": "^4.6.0",
-    "@purescraps/purehtml": "^0.4.0",
-    "@react-nano/router": "^0.13.0",
-    "@tabler/icons-react": "^3.4.0",
-    "cheerio": "1.0.0-rc.12",
-    "monaco-editor": "^0.48.0",
-    "next": "^14.2.3",
+    "@purescraps/purehtml": "^0.4.3",
+    "@react-nano/router": "^0.15.0",
+    "@tabler/icons-react": "^3.22.0",
+    "cheerio": "1.0.0",
+    "monaco-editor": "^0.52.0",
+    "next": "^15.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "yaml": "^2.4.2"
+    "yaml": "^2.6.1"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.35",
     "@types/json-schema": "^7.0.15",
-    "@types/node": "^20.12.12",
-    "@types/react": "^18.3.2",
-    "@types/react-dom": "^18.3.0",
+    "@types/node": "^22.9.1",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.1",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "json-schema": "^0.4.0",
-    "react-router-dom": "^6.23.1",
-    "typescript": "^5.4.5"
-  }
+    "react-router-dom": "^7.0.0",
+    "typescript": "^5.6.3"
+  },
+  "packageManager": "pnpm@9.14.2+sha256.06e65a4965baff6d6097f9c8f75c35f6d420974dbc03d775009056a69edfd271"
 }
