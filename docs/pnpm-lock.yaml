@@ -21,8 +21,8 @@ importers:
         specifier: ^4.6.0
         version: 4.6.0(monaco-editor@0.52.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@purescraps/purehtml':
-        specifier: ^0.4.3
-        version: 0.4.3
+        specifier: ^0.4.4
+        version: 0.4.4
       '@react-nano/router':
         specifier: ^0.15.0
         version: 0.15.0(react@18.3.1)
@@ -349,8 +349,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@purescraps/purehtml@0.4.3':
-    resolution: {integrity: sha512-iPejQ/lRGZ67eeTLlO27hsCO9rQ2ADcuuyIOujgouv2jKIpC5YapaPgXsoK3MHswAcc6XTb5xQjRrlKGjMniSw==}
+  '@purescraps/purehtml@0.4.4':
+    resolution: {integrity: sha512-jg03n1KJ8qG9n+a5/8SVW/dVRqmsxd65APlMi5vOV8WkW5blMJrw5F+79WI8T7qAY7AXl4PIMzB0W810feMRBQ==}
 
   '@react-nano/router@0.15.0':
     resolution: {integrity: sha512-P2H3bhSR21AsJanmwp3Tsv1O0pW66/RzYZmRFpznnNwlTJyqbVBHjxF5jEYdEFT2EUFIlp9GnFlSnLdUP1IGNQ==}
@@ -1440,7 +1440,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
 
-  '@purescraps/purehtml@0.4.3':
+  '@purescraps/purehtml@0.4.4':
     dependencies:
       cheerio: 1.0.0
       yaml: 2.6.1
