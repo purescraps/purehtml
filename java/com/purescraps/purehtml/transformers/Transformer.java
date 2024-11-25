@@ -1,7 +1,5 @@
 package com.purescraps.purehtml.transformers;
 
-import com.purescraps.purehtml.transformers.types.AttributeTransformer;
-
 import java.util.List;
 
 public abstract class Transformer {

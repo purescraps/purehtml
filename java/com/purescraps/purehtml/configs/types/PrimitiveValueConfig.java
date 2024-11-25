@@ -73,6 +73,7 @@ public class PrimitiveValueConfig extends ConfigWithSelector {
         return transformVal(transform, tParams, val);
     }
     // Helper method to apply transformations
+    @SuppressWarnings("unchecked")
     protected Object transformVal(Object transformer, TransformParams transformParams, Object val)
     {
         if (transformer instanceof Transformer) {

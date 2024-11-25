@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
         String yaml =
-      """
+"""
 selector: '#course-details'
 type: object
 properties:
@@ -16,16 +16,15 @@ properties:
   title: { selector: h1, transform: [trim] }
 """;
         String html =
-                """
+"""
 <div id="course-details" data-course-id="9999">
   introduction and table-of-contents of the course...
   <h1>
     Web Scraping Fundamentals
   </h1>
 </div>
-      """;
-
+""";
         Config config = ConfigFactory.fromYAML(yaml);
-        PureHTML.extract(config, html, yaml);
+        System.out.println(PureHTML.extract(config, html, yaml));
     }
 }

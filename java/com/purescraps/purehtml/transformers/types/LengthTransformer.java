@@ -6,10 +6,13 @@ import com.purescraps.purehtml.transformers.Transformer;
 import java.util.List;
 
 public class LengthTransformer extends Transformer {
+    @SuppressWarnings("unused")
     private List<String>  args;
+    @SuppressWarnings("unused")
     public LengthTransformer(List<String>  args) {
         this.args = args;
     }
+    @SuppressWarnings("unused")
     public LengthTransformer(){
         this.args = null;
     }
