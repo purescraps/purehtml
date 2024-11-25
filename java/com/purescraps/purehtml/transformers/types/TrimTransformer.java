@@ -7,10 +7,13 @@ import org.json.JSONStringer;
 import java.util.List;
 
 public class TrimTransformer extends Transformer {
+    @SuppressWarnings("unused")
     private List<String>  args;
+    @SuppressWarnings("unused")
     public TrimTransformer(List<String>  args) {
         this.args = args;
     }
+    @SuppressWarnings("unused")
     public TrimTransformer(){
         this.args = null;
     }

@@ -1,9 +1,13 @@
 package com.purescraps.purehtml;
+
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import org.everit.json.schema.*;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
+
 
 import java.io.IOException;
 
@@ -11,12 +15,6 @@ public class Validator {
 
     public static void validate(String yamlString) {
         try {
-            //String yamlString = "---\nname: John Doe\nage: 30\nactive: true";
-
-            YAMLMapper yamlMapper = new YAMLMapper();
-            JsonNode yamlJson = yamlMapper.readTree(yamlString);
-
-            // JSON Schema
             String jsonSchemaString = """
                       {
                       "$schema": "http://json-schema.org/draft-07/schema",
@@ -24,7 +22,6 @@ public class Validator {
                       "$id": "config-schema.json",
                       "oneOf": [
                         {
-                          "$comment": "WithSelector",
                           "properties": {
                             "selector": {
                               "oneOf": [
@@ -89,12 +86,10 @@ public class Validator {
                           "additionalProperties": false,
                           "allOf": [
                             {
-                              "$comment": "when the \\"properties\\" present, \\"type\\" can only be \\"object\\" or not defined at all",
                               "if": { "required": ["properties"] },
                               "then": { "properties": { "type": { "const": "object" } } }
                             },
                             {
-                              "$comment": "when the \\"type\\" is \\"object\\", then the \\"properties\\" MUST be defined.",
                               "if": {
                                 "properties": { "type": { "const": "object" } },
                                 "required": ["type"]
@@ -102,7 +97,6 @@ public class Validator {
                               "then": { "required": ["properties"] }
                             },
                             {
-                              "$comment": "objects cannot have transform",
                               "if": {
                                 "anyOf": [
                                   {
@@ -120,12 +114,10 @@ public class Validator {
                               }
                             },
                             {
-                              "$comment": "when the \\"items\\" present, \\"type\\" can only be \\"array\\" or not defined at all",
                               "if": { "required": ["items"] },
                               "then": { "properties": { "type": { "const": "array" } } }
                             },
                             {
-                              "$comment": "when the \\"type\\" is \\"array\\", then the \\"items\\" MUST be defined.",
                               "if": {
                                 "properties": { "type": { "const": "array" } },
                                 "required": ["type"]
@@ -135,7 +127,6 @@ public class Validator {
                           ]
                         },
                         {
-                          "$comment": "Union",
                           "type": "object",
                           "properties": {
                             "union": {
@@ -148,7 +139,6 @@ public class Validator {
                           "additionalProperties": false
                         },
                         {
-                          "$comment": "Constant",
                           "type": "object",
                           "properties": { "selector": { "type": "string" }, "constant": {} },
                           "required": ["constant"],
@@ -158,34 +148,22 @@ public class Validator {
                     }
                     """;
 
-            //JSON Schema into a JSONObject
+            ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
+            ObjectMapper jsonWriter = new ObjectMapper();
+            JsonNode yamlNode = yamlReader.readTree(yamlString);
+            String jsonString = jsonWriter.writeValueAsString(yamlNode);
+            // Parse JSON Schema
             JSONObject jsonSchema = new JSONObject(jsonSchemaString);
-
-            // 5. Create a Schema object from the JSON Schema
             Schema schema = SchemaLoader.load(jsonSchema);
+            JSONObject jsonData = new JSONObject(jsonString);
+            schema.validate(jsonData);
 
-            // 6. Validate the YAML data (converted to JSON) against the schema
-            JSONObject yamlJsonObject = convertJsonNodeToJSONObject(yamlJson);
-            schema.validate(yamlJsonObject); // Validate
-
-            System.out.println("YAML is valid against the JSON Schema.");
+            System.out.println("Validation successful!");
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } catch (ValidationException e) {
-            System.err.println("YAML is invalid: " + e.getMessage());
-        }
-    }
-    private static JSONObject convertJsonNodeToJSONObject(JsonNode jsonNode) {
-        if (jsonNode.isObject()) {
-            // If it's already an object, just convert it directly
-            return new JSONObject(jsonNode.toString());
-        } else if (jsonNode.isArray()) {
-            // If it's an array, handle it as a JSONArray
-            return new JSONObject().put("array", new org.json.JSONArray(jsonNode.toString()));
-        } else {
-            // For scalar values, wrap them as part of a new object
-            return new JSONObject().put("value", jsonNode.asText());
+            System.err.println("YAML is invalid: " + e.getAllMessages());
         }
     }
 }

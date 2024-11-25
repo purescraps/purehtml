@@ -19,9 +19,11 @@ public class UrlQueryParamTransformer extends Transformer {
 
     private List<String>  args;
     // Constructor accepting query parameter keys
+    @SuppressWarnings("unused")
     public UrlQueryParamTransformer(List<String>  args) {
         this.args = args;
     }
+    @SuppressWarnings("unused")
     public UrlQueryParamTransformer(){
         this.args = null;
     }

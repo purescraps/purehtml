@@ -8,10 +8,13 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 public class ResolveTransformer extends Transformer {
+    @SuppressWarnings("unused")
     private List<String>  args;
+    @SuppressWarnings("unused")
     public ResolveTransformer(List<String>  args) {
         this.args = args;
     }
+    @SuppressWarnings("unused")
     public ResolveTransformer(){
         this.args = null;
     }

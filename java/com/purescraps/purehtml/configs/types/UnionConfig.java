@@ -19,13 +19,13 @@ public class UnionConfig extends Config {
         super();
         this.configs = configs;
     }
-
     // The extract method
     public Object extract(ExtractParams params) {
 
         Elements parentElement = params.node();
         List<Object> result = new ArrayList<>();
-        int index = 0;
+        int configIndex = 0;
+        int elementIndex = 0;
         for (Config config : configs) {
             if (config instanceof ConfigWithSelector configWithSelector) {
                 GetSelectorMatchesParams param = new GetSelectorMatchesParams() {
@@ -44,10 +44,19 @@ public class UnionConfig extends Config {
                         return params.document();
                     }
                 };
-                Element element = (Element) configWithSelector.getAtIndex(parentElement, param, index);
-                index++;
-                if (element == null){
-                    continue;
+                Element element=null;
+                //element = (Element) configWithSelector.getAtIndex(parentElement, param, index);
+                Elements elements =(Elements)  configWithSelector.getAllMatches(parentElement, param);
+                if (elements == null) {
+                    if(configIndex != configs.size() - 1)
+                    {
+                        configIndex++;
+                        continue;
+                    }
+                }
+                else{
+                    element = elements.get(elementIndex);
+                    elementIndex++;
                 }
                 ExtractParams extractParams = new ExtractParamsBuilder()
                         .setDocument(params.document())
@@ -68,6 +77,7 @@ public class UnionConfig extends Config {
                         .build();
                 result.add(config.extract(extractParams));
             }
+
         }
         // Convert each object to its string representation
         // Join with a separator

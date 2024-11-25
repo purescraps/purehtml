@@ -6,10 +6,13 @@ import org.jsoup.nodes.Element;
 import java.util.List;
 
 public class HTMLTransformer extends Transformer {
+    @SuppressWarnings("unused")
     private List<String>  args;
+    @SuppressWarnings("unused")
     public HTMLTransformer(List<String>  args) {
         this.args = args;
     }
+    @SuppressWarnings("unused")
     public HTMLTransformer(){
         this.args = null;
     }

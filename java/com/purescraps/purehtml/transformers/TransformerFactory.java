@@ -8,7 +8,7 @@ public class TransformerFactory {
 
     //private static final String TRANSFORMER_DEFINITION_REGEX = "^[\\w-]+(\\(([\\w-]+|(([\\w-]+\\s*,\\s*)*[\\w-]+))?\\))?$";
     private static final Pattern TRANSFORMER_NAME_REGEX = Pattern.compile("^([\\w-]+[^(])");
-    private static final Pattern TRANSFORMER_ARGUMENT_PARANTHESIS_REGEX = Pattern.compile("\\((([\\w-]+\\s*,?\\s*)*)\\)");
+    private static final Pattern TRANSFORMER_ARGUMENT_PARENTHESIS_REGEX = Pattern.compile("\\((([\\w-]+\\s*,?\\s*)*)\\)");
     private static final Pattern TRANSFORMER_ARGUMENT_NAME_REGEX = Pattern.compile("[\\w-]+");
 
     public static Transformer create(String transform) {
@@ -35,7 +35,7 @@ public class TransformerFactory {
 
     private static List<String> extractTransformerArgs(String def) {
         List<String> args = new ArrayList<>();
-        Matcher paranthesisMatcher = TRANSFORMER_ARGUMENT_PARANTHESIS_REGEX.matcher(def);
+        Matcher paranthesisMatcher = TRANSFORMER_ARGUMENT_PARENTHESIS_REGEX.matcher(def);
         if (paranthesisMatcher.find()) {
 
             Matcher argumentMatcher = TRANSFORMER_ARGUMENT_NAME_REGEX.matcher(paranthesisMatcher.group(0));

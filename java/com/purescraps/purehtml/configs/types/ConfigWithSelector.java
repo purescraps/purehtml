@@ -42,8 +42,5 @@ public abstract class  ConfigWithSelector extends Config {
         }
         return matches;  // If it's not a list, return the element itself
     }
-    public Object getAtIndex (Elements elements, GetSelectorMatchesParams params, int index){
-        Object matches = getAllMatches(elements,params);
-        return ((Elements) matches).get(index);
-    }
+
 }

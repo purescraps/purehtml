@@ -6,10 +6,13 @@ import com.purescraps.purehtml.transformers.Transformer;
 import java.util.List;
 
 public class ExistsTransformer extends Transformer {
+    @SuppressWarnings("unused")
     private List<String>  args;
+    @SuppressWarnings("unused")
     public ExistsTransformer(List<String>  args) {
         this.args = args;
     }
+    @SuppressWarnings("unused")
     public ExistsTransformer(){
         this.args = null;
     }

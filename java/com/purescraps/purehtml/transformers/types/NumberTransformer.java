@@ -6,10 +6,13 @@ import com.purescraps.purehtml.transformers.Transformer;
 import java.util.List;
 
 public class NumberTransformer extends Transformer {
+    @SuppressWarnings("unused")
     private List<String>  args;
+    @SuppressWarnings("unused")
     public NumberTransformer(List<String>  args) {
         this.args = args;
     }
+    @SuppressWarnings("unused")
     public NumberTransformer(){
         this.args = null;
     }

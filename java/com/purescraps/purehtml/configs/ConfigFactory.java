@@ -16,14 +16,13 @@ public class ConfigFactory {
         Map<String, Object> plain = parser.load(yaml);
         return generate(plain);
     }
+    public static Config fromYAML(Map<String, Object> plain)
+    {
+        return generate(plain);
+    }
+    @SuppressWarnings("unchecked")
     private static Config generate(Map<String, Object> plain) {
 
-        Map<String, Object> errors = null;
-        if (errors != null) {
-            throw new IllegalArgumentException(
-                    String.format("Invalid config provided. Got validation errors: %s. Plain config: %s",
-                            errors.toString(), plain.toString()));
-        }
         Object constant = plain.get("constant");
         Object selectorOrig = plain.get("selector");
         Object transformOrig = plain.get("transform");
@@ -39,18 +38,26 @@ public class ConfigFactory {
                 return new ConstantConfig(constant, selector);
             case "object":
                 Map<String, Config> propConfigs = null;
-                if (properties != null) {
+                if (properties instanceof Map<?, ?>) {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> propertiesMap = (Map<String, Object>) properties;
 
-                    propConfigs = ((Map<String, Object>) properties).entrySet().stream()
+                    propConfigs = propertiesMap.entrySet().stream()
+                            .filter(entry -> entry.getValue() instanceof Map<?, ?>) // Validate entry value type
                             .collect(Collectors.toMap(
                                     Map.Entry::getKey,
-                                    entry -> generate((Map<String, Object>) entry.getValue())
+                                    entry -> {
+                                        @SuppressWarnings("unchecked")
+                                        Map<String, Object> valueMap = (Map<String, Object>) entry.getValue();
+                                        return generate(valueMap);
+                                    }
                             ));
                 }
                 return new ObjectConfig(selector, propConfigs);
             case "array":
                 return new ArrayConfig(selector,items != null ? generate((Map<String, Object>) items) : null , transformers);
             case "union":
+
                 return new UnionConfig(((List<Map<String, Object>>) union).stream()
                         .map(ConfigFactory::generate)
                         .collect(Collectors.toList()));
@@ -96,6 +103,7 @@ public class ConfigFactory {
             return  transform;
 
         }
+        @SuppressWarnings("unchecked")
         List<String> transforms = (List<String>) transformOrig;
         return transforms.stream()
                 .map(TransformerFactory::create)
