@@ -52,7 +52,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.0.6+sha1.648f6014eb363abb36618f2ba59282a9eeb3e879
+          version: pnpm@9.14.2+sha256.06e65a4965baff6d6097f9c8f75c35f6d420974dbc03d775009056a69edfd271
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
