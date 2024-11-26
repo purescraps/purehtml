@@ -158,7 +158,7 @@ public class Validator {
             JSONObject jsonData = new JSONObject(jsonString);
             schema.validate(jsonData);
 
-            System.out.println("Validation successful!");
+            //System.out.println("Validation successful!");
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

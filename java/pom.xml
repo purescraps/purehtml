@@ -7,38 +7,12 @@
     <artifactId>purehtml</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Main-Class>org.purescraps.purehtml.tests.Specs</Main-Class>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-
-            <!-- Maven Shade Plugin (to bundle dependencies into a single JAR) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>  <!-- Make sure it runs during the package phase -->
-                        <goals>
-                            <goal>shade</goal>  <!-- Create a "fat" JAR with dependencies -->
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    <!-- Use mvn clean package -P Specs for testing.
+    It will be created at the target/Specs folder as ${project.artifactId}-${project.version}-Specs.jar
+         Use mvn clean package if you want library jar.
+    It will be created at the target/lib folder as   ${project.artifactId}-${project.version}jar. -->
+    <name>PureHTML</name>
+    <description>PureHTML is an HTML parsing specification for extracting useful data from HTMLs in the JSON form. </description>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
@@ -46,6 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <!-- Library dependencies -->
     <dependencies>
         <dependency>
             <groupId>org.yaml</groupId>
@@ -57,12 +32,6 @@
             <groupId>com.github.erosb</groupId>
             <artifactId>everit-json-schema</artifactId>
             <version>1.14.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.9</version>
         </dependency>
 
         <dependency>
@@ -83,4 +52,80 @@
             <version>2.2.14</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Plugin to create the default library JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <finalName>${project.artifactId}-${project.version}</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Plugin to create a fat JAR with a main class for testing -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>specs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Output the fat JAR to a different folder -->
+                            <outputFile>${project.build.directory}/Specs/${project.artifactId}-${project.version}-Specs.jar</outputFile>
+                            <!-- Specify the main class for the fat JAR -->
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.purescraps.purehtml.tests.Specs</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- Profile for the default library build -->
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault> <!-- This will be active by default -->
+            </activation>
+        </profile>
+
+        <!-- Profile for the fat JAR with testing -->
+        <profile>
+            <id>specs</id>
+            <dependencies>
+                <!-- You can define additional dependencies for the fat JAR, if needed -->
+            </dependencies>
+        </profile>
+    </profiles>
+
+
+
+
+
 </project>
+
+
+
