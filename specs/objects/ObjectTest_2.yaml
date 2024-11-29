@@ -1,0 +1,28 @@
+                # yaml-language-server: $schema=../../spec.schema.yaml
+
+                description: Object Tests
+
+                specs:
+                  - description: Object Test 2
+
+                    input: >
+                      <div id="course-details" data-course-id="9999">
+                        introduction and table-of-contents of the course...
+                        <h1>
+                          Web Scraping Fundamentals
+                        </h1>
+                      </div>
+
+                    configuration:
+                        selector: '#course-details'
+                        type: object
+                        properties:
+                          # if no other selector was provided, transformers will be executed
+                          # on the parent element
+                          courseId: { transform: [attr(data-course-id), number] }
+                          title: { selector: h1, transform: [trim] }
+
+                    expected: {
+                        "courseId": 9999,
+                        "title": "Web Scraping Fundamentals"
+                }

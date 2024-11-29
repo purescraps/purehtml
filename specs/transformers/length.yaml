@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: html transformer
+
+specs:
+  - description: Extract attributes
+
+    input: >
+      <div><span>hello</span> <span>foo</span> <span>bar baz</span></div>
+
+    configuration:
+      { selector: span, type: array, items: { transform: length } }
+
+    expected: [5, 3, 7]

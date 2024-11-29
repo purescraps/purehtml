@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: exists transformer
+
+specs:
+  - description: Extract attributes
+
+    input: >
+      <div>Hello, world!</div>
+
+    configuration:
+      { selector: div, transform: exists }
+
+    expected: true
