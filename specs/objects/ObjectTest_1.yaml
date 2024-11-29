@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: Object Tests
+
+specs:
+  - description: Object test 1
+
+    input: >
+        <div>
+        <span class="firstname">John</span>
+        <span class="lastname">Doe</span>
+        <span class="age">42</span>
+        </div>
+
+    configuration:
+      type: object
+      properties:
+        firstName: { selector: .firstname }
+        lastName: { selector: .lastname }
+        age: { selector: .age }
+
+    expected: {
+  "firstName": "John",
+  "lastName": "Doe",
+  "age": "42"
+}

@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: Union Tests
+
+specs:
+  - description: Union test 3
+
+    input: >
+      <div>
+          <p>paragraph element</p>
+      </div>
+
+    configuration:
+        union:
+          - selector: a # will not match
+          - selector: span # will not match
+
+    expected: null

@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: html transformer
+
+specs:
+  - description: Extract attributes
+
+    input: >
+      <div>1234</div>
+
+    configuration:
+      { selector: div, transform: number }
+
+    expected: 1234
