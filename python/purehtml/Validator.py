@@ -63,13 +63,13 @@ class Validator:
                           "oneOf": [
                             {
                               "type": "string",
-                              "pattern": "^[\\w-]+(\\([\\w-]+|([\\w-]+\\s*,\\s*)*[\\w-]+\\))?$"
+                              "pattern": "^[\\w-]+(\\(([\\w-]+|(([\\w-]+\\s*,\\s*)*[\\w-]+))?\\))?$"
                             },
                             {
                               "type": "array",
                               "items": {
                                 "type": "string",
-                                "pattern": "^[\\w-]+(\\([\\w-]+|([\\w-]+\\s*,\\s*)*[\\w-]+\\))?$"
+                                "pattern": "^[\\w-]+(\\(([\\w-]+|(([\\w-]+\\s*,\\s*)*[\\w-]+))?\\))?$"
                               },
                               "minItems": 1
                             }
@@ -152,8 +152,6 @@ class Validator:
 
             # Validate the YAML (now in JSON format) against the schema
             validate(instance=json.loads(json_string), schema=json_schema)
-
-            print("Validation successful!")
 
         except yaml.YAMLError as e:
             print(f"YAML Parsing Error: {e}")
