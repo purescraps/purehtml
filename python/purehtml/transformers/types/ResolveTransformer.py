@@ -42,7 +42,7 @@ class ResolveTransformer(Transformer, ABC):
             try:
                 # Resolve the relative URL to an absolute URL using urljoin
                 resolved_url = urljoin(base_url, val)
-                return json.dumps(resolved_url)
+                return resolved_url
             except Exception as e:
                 print(f"Error resolving URL: {e}")
                 raise
