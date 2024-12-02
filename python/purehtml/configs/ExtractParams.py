@@ -4,7 +4,7 @@ from typing import List, Optional
 
 class ExtractParams:
     """
-    Concrete implementation of the abstract ExtractParams class.
+    Implementation of the ExtractParams Class. It is used by configs for extraction.
     """
 
     def __init__(
