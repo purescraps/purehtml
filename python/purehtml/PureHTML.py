@@ -1,8 +1,8 @@
 import yaml
 from bs4 import BeautifulSoup
 
+from purehtml.Validator import Validator
 from purehtml.configs.ExtractParamsBuilder import ExtractParamsBuilder
-from Validator import Validator
 
 
 class PureHTML:
