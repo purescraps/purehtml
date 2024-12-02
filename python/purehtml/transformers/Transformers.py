@@ -18,23 +18,25 @@ class Transformers:
         NumberTransformer,
         ResolveTransformer,
         UrlQueryParamTransformer,
-        TrimTransformer
+        TrimTransformer,
     ]
+
+    _transformer_lookup = {
+        transformer_class().get_name(): transformer_class
+        for transformer_class in transformers
+    }
 
     @staticmethod
     def get_by_name(name: str):
         """
-        This method searches for a transformer class by its name.
+        Get a transformer instance by its name.
         :param name: The name of the transformer to find.
         :return: The transformer instance if found, or None if not.
         """
-        for transformer_class in Transformers.transformers:
+        transformer_class = Transformers._transformer_lookup.get(name)
+        if transformer_class:
             try:
-                # Instantiate the transformer
-                transformer = transformer_class()
-                # Check if the transformer name matches
-                if transformer.get_name() == name:
-                    return transformer
+                return transformer_class()
             except Exception as e:
                 print(f"Error instantiating transformer {transformer_class}: {e}")
         return None  # Return None if no matching transformer is found
