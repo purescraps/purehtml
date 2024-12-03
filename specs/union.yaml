@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../spec.schema.yaml
+
+description: Union Configuration Tests
+
+specs:
+  - description: Should walk over the configurations and use the first match
+
+    input: &input |
+      <div id="foo">
+        <span id="bar">
+          baz
+        </span>
+      </div>
+
+    configuration:
+      union:
+        - selector: "#foo first"
+        - selector: "#bar"
+          transform: trim
+
+    expected: baz
+
+  - description: Should return null if nothing matches
+    input: *input
+    configuration:
+      union:
+        - selector: .foo
+        - selector: .bar
+    expected: null

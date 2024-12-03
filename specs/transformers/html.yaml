@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: html transformer
+
+specs:
+  - description: Extract html
+
+    input: |
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+      </head>
+      <body>
+        <div class="foo">
+          <div class="bar">
+            baz
+          </div>
+        </div>
+      </body>
+      </html>
+
+    configuration:
+      selector: .foo
+      transform: html
+
+    expected: "\n    <div class=\"bar\">\n      baz\n    </div>\n  "
