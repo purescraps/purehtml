@@ -20,7 +20,6 @@ class AttributeTransformer(Transformer, ABC):
         """
         self.args = args
 
-
     def get_name(self) -> str:
         """
         Return the name of the transformer.
