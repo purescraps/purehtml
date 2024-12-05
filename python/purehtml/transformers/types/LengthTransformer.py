@@ -48,5 +48,4 @@ class LengthTransformer(Transformer, ABC):
             return len(val)
 
         # If the value is neither a string nor a list/tuple, throw an error
-        print(f"LengthTransformer --> Invalid value type: {type(val)}")
-        raise ValueError(f"Invalid value type: {type(val)}")
+        raise ValueError(f"LengthTransformer --> Invalid value type: {type(val)}")

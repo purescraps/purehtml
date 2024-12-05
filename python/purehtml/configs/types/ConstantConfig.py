@@ -1,15 +1,7 @@
 from typing import Any, Optional
 
 from purehtml.configs.GetSelectorMatchesParams import GetSelectorMatchesParams
-
-
-# Assuming ConfigWithSelector and ExtractParams are already defined
-class ConfigWithSelector:
-    def get_all_matches(self, node: Any, params: Any) -> Optional[Any]:
-        """
-        Placeholder for get_all_matches. This should be implemented.
-        """
-        pass
+from purehtml.configs.types.ConfigWithSelector import ConfigWithSelector
 
 
 class ConstantConfig(ConfigWithSelector):
@@ -29,16 +21,18 @@ class ConstantConfig(ConfigWithSelector):
         :param params: An object implementing ExtractParams interface.
         :return: A JSON string of the value or None if no match is found.
         """
+
+
         if self.selector is not None:
             # Create a local equivalent of GetSelectorMatchesParams
-            selector_params = GetSelectorMatchesParams(False, True, params.document())
+            selector_params = GetSelectorMatchesParams(False, True)
 
             # Attempt to get matches using the selector
-            matches = self.get_all_matches(params.node(), selector_params)
+            matches = self.get_all_matches(params.node(), selector_params, params.document)
             if matches is None:
                 return None
 
-            # Convert value to JSON string
+
             return self.val
 
         # Default return if no selector

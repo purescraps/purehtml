@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import List
+from typing import List, Union
 
 from purehtml.transformers.Transformer import Transformer
 
@@ -27,27 +27,29 @@ class AttributeTransformer(Transformer, ABC):
         """
         return "attr"
 
-    def transform(self, params) -> str:
+    def transform(self, params) -> Union[dict, str]:
         """
         Retrieve the attributes of the HTML element.
         :param params: The parameters that contain the element to extract attributes from.
         :return: A dictionary of attributes.
         """
+
         element = params.get_element()
         attributes = {}
 
         if len(self.args) == 1:
             # If only one argument is provided, return the value of that attribute
             attribute_name = self.args[0].replace("(", "").replace(")", "")
-            return element.get(attribute_name)
+
+            return element.attr(attribute_name)
 
         elif not self.args:
-            # If no arguments are provided, return all attributes
-            for key, value in element.attrs.items():
-                attributes[key] = value
+
+            return element.attr()
+
         else:
             # If multiple arguments are provided, return the specified attributes
             for arg in self.args:
                 attributes[arg] = element.get(arg)
 
-        return str(attributes)
+        return attributes

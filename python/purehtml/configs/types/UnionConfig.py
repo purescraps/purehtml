@@ -1,10 +1,10 @@
-from typing import List
+from typing import List, Any
 
 from purehtml.configs.ExtractParams import ExtractParams
-from purehtml.configs.ExtractParamsBuilder import ExtractParamsBuilder
 from purehtml.configs.GetSelectorMatchesParams import GetSelectorMatchesParams
 from purehtml.configs.Configs import Config
 from purehtml.configs.types.ConfigWithSelector import ConfigWithSelector
+from purehtml.configs.types.ConstantConfig import ConstantConfig
 
 
 class UnionConfig(Config):
@@ -16,66 +16,44 @@ class UnionConfig(Config):
         super().__init__()
         self.configs = configs
 
-    def extract(self, params: ExtractParams) -> str:
+    def extract(self, params: ExtractParams) -> Any:
         """
         Extracts values from the list of configs based on provided parameters.
         :param params: The ExtractParams object containing context for extraction.
         :return: A string representation of the extracted values.
         """
-        parent_element = params.node()  # This is the equivalent of elements in Java
-        #result = []
-        result: List[str] = []  # Empty list of strings
-        config_index = 0
+
+        parent_element = params.node()
 
         for config in self.configs:
+
             if isinstance(config, ConfigWithSelector):
                 # Creating an instance of GetSelectorMatchesParams
                 selector_params = GetSelectorMatchesParams(
                     already_matched=False,
                     include_root=True,
-                    doc=params.document()
                 )
 
-                element = None
-                # Get the matching elements
-                elements = config.get_first(parent_element, selector_params)
-                if not elements:
-                    continue
-                #below is for last config if it is constant. it will return null otherwise.
-                if elements is None:
-                    if config_index != len(self.configs) - 1:
-                        config_index += 1
-                        continue
-                else:
+                elements = config.get_first_match(parent_element, selector_params, params.document())
 
-                    element = elements if elements else None
-                    #element_index += 1
+                if not elements and not isinstance(config, ConstantConfig):
+                    continue
 
                 # Build ExtractParams for this element
-                extract_params = ExtractParamsBuilder() \
-                    .set_document(params.document()) \
-                    .set_node(params.node()) \
-                    .set_url(params.url()) \
-                    .set_element_already_matched(True) \
-                    .set_element(element) \
-                    .build()
+                extract_params = ExtractParams(document=params.document(),
+                                               nodes=[elements],
+                                               url=params.url(),
+                                               element_already_matched=True)
 
-                # Extract and append the result
-                result.append(config.extract(extract_params))
+                return config.extract(extract_params)
+
             else:
                 # For other types of configs (non ConfigWithSelector)
-                extract_params = ExtractParamsBuilder() \
-                    .set_document(params.document()) \
-                    .set_node(params.node()) \
-                    .set_url(params.url()) \
-                    .set_element_already_matched(params.get_element_already_matched()) \
-                    .set_element(params.element()) \
-                    .build()
+                extract_params = ExtractParams(document=params.document(),
+                                               nodes=params.node(),
+                                               url=params.url(),
+                                               element_already_matched=params.get_element_already_matched())
 
-                result.append(config.extract(extract_params))
+                return config.extract(extract_params)
 
-        if len(result) == 1:
-            return str(result[0])
-        else:
-            return str(result)
-        #return ", ".join(map(str, result))
+        return None

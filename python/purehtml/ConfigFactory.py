@@ -1,5 +1,7 @@
+import logging
+
 import yaml
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from purehtml.configs.Configs import Config
 from purehtml.configs.types.ArrayConfig import ArrayConfig
@@ -12,19 +14,19 @@ from purehtml.transformers.TransformerFactory import TransformerFactory
 
 class ConfigFactory:
     @staticmethod
-    def from_yaml(yaml_str: str) -> Config:
+    def extract(yaml_input: Union[str, dict]) -> Config:
         """
-        Parses a YAML string and generates a Config object.
+        Parses a YAML string or dictionary and generates a Config object.
         """
-        plain = yaml.safe_load(yaml_str)
-        return ConfigFactory.generate(plain)
+        if isinstance(yaml_input, str):
+            plain = yaml.safe_load(yaml_input)
+            return ConfigFactory.generate(plain)
 
-    @staticmethod
-    def from_dict(plain: Dict[str, Any]) -> Config:
-        """
-        Generates a Config object from a dictionary, !!For Tests Only. For library, use from_yaml method.
-        """
-        return ConfigFactory.generate(plain)
+        elif isinstance(yaml_input, dict):
+            return ConfigFactory.generate(yaml_input)
+
+        else:
+            logging.error(f"ConfigFactory.extract --> ValueError : yaml_input is not dict or str")
 
     @staticmethod
     def generate(plain: Dict[str, Any]) -> ConstantConfig | ObjectConfig | ArrayConfig | UnionConfig | PrimitiveValueConfig:
@@ -37,33 +39,34 @@ class ConfigFactory:
         properties = plain.get("properties")
         items = plain.get("items")
         union = plain.get("union")
+
         selector = ConfigFactory.generate_selector(selector_orig)
         expected_type = ConfigFactory.detect_expected_type(plain)
         transformers = ConfigFactory.generate_transform(transform_orig)
 
         if expected_type == "constant":
             return ConstantConfig(constant, selector)
+
         elif expected_type == "object":
+
             prop_configs = (
-                {
-                    key: ConfigFactory.generate(value)
-                    for key, value in properties.items()
-                }
+                {key: ConfigFactory.generate(value) for key, value in properties.items()}
                 if isinstance(properties, dict)
-                else None
-            )
+                else None )
+
             return ObjectConfig(selector, prop_configs)
+
         elif expected_type == "array":
-            return ArrayConfig(
-                selector,
-                ConfigFactory.generate(items) if items else None,
-                transformers,
-            )
+
+            return ArrayConfig(selector, ConfigFactory.generate(items) if items else None, transformers)
+
         elif expected_type == "union":
+
             return UnionConfig(
-                [ConfigFactory.generate(u) for u in union]
-            )
+                [ConfigFactory.generate(u) for u in union])
+
         else:
+
             return PrimitiveValueConfig(selector, transformers)
 
     @staticmethod
@@ -73,12 +76,16 @@ class ConfigFactory:
         """
         if isinstance(selector_orig, str):
             return selector_orig
+
         if isinstance(selector_orig, list):
             return ", ".join(map(str, selector_orig))
+
         if isinstance(selector_orig, dict):
             return ConfigFactory.generate_selector(selector_orig.get("selector"))
+
         if selector_orig is None:
             return None
+
         raise ValueError(f"Unexpected selector type: {type(selector_orig).__name__}")
 
     @staticmethod
@@ -88,10 +95,13 @@ class ConfigFactory:
         """
         if transform_orig is None:
             return None
+
         if isinstance(transform_orig, str):
             return [TransformerFactory.create(transform_orig)]
+
         if isinstance(transform_orig, list):
             return [TransformerFactory.create(t) for t in transform_orig]
+
         raise ValueError(f"Unexpected transform type: {type(transform_orig).__name__}")
 
     @staticmethod
@@ -101,10 +111,14 @@ class ConfigFactory:
         """
         if "properties" in conf or conf.get("type") == "object":
             return "object"
+
         if "items" in conf or conf.get("type") == "array":
             return "array"
+
         if "union" in conf:
             return "union"
+
         if "constant" in conf:
             return "constant"
+
         return "primitive"

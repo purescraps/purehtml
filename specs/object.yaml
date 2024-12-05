@@ -37,4 +37,4 @@ specs:
           items: {}
 
     expected:
-      childDivs: [foo, bar, baz]
+      {childDivs: ["foo", "bar", "baz"] }

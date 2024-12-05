@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import List
+from typing import List, Optional
 
 from purehtml.transformers.Transformer import Transformer
 
@@ -27,7 +27,7 @@ class TrimTransformer(Transformer, ABC):
         """
         return "trim"
 
-    def transform(self, params) -> str:
+    def transform(self, params) -> Optional[str]:
         """
         Trim the input string value by removing leading and trailing whitespace.
         :param params: The parameters that contain the value to be transformed.
@@ -44,5 +44,4 @@ class TrimTransformer(Transformer, ABC):
             return val.strip() # Trim leading and trailing whitespace
 
         # If the value is not a string, throw an error
-        print(f"Trim: invalid value type: {type(val).__name__}")
-        raise TypeError("Trim transformer requires a string value")
+        raise TypeError("Trim: invalid value type: {type(val).__name__}")

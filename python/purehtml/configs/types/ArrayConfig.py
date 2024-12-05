@@ -1,12 +1,10 @@
-from typing import List
+from typing import List, Any
 
 from purehtml.configs.ExtractParams import ExtractParams
-from purehtml.configs.ExtractParamsBuilder import ExtractParamsBuilder
 from purehtml.configs.GetSelectorMatchesParams import GetSelectorMatchesParams
 from purehtml.configs.Configs import Config
 from purehtml.configs.types.ConfigWithSelector import ConfigWithSelector
 from purehtml.configs.types.PrimitiveValueConfig import PrimitiveValueConfig
-from purehtml.configs.types.UnionConfig import UnionConfig
 from purehtml.transformers.Transformer import Transformer
 
 
@@ -26,43 +24,33 @@ class ArrayConfig(ConfigWithSelector):
         self.items = items
         self.transform = transform
 
-    def extract(self, params: ExtractParams) -> str:
+    def extract(self, params: ExtractParams) -> Any:
         """
         Extract values from the array based on the provided parameters.
         :param params: The ExtractParams object containing context for extraction.
         :return: A list of extracted values.
         """
         # Get all matches for the element
-        selector_params = GetSelectorMatchesParams(
-            already_matched=params.get_element_already_matched(),
-            include_root=False,
-            doc=params.document()
-        )
-        elements = self.get_all_matches(params.node(), selector_params)
 
-        # Ensure elements is a list, even if there's only one element
-        matches = elements if isinstance(elements, list) else [elements]
+        selector_params = GetSelectorMatchesParams(
+            already_matched=params.get_element_already_matched() or False,
+            include_root=False
+        )
+
+        elements = self.get_all_matches(params.node(), selector_params, params.document())
 
         # Use the provided `items` config, or a default primitive config
         conf = self.items if self.items is not None else PrimitiveValueConfig(None, self.transform)
 
         result = []
-        # this could be better with configs instead of elements
-        for el in matches:
 
-            # Build extract parameters
-            extract_params = ExtractParamsBuilder() \
-                .set_document(params.document()) \
-                .set_node(params.node()) \
-                .set_url(params.url()) \
-                .set_element_already_matched(params.get_element_already_matched()) \
-                .set_element(el) \
-                .build()
+        for el in elements:
+            extract_params = ExtractParams(document=params.document(),
+                                           nodes=[el],
+                                           url=params.url(),
+                                           element_already_matched=params.get_element_already_matched())
 
             # Extract the value
             result.append(conf.extract(extract_params))
 
-            # If items is an instance of UnionConfig, return the result immediately
-            if isinstance(self.items, UnionConfig):
-                return str(result[0])
-        return str(result)
+        return result

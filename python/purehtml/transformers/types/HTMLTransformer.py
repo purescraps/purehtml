@@ -37,5 +37,5 @@ class HTMLTransformer(Transformer, ABC):
 
         # If element is found, return its HTML content; otherwise, return an empty string
         if element:
-            return element.decode_contents()  # Equivalent to html() in Jsoup
+            return element.html()
         return ""

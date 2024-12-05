@@ -1,5 +1,6 @@
-from bs4 import BeautifulSoup, Tag  # Using BeautifulSoup for HTML parsing
-from typing import List, Optional
+from typing import List
+
+from purehtml.backend.backend import PureHTMLDocument, PureHTMLNode
 
 
 class ExtractParams:
@@ -9,29 +10,25 @@ class ExtractParams:
 
     def __init__(
         self,
-        document: BeautifulSoup,
-        node: List[Tag],
+        document: PureHTMLDocument,
+        nodes: List[PureHTMLNode],
         url: str,
         element_already_matched: bool,
-        element: Optional[Tag],
+
     ):
         self._document = document
-        self._node = node
+        self._nodes = nodes
         self._url = url
         self._element_already_matched = element_already_matched
-        self._element = element
 
-    def document(self) -> BeautifulSoup:
+    def document(self) -> PureHTMLDocument:
         return self._document
 
-    def node(self) -> List[Tag]:
-        return self._node
+    def node(self) -> List[PureHTMLNode]:
+        return self._nodes
 
     def url(self) -> str:
         return self._url
 
     def get_element_already_matched(self) -> bool:
         return self._element_already_matched
-
-    def element(self) -> Optional[Tag]:
-        return self._element

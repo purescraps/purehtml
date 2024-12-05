@@ -1,8 +1,9 @@
 from abc import ABC
-from typing import Any, Optional, Union, List
 
-from bs4 import Tag
 
+from typing import Any, Optional, List, Union
+
+from purehtml.backend.backend import PureHTMLDocument, PureHTMLNode
 from purehtml.configs.Configs import Config
 
 
@@ -16,42 +17,108 @@ class ConfigWithSelector(Config, ABC):
         super().__init__()
         self.selector = selector
 
-    def get_all_matches(
-        self, elements: Optional[List[Tag]], params: Any
-    ) -> Optional[Union[List[Tag], Tag]]:
-        """
-        Get all matches based on the selector and parameters.
-        :param elements: The current list of elements (or None).
-        :param params: An object implementing GetSelectorMatchesParams.
-        :return: A list of matching elements or None if no matches.
-        """
-        if params.is_already_matched():
-            return elements
+    def get_all_matches(self, element, params: Any, doc : PureHTMLDocument) \
+            -> List[PureHTMLNode]:
 
         if self.selector is None:
-            return elements
+            # If no selector is provided, return the element as is.
+            return element
 
-        if elements is None and params.is_include_root():
-            elements = params.doc().select(self.selector)
-            if elements:
-                return elements
-            return None
+        if isinstance(element, list):
+            # Process each element in the list and collect all matches
+            matches = []
+            for el in element:
+                matches.extend(self._get_matches_for_single_node(el, params, doc))
 
-        if params.is_include_root() and elements is not None:
-            if any(element.select_one(self.selector) for element in elements):
-                return elements
+            return matches
 
-        # Use the document to select new elements with the selector
-        return params.doc().select(self.selector)
+        else:
+            # Handle a single node
+            return self._get_matches_for_single_node(element, params, doc)
 
-    def get_first(self, elements: Optional[List[Tag]], params: Any) -> Optional[Tag]:
+
+    def get_first_match(self, element : Union[List[PureHTMLNode], PureHTMLNode],
+                        params: Any, doc : PureHTMLDocument) \
+                        -> Optional[PureHTMLNode]:
         """
-        Get the first matching element.
-        :param elements: The current list of elements (or None).
-        :param params: An object implementing GetSelectorMatchesParams.
-        :return: The first matching element or None.
+        Get the first match for the selector.
+        Handles both single nodes and lists of nodes.
         """
-        matches = self.get_all_matches(elements, params)
-        if matches and isinstance(matches, list):
-            return matches[0]  # Return the first element in the list
-        return matches
+
+        if isinstance(element, List):
+
+            if len(element) == 0: # if list is empty
+
+                matches = self._get_matches_for_single_node(None, params, doc)
+
+                if matches:
+                    return matches[0]  # Return the first match if found
+                else:
+                    return None
+
+            else:
+                # Iterate over each node in the list and get the first match
+                matches = []
+                for el in element:
+
+                    matches = self._get_matches_for_single_node(el, params, doc)
+
+                if matches:
+                    return matches[0]  # Return the first match if found
+                else:
+                    return None
+
+        else:
+            # Handle a Non List
+            matches = self._get_matches_for_single_node(element, params, doc)
+            return matches[0] if matches else None
+
+
+    def _get_matches_for_single_node(self, node : Optional[PureHTMLNode],
+                                     params : Any, doc : PureHTMLDocument) \
+                                     -> List[PureHTMLNode]:
+        """
+        Helper method to get matches for a single node.
+        """
+
+        if params.is_already_matched():
+            return [node]
+
+        if self.selector is None:
+            return [node]
+
+        if params.is_include_root():
+
+            if node is None:
+                root = doc.select(self.selector)
+
+                for nod in root:
+
+                    if nod.is_selector(self.selector):
+                        return [nod]
+
+                    else:
+                        return root
+            else:
+                if node.is_selector(self.selector):
+                    return [node]
+
+        # get new nodes with selector from Document
+        if node is None:
+
+            nodes = doc.select(self.selector)
+            results = []
+
+            for node in nodes:
+
+                if params.is_include_root():
+                    results.extend(node.find(self.selector))
+
+            return results if params.is_include_root() else nodes
+
+        else:
+            nodes = node.find(self.selector)
+
+            return nodes
+
+

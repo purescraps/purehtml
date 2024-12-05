@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List
 
 class Transformer(ABC):
+
     def __init__(self):
         self.args = []  # Default argument list
 

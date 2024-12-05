@@ -1,4 +1,3 @@
-import json
 from abc import ABC
 from typing import List
 from urllib.parse import urljoin
@@ -43,9 +42,9 @@ class ResolveTransformer(Transformer, ABC):
                 # Resolve the relative URL to an absolute URL using urljoin
                 resolved_url = urljoin(base_url, val)
                 return resolved_url
+
             except Exception as e:
                 print(f"Error resolving URL: {e}")
                 raise
 
-        print(f"ResolveTransformer.transform: Invalid value type: {type(val)}")
-        raise ValueError(f"Invalid value type: {type(val)}")
+        raise ValueError(f"ResolveTransformer: Invalid value type: {type(val)}")

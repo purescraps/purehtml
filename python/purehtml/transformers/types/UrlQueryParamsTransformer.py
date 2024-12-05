@@ -54,14 +54,21 @@ class UrlQueryParamTransformer(Transformer, ABC):
         json_object = {}
 
         if len(self.args) == 1:
+
             key = self.args[0]
             if key in query_params:
                 return query_params[key]
+
             return element.get(key, None)  # Assuming `element.get()` for attributes (adjust if needed)
+
         elif len(self.args) == 0:
+
             return query_params  # Return all query parameters
+
         else:
             for arg in self.args:
+
                 if arg in query_params:
                     json_object[arg] = query_params[arg]
+
             return json_object

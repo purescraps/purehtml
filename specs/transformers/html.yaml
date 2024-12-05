@@ -27,4 +27,4 @@ specs:
       selector: .foo
       transform: html
 
-    expected: "\n    <div class=\"bar\">\n      baz\n    </div>\n  "
+    expected: "\n<div class=\"bar\">\n      baz\n    </div>\n"

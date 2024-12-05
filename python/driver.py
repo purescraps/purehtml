@@ -1,19 +1,3 @@
-# PureHTML 
-PureHTML is a parsing specification for extracting JSON from HTML.
-
-* [Documentation](https://purescraps.github.io/purehtml/)
-
-
-**Installation**:
-
-To install **PureHTML**, you can use `pip` with following command:
-
-```bash
-  pip install PureHTML
-```
-## Usage
-
-```python
 from purehtml import ConfigFactory
 from purehtml import extract_from_str
 
@@ -34,10 +18,3 @@ expected_output = "['a', 'b', 'c']"
 config = ConfigFactory.extract(yaml_string)
 print(extract_from_str(config, html_string, yaml_string))
 print(expected_output)
-```
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
-

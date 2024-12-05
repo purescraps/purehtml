@@ -1,8 +1,11 @@
 from typing import Any
 from bs4 import Tag  # Assuming bs4 is used for the Element equivalent in Python
 
+from purehtml.backend.backend import PureHTMLNode
+
+
 class TransformParams:
-    def __init__(self, val: Any, element: Tag, url: str):
+    def __init__(self, val: Any, element: PureHTMLNode, url: str):
         """
         Initialize TransformParams with value, element, and URL.
         :param val: The value to be transformed (can be any type).
@@ -20,7 +23,7 @@ class TransformParams:
     def set_val(self, val: Any) -> None:
         self.val = val
 
-    def get_element(self) -> Tag:
+    def get_element(self) -> PureHTMLNode:
         return self.element
 
     def set_element(self, element: Tag) -> None:

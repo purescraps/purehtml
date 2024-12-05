@@ -49,9 +49,12 @@ class TransformerFactory:
         """
         args = []
         parenthesis_matcher = TransformerFactory.TRANSFORMER_ARGUMENT_PARENTHESIS_REGEX.search(definition)
+
         if parenthesis_matcher:
             # Extract the arguments part from parentheses
+
             arguments_str = parenthesis_matcher.group(1)
+
             if arguments_str:
                 # Match individual arguments
                 argument_matcher = TransformerFactory.TRANSFORMER_ARGUMENT_NAME_REGEX.findall(arguments_str)

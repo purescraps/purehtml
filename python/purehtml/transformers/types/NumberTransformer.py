@@ -38,15 +38,17 @@ class NumberTransformer(Transformer, ABC):
         # If the value is a string, convert it to a number
         if isinstance(val, str):
             try:
-                return int(val.replace("\"", "").strip())  # Convert string to float, remove quotes and whitespace
+
+                value = float(val.replace("\"", "").strip())
+                return value
+
             except ValueError:
-                print("NumberTransformer --> Not a valid number format.")
-                raise ValueError("Invalid number format")  # Raising an exception instead of System.exit(-1)
+
+                raise ValueError("NumberTransformer --> Not a valid number format.")
 
         # If the value is None, return None
         if val is None:
             return None
 
         # If the value is not a string or valid number, throw an error
-        print("NumberTransformer --> Not a valid type.")
-        raise TypeError("Input is not a valid number or string representation of a number.")
+        raise TypeError("NumberTransformer --> Input is not a valid number or string representation of a number.")
