@@ -1,6 +1,8 @@
 from purehtml import ConfigFactory
 from purehtml import extract_from_str
 
+# This is the example usage of library.
+
 yaml_string = """
 selector: span
 type: array
@@ -16,5 +18,5 @@ html_string = """
 expected_output = "['a', 'b', 'c']"
 
 config = ConfigFactory.extract(yaml_string)
-print(extract_from_str(config, html_string, yaml_string))
-print(expected_output)
+print(f"Extracted output : {extract_from_str(config, html_string, yaml_string)}")
+print(f"Expected  output : {expected_output}")
