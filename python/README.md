@@ -1,8 +1,8 @@
-# PureHTML 
+# PureHTML
+
 PureHTML is a parsing specification for extracting JSON from HTML.
 
-* [Documentation](https://purescraps.github.io/purehtml/)
-
+- [Documentation](https://purescraps.github.io/purehtml/)
 
 **Installation**:
 
@@ -11,6 +11,7 @@ To install **PureHTML**, you can use `pip` with following command:
 ```bash
   pip install PureHTML
 ```
+
 ## Usage
 
 ```python
@@ -40,5 +41,3 @@ print(f"Expected  output : {expected_output}")
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
-
