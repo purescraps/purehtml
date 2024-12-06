@@ -13,22 +13,35 @@ def run():
     try:
         for file_path in specs_dir.rglob("*"):
             if file_path.is_file():  # Process only files
-                process_file(file_path)
+                process_file(specs_dir, file_path)
 
     except Exception as e:
         print(f"Exception: {str(e)}")
 
 
-def process_file(file_path: Path):
+def process_file(base_dir: Path, file_path: Path):
     """Process each file in the specs' directory."""
+    relative_path = file_path.name.replace(base_dir.name, "")
+
+    print(f"\nProcessing: {relative_path}")
+
+    is_valid = validate_file(file_path)
+
+    if not is_valid:
+        print(
+            f"File does not seem to be a valid test specification. Skipping {relative_path}"
+        )
+        return
+
     try:
-        if validate_file(file_path):
-            content = read_file(file_path)
-            specs = parse_yaml(content)
-            process_specs(specs, file_path)
+        content = read_file(file_path)
+        specs = parse_yaml(content)
+        process_specs(specs, file_path)
+
+        print(f"Done: {relative_path}")
 
     except Exception as e:
-        print(f"Exception: {file_path} - {str(e)}")
+        print(f"Test failed: {relative_path}: {str(e)}")
 
 
 def read_file(file_path: Path) -> str:
@@ -68,8 +81,6 @@ def compare_values(answer, expected_object, file_path, spec):
     """Compare extracted answer and expected values, and report result."""
     if str(answer) != str(expected_object):
         report_incorrect_values(file_path, spec, answer, expected_object)
-    else:
-        print(f"Success: {file_path}")
 
 
 def report_incorrect_values(file_path, spec, answer, expected_object):
