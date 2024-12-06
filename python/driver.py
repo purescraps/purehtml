@@ -1,5 +1,5 @@
 from purehtml import ConfigFactory
-from purehtml import extract_from_str
+from purehtml import extract
 
 # This is the example usage of library.
 
@@ -18,5 +18,6 @@ html_string = """
 expected_output = "['a', 'b', 'c']"
 
 config = ConfigFactory.extract(yaml_string)
-print(f"Extracted output : {extract_from_str(config, html_string, yaml_string)}")
+
+print(f"Extracted output : {extract(config, html_string)}")
 print(f"Expected  output : {expected_output}")

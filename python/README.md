@@ -15,8 +15,7 @@ To install **PureHTML**, you can use `pip` with following command:
 ## Usage
 
 ```python
-from purehtml import ConfigFactory
-from purehtml import extract_from_str
+from purehtml import ConfigFactory, extract
 
 yaml_string = """
 selector: span
@@ -33,7 +32,7 @@ html_string = """
 expected_output = "['a', 'b', 'c']"
 
 config = ConfigFactory.extract(yaml_string)
-print(f"Extracted output : {extract_from_str(config, html_string, yaml_string)}")
+print(f"Extracted output : {extract(config, html_string)}")
 print(f"Expected  output : {expected_output}")
 
 ```

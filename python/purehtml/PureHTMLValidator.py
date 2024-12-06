@@ -3,7 +3,7 @@ import yaml
 from jsonschema import validate, ValidationError
 
 
-def validate_string(yaml_string) -> bool:
+def is_valid_config_yaml(yaml_string) -> bool:
     try:
         # The JSON schema with proper escaping
         json_schema_string = r"""
@@ -156,7 +156,6 @@ def validate_string(yaml_string) -> bool:
         return False
 
     except ValidationError as e:
-        print(f"YAML is invalid: {e.message}\n" +f"Validation Errors: {e.context}")
         return False
 
     except Exception as e:
