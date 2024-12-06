@@ -14,22 +14,28 @@ from purehtml.transformers.TransformerFactory import TransformerFactory
 
 class ConfigFactory:
     @staticmethod
-    def extract(yaml_input: Union[str, dict]) -> Config:
+    def fromYAML(yaml_input: Union[str, dict]) -> Config:
         """
         Parses a YAML string or dictionary and generates a Config object.
         """
         if isinstance(yaml_input, str):
             plain = yaml.safe_load(yaml_input)
-            return ConfigFactory.generate(plain)
+            return ConfigFactory.fromDict(plain)
 
         elif isinstance(yaml_input, dict):
-            return ConfigFactory.generate(yaml_input)
+            return ConfigFactory.fromDict(yaml_input)
 
         else:
-            logging.error(f"ConfigFactory.extract --> ValueError : yaml_input is not dict or str")
+            logging.error(
+                f"ConfigFactory.extract --> ValueError : yaml_input is not dict or str"
+            )
 
     @staticmethod
-    def generate(plain: Dict[str, Any]) -> ConstantConfig | ObjectConfig | ArrayConfig | UnionConfig | PrimitiveValueConfig:
+    def fromDict(
+        plain: Dict[str, Any]
+    ) -> (
+        ConstantConfig | ObjectConfig | ArrayConfig | UnionConfig | PrimitiveValueConfig
+    ):
         """
         Generating a Config object based on the input dictionary.
         """
@@ -50,20 +56,25 @@ class ConfigFactory:
         elif expected_type == "object":
 
             prop_configs = (
-                {key: ConfigFactory.generate(value) for key, value in properties.items()}
+                {
+                    key: ConfigFactory.fromDict(value)
+                    for key, value in properties.items()
+                }
                 if isinstance(properties, dict)
-                else None )
+                else None
+            )
 
             return ObjectConfig(selector, prop_configs)
 
         elif expected_type == "array":
 
-            return ArrayConfig(selector, ConfigFactory.generate(items) if items else None, transformers)
+            return ArrayConfig(
+                selector, ConfigFactory.fromDict(items) if items else None, transformers
+            )
 
         elif expected_type == "union":
 
-            return UnionConfig(
-                [ConfigFactory.generate(u) for u in union])
+            return UnionConfig([ConfigFactory.fromDict(u) for u in union])
 
         else:
 

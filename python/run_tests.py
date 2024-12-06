@@ -2,7 +2,7 @@ import json
 import yaml
 from pathlib import Path
 from jsonschema import validate, ValidationError
-from purehtml import extract_from_dict, ConfigFactory
+from purehtml import extract, ConfigFactory
 
 
 def run():
@@ -50,10 +50,10 @@ def process_specs(specs: list, file_path: Path):
         configuration = spec.get("configuration", {})
 
         # Create the config object
-        config = ConfigFactory.extract(configuration)
+        config = ConfigFactory.fromYAML(configuration)
 
         # Extract the answer using PureHTML
-        answer = extract_from_dict(config, html, configuration)
+        answer = extract(config, html, "http://example.com")
 
         expected = spec.get("expected", [])
         expected_object = str(json.loads(json.dumps(expected)))

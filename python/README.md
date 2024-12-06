@@ -31,11 +31,18 @@ html_string = """
 """
 expected_output = "['a', 'b', 'c']"
 
-config = ConfigFactory.extract(yaml_string)
-print(f"Extracted output : {extract(config, html_string)}")
+config = ConfigFactory.fromYAML(yaml_string)
+
+print(f"Extracted output : {extract(config, html_string, 'http://example.com')}")
 print(f"Expected  output : {expected_output}")
 
 ```
+
+## Development
+
+For testing, we use test specifications defined in `<purehtml root>/specs`.
+You may run `python3 run_tests.py` to check if the python implementation
+is working correctly or has some incompatibilities.
 
 ## License
 
