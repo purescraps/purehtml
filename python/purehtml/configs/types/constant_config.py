@@ -1,7 +1,8 @@
-from typing import Any, Optional
+from typing import Any
+from typing import Optional
 
-from purehtml.configs.GetSelectorMatchesParams import GetSelectorMatchesParams
-from purehtml.configs.types.ConfigWithSelector import ConfigWithSelector
+from purehtml.configs.selector_match_params import GetSelectorMatchesParams
+from purehtml.configs.types.config_with_selector import ConfigWithSelector
 
 
 class ConstantConfig(ConfigWithSelector):
@@ -22,7 +23,6 @@ class ConstantConfig(ConfigWithSelector):
         :return: A JSON string of the value or None if no match is found.
         """
 
-
         if self.selector is not None:
             # Create a local equivalent of GetSelectorMatchesParams
             selector_params = GetSelectorMatchesParams(False, True)
@@ -31,7 +31,6 @@ class ConstantConfig(ConfigWithSelector):
             matches = self.get_all_matches(params.node(), selector_params, params.document)
             if matches is None:
                 return None
-
 
             return self.val
 

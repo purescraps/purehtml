@@ -1,10 +1,11 @@
+from typing import Any
+from typing import List
+from typing import Optional
 
-from typing import List, Optional, Any
-
-from purehtml.configs.GetSelectorMatchesParams import GetSelectorMatchesParams
-from purehtml.configs.types.ConfigWithSelector import ConfigWithSelector
-from purehtml.transformers.TransformParams import TransformParams
-from purehtml.transformers.Transformer import Transformer
+from purehtml.configs.selector_match_params import GetSelectorMatchesParams
+from purehtml.configs.types.config_with_selector import ConfigWithSelector
+from purehtml.transformers.transform_params import TransformParams
+from purehtml.transformers.transformer import Transformer
 
 
 class PrimitiveValueConfig(ConfigWithSelector):
@@ -36,7 +37,6 @@ class PrimitiveValueConfig(ConfigWithSelector):
 
         if not self.transform:
             return val
-
 
         transform_params = TransformParams(val, selected_element, params.url())
         return self._transform_val(self.transform, transform_params, val)

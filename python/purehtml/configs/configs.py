@@ -1,6 +1,7 @@
-from abc import ABC, abstractmethod
+from abc import ABC
+from abc import abstractmethod
 
-from purehtml.configs.ExtractParams import ExtractParams
+from purehtml.configs.extract_params import ExtractParams
 
 
 class Config(ABC):

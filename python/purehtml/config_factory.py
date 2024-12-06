@@ -1,29 +1,33 @@
 import logging
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Union
 
 import yaml
-from typing import Any, Dict, List, Optional, Union
 
-from purehtml.configs.Configs import Config
-from purehtml.configs.types.ArrayConfig import ArrayConfig
-from purehtml.configs.types.ConstantConfig import ConstantConfig
-from purehtml.configs.types.ObjectConfig import ObjectConfig
-from purehtml.configs.types.PrimitiveValueConfig import PrimitiveValueConfig
-from purehtml.configs.types.UnionConfig import UnionConfig
-from purehtml.transformers.TransformerFactory import TransformerFactory
+from purehtml.configs.configs import Config
+from purehtml.configs.types.array_config import ArrayConfig
+from purehtml.configs.types.constant_config import ConstantConfig
+from purehtml.configs.types.object_config import ObjectConfig
+from purehtml.configs.types.primitive_value_config import PrimitiveValueConfig
+from purehtml.configs.types.union_config import UnionConfig
+from purehtml.transformers.transformer_factory import TransformerFactory
 
 
 class ConfigFactory:
     @staticmethod
-    def fromYAML(yaml_input: Union[str, dict]) -> Config:
+    def from_yaml(yaml_input: Union[str, dict]) -> Config:
         """
         Parses a YAML string or dictionary and generates a Config object.
         """
         if isinstance(yaml_input, str):
             plain = yaml.safe_load(yaml_input)
-            return ConfigFactory.fromDict(plain)
+            return ConfigFactory.from_dict(plain)
 
         elif isinstance(yaml_input, dict):
-            return ConfigFactory.fromDict(yaml_input)
+            return ConfigFactory.from_dict(yaml_input)
 
         else:
             logging.error(
@@ -31,10 +35,10 @@ class ConfigFactory:
             )
 
     @staticmethod
-    def fromDict(
-        plain: Dict[str, Any]
+    def from_dict(
+            plain: Dict[str, Any]
     ) -> (
-        ConstantConfig | ObjectConfig | ArrayConfig | UnionConfig | PrimitiveValueConfig
+            ConstantConfig | ObjectConfig | ArrayConfig | UnionConfig | PrimitiveValueConfig
     ):
         """
         Generating a Config object based on the input dictionary.
@@ -57,7 +61,7 @@ class ConfigFactory:
 
             prop_configs = (
                 {
-                    key: ConfigFactory.fromDict(value)
+                    key: ConfigFactory.from_dict(value)
                     for key, value in properties.items()
                 }
                 if isinstance(properties, dict)
@@ -69,12 +73,12 @@ class ConfigFactory:
         elif expected_type == "array":
 
             return ArrayConfig(
-                selector, ConfigFactory.fromDict(items) if items else None, transformers
+                selector, ConfigFactory.from_dict(items) if items else None, transformers
             )
 
         elif expected_type == "union":
 
-            return UnionConfig([ConfigFactory.fromDict(u) for u in union])
+            return UnionConfig([ConfigFactory.from_dict(u) for u in union])
 
         else:
 

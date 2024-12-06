@@ -1,8 +1,10 @@
 from abc import ABC
-from urllib.parse import urlparse, parse_qs
-from typing import List, Optional
+from typing import List
+from typing import Optional
+from urllib.parse import parse_qs
+from urllib.parse import urlparse
 
-from purehtml.transformers.Transformer import Transformer
+from purehtml.transformers.transformer import Transformer
 
 
 def parse(url: str) -> dict:

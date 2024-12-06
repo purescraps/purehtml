@@ -1,7 +1,8 @@
 from abc import ABC
-from typing import List, Optional
+from typing import List
+from typing import Optional
 
-from purehtml.transformers.Transformer import Transformer
+from purehtml.transformers.transformer import Transformer
 
 
 class TrimTransformer(Transformer, ABC):
@@ -41,7 +42,7 @@ class TrimTransformer(Transformer, ABC):
 
         # If the value is a string, trim it
         if isinstance(val, str):
-            return val.strip() # Trim leading and trailing whitespace
+            return val.strip()  # Trim leading and trailing whitespace
 
         # If the value is not a string, throw an error
         raise TypeError("Trim: invalid value type: {type(val).__name__}")

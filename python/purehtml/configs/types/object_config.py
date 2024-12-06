@@ -1,15 +1,18 @@
-from typing import Dict, Optional, Any
+from typing import Any
+from typing import Dict
+from typing import Optional
 
-from purehtml.configs.ExtractParams import ExtractParams
-from purehtml.configs.Configs import Config
-from purehtml.configs.GetSelectorMatchesParams import GetSelectorMatchesParams
-from purehtml.configs.types.ConfigWithSelector import ConfigWithSelector
+from purehtml.configs.configs import Config
+from purehtml.configs.extract_params import ExtractParams
+from purehtml.configs.selector_match_params import GetSelectorMatchesParams
+from purehtml.configs.types.config_with_selector import ConfigWithSelector
 
 
 class ObjectConfig(ConfigWithSelector):
     """
     Concrete class representing an object configuration with selector and properties.
     """
+
     def __init__(self, selector: Optional[str], properties: Dict[str, Config]):
         """
         Initializes the ObjectConfig with a selector and properties map.
@@ -48,7 +51,6 @@ class ObjectConfig(ConfigWithSelector):
         result = {}
 
         for key in props:
-
             config = props[key]
             extract_params = ExtractParams(document=params.document(),
                                            nodes=[element],

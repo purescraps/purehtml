@@ -2,7 +2,7 @@ from abc import ABC
 from typing import List
 from urllib.parse import urljoin
 
-from purehtml.transformers.Transformer import Transformer
+from purehtml.transformers.transformer import Transformer
 
 
 class ResolveTransformer(Transformer, ABC):

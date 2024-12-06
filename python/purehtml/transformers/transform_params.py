@@ -1,4 +1,5 @@
 from typing import Any
+
 from bs4 import Tag  # Assuming bs4 is used for the Element equivalent in Python
 
 from purehtml.backend.backend import PureHTMLNode

@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import List
 
-from purehtml.transformers.Transformer import Transformer
+from purehtml.transformers.transformer import Transformer
 
 
 class ExistsTransformer(Transformer, ABC):

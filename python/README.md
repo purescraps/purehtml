@@ -31,7 +31,7 @@ html_string = """
 """
 expected_output = "['a', 'b', 'c']"
 
-config = ConfigFactory.fromYAML(yaml_string)
+config = ConfigFactory.from_yaml(yaml_string)
 
 print(f"Extracted output : {extract(config, html_string, 'http://example.com')}")
 print(f"Expected  output : {expected_output}")

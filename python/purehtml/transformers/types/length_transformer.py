@@ -1,7 +1,8 @@
 from abc import ABC
-from typing import List, Any
+from typing import Any
+from typing import List
 
-from purehtml.transformers.Transformer import Transformer
+from purehtml.transformers.transformer import Transformer
 
 
 class LengthTransformer(Transformer, ABC):

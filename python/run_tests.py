@@ -1,8 +1,12 @@
 import json
-import yaml
 from pathlib import Path
-from jsonschema import validate, ValidationError
-from purehtml import extract, ConfigFactory
+
+import yaml
+from jsonschema import ValidationError
+from jsonschema import validate
+
+from purehtml import ConfigFactory
+from purehtml import extract
 
 
 def run():
@@ -64,7 +68,7 @@ def process_specs(specs: list, file_path: str):
         configuration = spec.get("configuration", {})
 
         # Create the config object
-        config = ConfigFactory.fromYAML(configuration)
+        config = ConfigFactory.from_yaml(configuration)
 
         # Extract the answer using PureHTML
         answer = extract(config, html, "http://example.com")

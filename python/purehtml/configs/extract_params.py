@@ -1,6 +1,7 @@
 from typing import List
 
-from purehtml.backend.backend import PureHTMLDocument, PureHTMLNode
+from purehtml.backend.backend import PureHTMLDocument
+from purehtml.backend.backend import PureHTMLNode
 
 
 class ExtractParams:
@@ -9,11 +10,11 @@ class ExtractParams:
     """
 
     def __init__(
-        self,
-        document: PureHTMLDocument,
-        nodes: List[PureHTMLNode],
-        url: str,
-        element_already_matched: bool,
+            self,
+            document: PureHTMLDocument,
+            nodes: List[PureHTMLNode],
+            url: str,
+            element_already_matched: bool,
 
     ):
         self._document = document

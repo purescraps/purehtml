@@ -1,10 +1,12 @@
 from abc import ABC
+from typing import Any
+from typing import List
+from typing import Optional
+from typing import Union
 
-
-from typing import Any, Optional, List, Union
-
-from purehtml.backend.backend import PureHTMLDocument, PureHTMLNode
-from purehtml.configs.Configs import Config
+from purehtml.backend.backend import PureHTMLDocument
+from purehtml.backend.backend import PureHTMLNode
+from purehtml.configs.configs import Config
 
 
 class ConfigWithSelector(Config, ABC):
@@ -17,7 +19,7 @@ class ConfigWithSelector(Config, ABC):
         super().__init__()
         self.selector = selector
 
-    def get_all_matches(self, element : List, params: Any, doc : PureHTMLDocument) \
+    def get_all_matches(self, element: List, params: Any, doc: PureHTMLDocument) \
             -> List[PureHTMLNode]:
         """
                 Get the all matches according to below conditions. It will return the given
@@ -64,10 +66,10 @@ class ConfigWithSelector(Config, ABC):
             return nodes
 
     def get_first_match(self,
-                        element : Union[List[PureHTMLNode], PureHTMLNode],
+                        element: Union[List[PureHTMLNode], PureHTMLNode],
                         params: Any,
-                        doc : PureHTMLDocument) \
-                        -> Optional[PureHTMLNode]:
+                        doc: PureHTMLDocument) \
+            -> Optional[PureHTMLNode]:
         """
         Get the first match for the selector.
         """
@@ -75,4 +77,3 @@ class ConfigWithSelector(Config, ABC):
         if matches:
             return matches[0]
         return None
-

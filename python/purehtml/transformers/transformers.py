@@ -1,11 +1,11 @@
-from purehtml.transformers.types.NumberTransformer import NumberTransformer
-from purehtml.transformers.types.AttributeTransformer import AttributeTransformer
-from purehtml.transformers.types.ExistsTransformer import ExistsTransformer
-from purehtml.transformers.types.HTMLTransformer import HTMLTransformer
-from purehtml.transformers.types.LengthTransformer import LengthTransformer
-from purehtml.transformers.types.ResolveTransformer import ResolveTransformer
-from purehtml.transformers.types.TrimTransformer import TrimTransformer
-from purehtml.transformers.types.UrlQueryParamsTransformer import UrlQueryParamTransformer
+from purehtml.transformers.types.attribute_transformer import AttributeTransformer
+from purehtml.transformers.types.exists_transformer import ExistsTransformer
+from purehtml.transformers.types.html_transformer import HTMLTransformer
+from purehtml.transformers.types.length_transformer import LengthTransformer
+from purehtml.transformers.types.number_transformer import NumberTransformer
+from purehtml.transformers.types.resolve_transformer import ResolveTransformer
+from purehtml.transformers.types.trim_transformer import TrimTransformer
+from purehtml.transformers.types.url_query_params_transformer import UrlQueryParamTransformer
 
 
 class Transformers:

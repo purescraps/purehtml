@@ -1,5 +1,3 @@
-
-
 class GetSelectorMatchesParams:
     """
     A concrete implementation of GetSelectorMatchesParams.

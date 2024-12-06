@@ -79,7 +79,7 @@ class PureHTMLNode:
             selector
         )  # Store the matched elements in a variable
         return (
-            self._element in matched_elements
+                self._element in matched_elements
         )  # Check if current element is in the matched list
 
     def text(self):

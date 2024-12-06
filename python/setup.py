@@ -1,6 +1,7 @@
 # setup.py
 
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
 
 setup(
     name="PureHTML",
@@ -12,7 +13,7 @@ setup(
     install_requires=[
         'beautifulsoup4',  # For bs4
         'PyYAML',  # For yaml
-        'jsonschema', # For schema validation
+        'jsonschema',  # For schema validation
     ],
     author="Onur C. Güven",
     author_email="onurcguven09@gmail.com",
@@ -25,7 +26,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-setup_requires=[
+    setup_requires=[
         'setuptools',
     ],
     python_requires='>=3.10',

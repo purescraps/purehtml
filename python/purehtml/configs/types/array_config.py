@@ -1,17 +1,19 @@
-from typing import List, Any
+from typing import Any
+from typing import List
 
-from purehtml.configs.ExtractParams import ExtractParams
-from purehtml.configs.GetSelectorMatchesParams import GetSelectorMatchesParams
-from purehtml.configs.Configs import Config
-from purehtml.configs.types.ConfigWithSelector import ConfigWithSelector
-from purehtml.configs.types.PrimitiveValueConfig import PrimitiveValueConfig
-from purehtml.transformers.Transformer import Transformer
+from purehtml.configs.configs import Config
+from purehtml.configs.extract_params import ExtractParams
+from purehtml.configs.selector_match_params import GetSelectorMatchesParams
+from purehtml.configs.types.config_with_selector import ConfigWithSelector
+from purehtml.configs.types.primitive_value_config import PrimitiveValueConfig
+from purehtml.transformers.transformer import Transformer
 
 
 class ArrayConfig(ConfigWithSelector):
     """
     Concrete class representing an array configuration with selector and transformers.
     """
+
     def __init__(self, selector: str, items: Config, transform: List[Transformer]):
         """
         Initializes the ArrayConfig with selector, item config, and transformers.

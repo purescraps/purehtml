@@ -1,8 +1,8 @@
 import re
 from typing import List
 
-from purehtml.transformers.Transformer import Transformer
-from purehtml.transformers.Transformers import Transformers
+from purehtml.transformers.transformer import Transformer
+from purehtml.transformers.transformers import Transformers
 
 
 class TransformerFactory:

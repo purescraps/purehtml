@@ -1,6 +1,8 @@
 import json
+
 import yaml
-from jsonschema import validate, ValidationError
+from jsonschema import ValidationError
+from jsonschema import validate
 
 
 def is_valid_config_yaml(yaml_string) -> bool:

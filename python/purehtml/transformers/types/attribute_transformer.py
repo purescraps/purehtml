@@ -1,7 +1,8 @@
 from abc import ABC
-from typing import List, Union
+from typing import List
+from typing import Union
 
-from purehtml.transformers.Transformer import Transformer
+from purehtml.transformers.transformer import Transformer
 
 
 class AttributeTransformer(Transformer, ABC):
