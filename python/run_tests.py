@@ -7,7 +7,7 @@ from purehtml import extract, ConfigFactory
 
 def run():
     """Main function to walk through specs directory and process files."""
-    repo_root = Path(__file__).resolve().parent.parent.parent
+    repo_root = Path(__file__).resolve().parent.parent
     specs_dir = repo_root / "specs"
 
     try:
