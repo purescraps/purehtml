@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 
-class PureHTMLInitializer:
+class BeautifulSoupBackend:
     """
     A backend implementation using BeautifulSoup.
     """
