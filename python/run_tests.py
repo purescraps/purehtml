@@ -86,15 +86,16 @@ def validate_file(yaml_file_path: Path) -> bool:
     repo_root = Path(__file__).resolve().parent.parent
     schema_path = repo_root / "spec.schema.yaml"
 
-    try:
-        schema_object = load_schema(schema_path)
-        yaml_content = load_yaml(yaml_file_path)
+    schema_object = load_schema(schema_path)
+    yaml_content = load_yaml(yaml_file_path)
 
+    try:
         # Convert schema to JSON
         schema_json = json.loads(json.dumps(schema_object))
 
         # Validate YAML content against the schema
         validate(instance=yaml_content, schema=schema_json)
+
         return True
 
     except Exception as e:
