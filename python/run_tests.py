@@ -36,7 +36,8 @@ def process_file(base_dir: Path, file_path: Path):
     try:
         content = read_file(file_path)
         specs = parse_yaml(content)
-        process_specs(specs, file_path)
+
+        process_specs(specs, relative_path)
 
         print(f"Done: {relative_path}")
 
@@ -56,7 +57,7 @@ def parse_yaml(content: str) -> list:
     return yaml_map.get("specs", [])
 
 
-def process_specs(specs: list, file_path: Path):
+def process_specs(specs: list, file_path: str):
     """Process each spec in the YAML file."""
     for spec in specs:
         html = spec.get("input", "")
@@ -79,17 +80,20 @@ def process_specs(specs: list, file_path: Path):
 
 def compare_values(answer, expected_object, file_path, spec):
     """Compare extracted answer and expected values, and report result."""
-    if str(answer) != str(expected_object):
-        report_incorrect_values(file_path, spec, answer, expected_object)
+    if str(answer) == str(expected_object):
+        print(f"  ✔️ {spec.get('description')}")
+    else:
+        print(f"  ❌ {spec.get('description')}")
+        report_incorrect_values(answer, expected_object)
 
 
-def report_incorrect_values(file_path, spec, answer, expected_object):
+def report_incorrect_values(answer, expected_object):
     """Print the incorrect values for debugging."""
-    print(f"Incorrect values at: {file_path}")
-    print(f"Description: {spec.get('description')}")
-    print(f"Extracted Values: {answer}")
-    print(f"Expected Values: {expected_object}")
-    print("")
+
+    print(f"    Extracted: {answer}")
+    print(f"    Expected: {expected_object}")
+
+    raise Exception("Extracted value did not match the expected")
 
 
 def validate_file(yaml_file_path: Path) -> bool:
