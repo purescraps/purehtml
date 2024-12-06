@@ -78,7 +78,7 @@ def report_incorrect_values(file_path, spec, answer, expected_object):
     print(f"Description: {spec.get('description')}")
     print(f"Extracted Values: {answer}")
     print(f"Expected Values: {expected_object}")
-    print('')
+    print("")
 
 
 def validate_file(yaml_file_path: Path) -> bool:

@@ -1,12 +1,12 @@
 import re
-from typing import List, Any
+from typing import Any, List
 
 import yaml
 from bs4 import BeautifulSoup
 
-from purehtml.PureHTMLValidator import validate_string
 from purehtml.backend.backend import PureHTMLInitializer
 from purehtml.configs.ExtractParams import ExtractParams
+from purehtml.PureHTMLValidator import is_valid_config_yaml
 
 
 def extract_urls(html):
