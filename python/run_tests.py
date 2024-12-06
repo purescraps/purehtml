@@ -83,7 +83,7 @@ def report_incorrect_values(file_path, spec, answer, expected_object):
 
 def validate_file(yaml_file_path: Path) -> bool:
     """Validate a YAML file against the schema."""
-    repo_root = Path(__file__).resolve().parent.parent.parent
+    repo_root = Path(__file__).resolve().parent.parent
     schema_path = repo_root / "spec.schema.yaml"
 
     try:
