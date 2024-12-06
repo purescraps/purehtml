@@ -9,7 +9,7 @@ PureHTML is a parsing specification for extracting JSON from HTML.
 To install **PureHTML**, you can use `pip` with following command:
 
 ```bash
-  pip install PureHTML
+  pip install purehtml
 ```
 
 ## Usage
