@@ -39,7 +39,7 @@ class NumberTransformer(Transformer, ABC):
         if isinstance(val, str):
             try:
 
-                value = float(val.replace("\"", "").strip())
+                value = int(val.replace("\"", "").strip())
                 return value
 
             except ValueError:
