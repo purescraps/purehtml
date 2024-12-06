@@ -3,9 +3,7 @@ from typing import List, Any
 
 import yaml
 from bs4 import BeautifulSoup
-
-from purehtml.PureHTMLValidator import validate_string
-from purehtml.backend.backend import PureHTMLInitializer
+from purehtml.backend.backend import BeautifulSoupBackend
 from purehtml.configs.ExtractParams import ExtractParams
 
 
@@ -31,7 +29,7 @@ def extract_from_dict(config, html, plain):
     selector = plain.get("selector")
 
     matched = False
-    doc = PureHTMLInitializer().load(html)
+    doc = BeautifulSoupBackend().load(html)
 
     if selector:
         soup_nodes = doc.select(selector)
@@ -48,7 +46,7 @@ def extract_from_dict(config, html, plain):
             url = urls[0]
 
     extract_params = ExtractParams(
-        document=doc, nodes=soup_nodes, url=url, element_already_matched=matched
+        document=doc, nodes=[], url=url, element_already_matched=False
     )
 
     return config.extract(extract_params)
@@ -56,11 +54,11 @@ def extract_from_dict(config, html, plain):
 
 def extract(config, html) -> Any:
     # Initialize the backend and load the HTML
-    doc = PureHTMLInitializer().load(html)
+    doc = BeautifulSoupBackend().load(html)
 
     urls = extract_urls(html)
 
-    url = html
+    url = None
     if isinstance(urls, List):
         if len(urls) > 0:
             url = urls[0]
