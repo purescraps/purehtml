@@ -5,6 +5,7 @@ class PureHTMLInitializer:
     """
     A backend implementation using BeautifulSoup.
     """
+
     @staticmethod
     def load(html):
         """
@@ -41,7 +42,6 @@ class PureHTMLNode:
     """
 
     def __init__(self, soup, element):
-        #super().__init__()
         self._soup = soup
         self._element = element
 
@@ -75,12 +75,15 @@ class PureHTMLNode:
         """
         Check if the node matches the selector.
         """
-        matched_elements = self._soup.select(selector)  # Store the matched elements in a variable
-        return self._element in matched_elements  # Check if current element is in the matched list
+        matched_elements = self._soup.select(
+            selector
+        )  # Store the matched elements in a variable
+        return (
+            self._element in matched_elements
+        )  # Check if current element is in the matched list
 
     def text(self):
         """
         Get the text content of the node.
         """
         return self._element.get_text()
-
