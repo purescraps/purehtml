@@ -11,6 +11,10 @@ To install **PureHTML**, you can use `pip` with following command:
 ```bash
   pip install purehtml
 ```
+* You also need **html5lib** to be installed.
+```bash
+  pip install html5lib
+```
 
 ## Usage
 

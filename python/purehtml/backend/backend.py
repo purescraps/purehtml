@@ -11,7 +11,7 @@ class BeautifulSoupBackend:
         """
         Load an HTML string or buffer into a PureHTMLBeautifulSoupDocument.
         """
-        return PureHTMLDocument(BeautifulSoup(html, "html.parser"))
+        return PureHTMLDocument(BeautifulSoup(html, "html5lib"))
 
 
 class PureHTMLDocument:
