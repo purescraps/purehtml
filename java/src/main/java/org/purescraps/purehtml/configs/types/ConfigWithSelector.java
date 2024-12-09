@@ -1,46 +1,82 @@
 package org.purescraps.purehtml.configs.types;
 
-import org.purescraps.purehtml.interfaces.GetSelectorMatchesParams;
+import org.purescraps.purehtml.backend.PureHTMLDocument;
+import org.purescraps.purehtml.backend.PureHTMLNode;
 import org.purescraps.purehtml.configs.Config;
-import org.jsoup.select.Elements;
+import org.purescraps.purehtml.interfaces.GetSelectorMatchesParams;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public abstract class  ConfigWithSelector extends Config {
+public abstract class ConfigWithSelector extends Config {
     protected String selector;
 
-    public Object getAllMatches(Elements elements, GetSelectorMatchesParams params) {
+    public List<PureHTMLNode> getAllMatches(List<PureHTMLNode> element,
+                                            GetSelectorMatchesParams params, PureHTMLDocument doc) {
+        /*
+         * Get all matches according to the conditions described.
+         * It returns the given element if it is already matched or if no selector is provided.
+         */
+        if (selector == null) {
+            return element;
+        }
+
         if (params.isAlreadyMatched()) {
-            return elements;
-        }
-        if (this.selector == null) {
-            return elements;
-        }
-        if(elements == null && params.isIncludeRoot())
-        {
-            elements = params.doc().select(selector);
-            if(!elements.isEmpty())
-                return elements;
-            return null;
+            return element;
         }
 
         if (params.isIncludeRoot()) {
-            assert elements != null;
-            if (elements.is(this.selector)) {
+            if (element.isEmpty()) {
+                List<PureHTMLNode> root = doc.select(this.selector);
 
-                return elements;
+                for (PureHTMLNode node : root) {
+                    if (node.isSelector(this.selector)) {
+                        return Collections.singletonList(node);
+
+                    } else {
+                        return root;
+                    }
+                }
+            } else {
+                for (PureHTMLNode node : element) {
+                    if (node.isSelector(this.selector)) {
+                        return Collections.singletonList(node);
+                    }
+                }
+                return new ArrayList<>();
             }
         }
 
-        //Here is needed the doc, we will select new elements with new selector.
-        return params.doc().select(selector);
-    }
+        if (element.isEmpty()) {
+            List<PureHTMLNode> nodes = doc.select(selector);
+            List<PureHTMLNode> results = new ArrayList<>();
 
-    public Object getFirst(Elements elements, GetSelectorMatchesParams params) {
-        Object matches = getAllMatches(elements, params);
-        if (matches instanceof Elements) {
-            return ((Elements) matches).getFirst();
+            for (PureHTMLNode node : nodes) {
+                if (params.isIncludeRoot()) {
+                    results = node.find(selector);
+                }
+            }
+            return params.isIncludeRoot() ? results : nodes;
+
+        } else {
+            return element.getFirst().find(selector);
+
         }
-        return matches;  // If it's not a list, return the element itself
     }
 
+    public PureHTMLNode getFirstMatch(List<PureHTMLNode> element,
+                                      GetSelectorMatchesParams params, PureHTMLDocument doc) {
+        /*
+         * Get the first match for the selector.
+         */
+        List<PureHTMLNode> matches = getAllMatches(element, params, doc);
+        if (matches.isEmpty())
+            return null;
+
+        return matches.getFirst();
+
+    }
 }
+
+

@@ -3,17 +3,16 @@ package org.purescraps.purehtml;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-
-import org.everit.json.schema.*;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
-
 
 import java.io.IOException;
 
 public class Validator {
 
-    public static void validate(String yamlString) {
+    public static boolean validate(String yamlString) {
         try {
             String jsonSchemaString = """
                       {
@@ -157,13 +156,14 @@ public class Validator {
             Schema schema = SchemaLoader.load(jsonSchema);
             JSONObject jsonData = new JSONObject(jsonString);
             schema.validate(jsonData);
-
-            //System.out.println("Validation successful!");
+            return true;
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
+            return false;
         } catch (ValidationException e) {
             System.err.println("YAML is invalid: " + e.getAllMessages());
+            return false;
         }
     }
 }

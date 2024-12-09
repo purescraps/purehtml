@@ -1,20 +1,18 @@
 package org.purescraps.purehtml.configs.types;
+
+import org.purescraps.purehtml.backend.PureHTMLNode;
 import org.purescraps.purehtml.interfaces.ExtractParams;
 import org.purescraps.purehtml.interfaces.GetSelectorMatchesParams;
-
-import org.purescraps.purehtml.transformers.Transformer;
 import org.purescraps.purehtml.transformers.TransformParams;
+import org.purescraps.purehtml.transformers.Transformer;
 
-import org.json.JSONStringer;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PrimitiveValueConfig extends ConfigWithSelector {
 
     private List<Transformer> transform = new ArrayList<>();  // List to store transformers
+
     public PrimitiveValueConfig(String selector, List<Transformer> transform) {
         super();
         if (transform != null) {
@@ -25,8 +23,13 @@ public class PrimitiveValueConfig extends ConfigWithSelector {
 
     public Object extract(ExtractParams params) {
 
+        /*
+         * Extracts a value from the parameters, applying any transformations if available.
+         * @param params: The ExtractParams object containing context for extraction.
+         * @return: The extracted and transformed value as a String.
+         */
         String val = null;
-        Element node = null;
+
         GetSelectorMatchesParams selectorParams = new GetSelectorMatchesParams() {
             @Override
             public boolean isAlreadyMatched() {
@@ -38,44 +41,25 @@ public class PrimitiveValueConfig extends ConfigWithSelector {
                 return false;
             }
 
-            @Override
-            public Document doc() {
-                return params.document();
-            }
         };
-        if(params.element() != null)
-        {
-            val = params.element().text();
-            if (transform.isEmpty()) {
-                return JSONStringer.valueToString(val);
-            }
-            TransformParams tParams = new TransformParams(val, params.element(), params.url());
-            return transformVal(transform, tParams, val);
+
+        PureHTMLNode selectedElement = getFirstMatch(params.node(), selectorParams, params.document());
+
+        if (selectedElement != null) {
+            val = selectedElement.text();
         }
-        //if no element is given, we will search for elements with the selector of this config.
-        Object elements = getFirst(params.node(), selectorParams);
-        //if elements is an Element type, then we will get the text and apply transforms if any.
-        if(elements instanceof Element)
-        {
-            val= ((Element) elements).text();
-            node = ((Element) elements);
+
+        // If no transformation is required, return the value as is
+        if (transform == null) {
+            return val;
         }
-        //No transform, return the value directly with JSONStringer.
-        if (transform.isEmpty()) {
-            return JSONStringer.valueToString(val);
-        }
-        //Ready the tParams, it will be utilised by transformers.
-        TransformParams tParams = new TransformParams(val, node, params.url());
-        //get the text from element, which will be the value for transformers to modify.
-        if (node != null) {
-            val = node.text();
-        }
-        return transformVal(transform, tParams, val);
+
+        // Applying transformation
+        TransformParams transformParams = new TransformParams(val, selectedElement, params.url());
+        return this.transformVal(transform, transformParams, val);
     }
-    // Helper method to apply transformations
-    @SuppressWarnings("unchecked")
-    protected Object transformVal(Object transformer, TransformParams transformParams, Object val)
-    {
+
+    protected Object transformVal(Object transformer, TransformParams transformParams, Object val) {
         if (transformer instanceof Transformer) {
             return ((Transformer) transformer).transform(transformParams);
         }
@@ -84,8 +68,7 @@ public class PrimitiveValueConfig extends ConfigWithSelector {
             Object acc = val;
             List<Transformer> transformers = (List<Transformer>) transformer;
             for (Transformer tr : transformers) {
-                if(tr != null)
-                {
+                if (tr != null) {
                     acc = tr.transform(transformParams);
                     transformParams.setVal(acc);
                 }

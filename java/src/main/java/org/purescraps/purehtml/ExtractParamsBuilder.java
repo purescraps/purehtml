@@ -1,24 +1,27 @@
 package org.purescraps.purehtml;
 
+import org.purescraps.purehtml.backend.PureHTMLDocument;
+import org.purescraps.purehtml.backend.PureHTMLNode;
 import org.purescraps.purehtml.interfaces.ExtractParams;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
+
+/**
+ Used for building Extract Params.
+ */
 public class ExtractParamsBuilder {
 
-    private Document document;
-    private Elements node;
+    private PureHTMLDocument document;
+    private ArrayList<PureHTMLNode> node;
     private String url;
     private boolean elementAlreadyMatched;
-    private Element element;
 
-    public ExtractParamsBuilder setDocument(Document document) {
+    public ExtractParamsBuilder setDocument(PureHTMLDocument document) {
         this.document = document;
         return this;
     }
 
-    public ExtractParamsBuilder setNode(Elements node) {
+    public ExtractParamsBuilder setNode(ArrayList<PureHTMLNode> node) {
         this.node = node;
         return this;
     }
@@ -33,21 +36,16 @@ public class ExtractParamsBuilder {
         return this;
     }
 
-    public ExtractParamsBuilder setElement(Element element) {
-        this.element = element;
-        return this;
-    }
-
     public ExtractParams build() {
         return new ExtractParams() {
 
             @Override
-            public Document document() {
+            public PureHTMLDocument document() {
                 return document;
             }
 
             @Override
-            public Elements node() {
+            public ArrayList<PureHTMLNode> node() {
                 return node;
             }
 
@@ -61,10 +59,6 @@ public class ExtractParamsBuilder {
                 return elementAlreadyMatched;
             }
 
-            @Override
-            public Element element() {
-                return element;
-            }
         };
     }
 }

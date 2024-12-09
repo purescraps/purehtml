@@ -7,19 +7,22 @@ import java.util.List;
 
 public class NumberTransformer extends Transformer {
     @SuppressWarnings("unused")
-    private List<String>  args;
+    private List<String> args;
+
     @SuppressWarnings("unused")
-    public NumberTransformer(List<String>  args) {
+    public NumberTransformer(List<String> args) {
         this.args = args;
     }
+
     @SuppressWarnings("unused")
-    public NumberTransformer(){
+    public NumberTransformer() {
         this.args = null;
     }
 
-    public void setArgs(List<String> args){
+    public void setArgs(List<String> args) {
         this.args = args;
     }
+
     // Static method to return the name of the transformer
     public String getName() {
         return "number";

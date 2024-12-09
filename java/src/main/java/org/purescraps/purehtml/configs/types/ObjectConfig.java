@@ -1,16 +1,17 @@
 package org.purescraps.purehtml.configs.types;
-import org.purescraps.purehtml.ExtractParamsBuilder;
-import org.purescraps.purehtml.interfaces.ExtractParams;
-import org.purescraps.purehtml.configs.Config;
-import org.json.JSONStringer;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import org.purescraps.purehtml.ExtractParamsBuilder;
+import org.purescraps.purehtml.backend.PureHTMLNode;
+import org.purescraps.purehtml.configs.Config;
+import org.purescraps.purehtml.interfaces.ExtractParams;
+import org.purescraps.purehtml.interfaces.GetSelectorMatchesParams;
+
+import java.util.*;
 
 public class ObjectConfig extends ConfigWithSelector {
     // Properties map: key-value pairs of property names and Config objects
     private Map<String, Config> properties = new HashMap<>();
+
     public ObjectConfig(String selector, Map<String, Config> properties) {
         super();
         this.selector = selector;
@@ -24,23 +25,41 @@ public class ObjectConfig extends ConfigWithSelector {
     @Override
     public Object extract(ExtractParams params) {
 
+
+        List<PureHTMLNode> parent = params.node();
+        GetSelectorMatchesParams param = new GetSelectorMatchesParams() {
+            @Override
+            public boolean isAlreadyMatched() {
+                return params.getElementAlreadyMatched();
+            }
+
+            @Override
+            public boolean isIncludeRoot() {
+                return false;
+            }
+
+        };
+
+        PureHTMLNode element = this.getFirstMatch(parent, param, params.document());
+
+        if ((element == null) && (this.selector != null))
+            return null;
+
         Map<String, Config> props = this.properties;
-        Set<String> keys = props.keySet();
 
         Map<String, Object> result = new HashMap<>();
-        for (String key : keys) {
+        for (String key : props.keySet()) {
             Config config = props.get(key);
 
             ExtractParams extractParams = new ExtractParamsBuilder()
                     .setDocument(params.document())
-                    .setNode(params.node())
+                    .setNode(new ArrayList<>(Collections.singletonList(element)))
                     .setUrl(params.url())
                     .setElementAlreadyMatched(params.getElementAlreadyMatched())
-                    .setElement(params.element())
                     .build();
-                result.put(JSONStringer.valueToString(key), config.extract(extractParams));
-            }
-            return result;
+            result.put(key, config.extract(extractParams));
+        }
+        return result;
     }
 }
 

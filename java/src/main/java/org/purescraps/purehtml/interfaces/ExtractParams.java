@@ -1,14 +1,17 @@
 package org.purescraps.purehtml.interfaces;
 
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.purescraps.purehtml.backend.PureHTMLDocument;
+import org.purescraps.purehtml.backend.PureHTMLNode;
+
+import java.util.ArrayList;
 
 public interface ExtractParams {
-    Document document();
-    Elements node();
+    PureHTMLDocument document();
+
+    ArrayList<PureHTMLNode> node();
+
     String url();
+
     boolean getElementAlreadyMatched();
-    Element element();
 }
 

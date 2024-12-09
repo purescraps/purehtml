@@ -1,19 +1,15 @@
 package org.purescraps.purehtml.configs.types;
 
 import org.purescraps.purehtml.ExtractParamsBuilder;
-
+import org.purescraps.purehtml.backend.PureHTMLNode;
+import org.purescraps.purehtml.configs.Config;
 import org.purescraps.purehtml.interfaces.ExtractParams;
 import org.purescraps.purehtml.interfaces.GetSelectorMatchesParams;
-
-import org.purescraps.purehtml.configs.Config;
-
 import org.purescraps.purehtml.transformers.Transformer;
 
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ArrayConfig extends ConfigWithSelector {
 
@@ -27,10 +23,11 @@ public class ArrayConfig extends ConfigWithSelector {
         this.items = items;
         this.transform = transform;
     }
+
     // Extract method implementation
     @Override
     public Object extract(ExtractParams params) {
-        // Get all matches for the element
+
         GetSelectorMatchesParams selectorParams = new GetSelectorMatchesParams() {
             @Override
             public boolean isAlreadyMatched() {
@@ -42,34 +39,20 @@ public class ArrayConfig extends ConfigWithSelector {
                 return false;
             }
 
-            @Override
-            public Document doc() {
-                return params.document();
-            }
         };
-        Object elements = getAllMatches(params.node(), selectorParams);
-        List<Object> matches = new ArrayList<>();
-        if (elements instanceof List) {
-            matches.addAll((List<?>) elements);
-        } else {
-            matches.add(elements);
-        }
+
+        List<PureHTMLNode> elements = getAllMatches(params.node(), selectorParams, params.document());
+
         Config conf = items != null ? items : new PrimitiveValueConfig(null, transform);
         List<Object> result = new ArrayList<>();
-        for (Object el : matches) {
+        for (PureHTMLNode el : elements) {
             ExtractParams extractParams = new ExtractParamsBuilder()
                     .setDocument(params.document())
-                    .setNode(params.node())
+                    .setNode(new ArrayList<>(Collections.singletonList(el)))
                     .setUrl(params.url())
                     .setElementAlreadyMatched(params.getElementAlreadyMatched())
-                    .setElement((Element) el)
                     .build();
             result.add(conf.extract(extractParams));
-            if(items!=null)
-            {
-                if(items instanceof UnionConfig )
-                    return result;
-            }
         }
         return result;
     }

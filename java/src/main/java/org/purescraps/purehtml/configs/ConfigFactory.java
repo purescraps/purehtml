@@ -1,4 +1,6 @@
 package org.purescraps.purehtml.configs;
+
+import org.purescraps.purehtml.Validator;
 import org.purescraps.purehtml.configs.types.*;
 import org.purescraps.purehtml.transformers.Transformer;
 import org.purescraps.purehtml.transformers.TransformerFactory;
@@ -14,12 +16,15 @@ public class ConfigFactory {
     public static Config fromYAML(String yaml) {
         Yaml parser = new Yaml();
         Map<String, Object> plain = parser.load(yaml);
+        if(Validator.validate(yaml))
+            return generate(plain);
+        return null;
+    }
+
+    public static Config fromYAML(Map<String, Object> plain) {
         return generate(plain);
     }
-    public static Config fromYAML(Map<String, Object> plain)
-    {
-        return generate(plain);
-    }
+
     @SuppressWarnings("unchecked")
     private static Config generate(Map<String, Object> plain) {
 
@@ -55,7 +60,7 @@ public class ConfigFactory {
                 }
                 return new ObjectConfig(selector, propConfigs);
             case "array":
-                return new ArrayConfig(selector,items != null ? generate((Map<String, Object>) items) : null , transformers);
+                return new ArrayConfig(selector, items != null ? generate((Map<String, Object>) items) : null, transformers);
             case "union":
 
                 return new UnionConfig(((List<Map<String, Object>>) union).stream()
@@ -94,13 +99,12 @@ public class ConfigFactory {
     private static List<Transformer> generateTransform(Object transformOrig) {
 
         List<Transformer> transform = new ArrayList<>();
-        if(transformOrig == null)
+        if (transformOrig == null)
             return null;
-        if(transformOrig instanceof String)
-        {
+        if (transformOrig instanceof String) {
 
             transform.add(TransformerFactory.create((String) transformOrig));
-            return  transform;
+            return transform;
 
         }
         @SuppressWarnings("unchecked")
@@ -109,10 +113,12 @@ public class ConfigFactory {
                 .map(TransformerFactory::create)
                 .collect(Collectors.toList());
 
-        }
+    }
 
     private static String detectExpectedType(Map<String, Object> conf) {
+
         if (conf.containsKey("properties") || "object".equals(conf.get("type"))) {
+
             return "object";
         }
 

@@ -9,19 +9,22 @@ import java.util.List;
 
 public class ResolveTransformer extends Transformer {
     @SuppressWarnings("unused")
-    private List<String>  args;
+    private List<String> args;
+
     @SuppressWarnings("unused")
-    public ResolveTransformer(List<String>  args) {
+    public ResolveTransformer(List<String> args) {
         this.args = args;
     }
+
     @SuppressWarnings("unused")
-    public ResolveTransformer(){
+    public ResolveTransformer() {
         this.args = null;
     }
 
-    public void setArgs(List<String> args){
+    public void setArgs(List<String> args) {
         this.args = args;
     }
+
     // Static method to return the name of the transformer
     public String getName() {
         return "resolve";

@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 public class TransformerFactory {
 
-    //private static final String TRANSFORMER_DEFINITION_REGEX = "^[\\w-]+(\\(([\\w-]+|(([\\w-]+\\s*,\\s*)*[\\w-]+))?\\))?$";
     private static final Pattern TRANSFORMER_NAME_REGEX = Pattern.compile("^([\\w-]+[^(])");
     private static final Pattern TRANSFORMER_ARGUMENT_PARENTHESIS_REGEX = Pattern.compile("\\((([\\w-]+\\s*,?\\s*)*)\\)");
     private static final Pattern TRANSFORMER_ARGUMENT_NAME_REGEX = Pattern.compile("[\\w-]+");

@@ -1,11 +1,12 @@
 package org.purescraps.purehtml.configs.types;
 
+import org.purescraps.purehtml.backend.PureHTMLNode;
 import org.purescraps.purehtml.interfaces.ExtractParams;
 import org.purescraps.purehtml.interfaces.GetSelectorMatchesParams;
-import org.json.JSONStringer;
-import org.jsoup.nodes.Document;
 
-public class ConstantConfig extends ConfigWithSelector{
+import java.util.List;
+
+public class ConstantConfig extends ConfigWithSelector {
     private final Object val;
     private final String selector;
 
@@ -19,7 +20,6 @@ public class ConstantConfig extends ConfigWithSelector{
     @Override
     public Object extract(ExtractParams params) {
         if (this.selector != null) {
-            // Get the matches based on the selector
             GetSelectorMatchesParams selectors = new GetSelectorMatchesParams() {
                 @Override
                 public boolean isAlreadyMatched() {
@@ -31,18 +31,15 @@ public class ConstantConfig extends ConfigWithSelector{
                     return true;
                 }
 
-                @Override
-                public Document doc() {
-                    return params.document();
-                }
             };
-            Object matches = this.getAllMatches(params.node(), selectors);
+
+            List<PureHTMLNode> matches = this.getAllMatches(params.node(), selectors, params.document());
             // If no matches found, return null
             if (matches == null) {
                 return null;
             }
-            return JSONStringer.valueToString(val);
+            return val;
         }
-        return JSONStringer.valueToString(val);
+        return val;
     }
 }

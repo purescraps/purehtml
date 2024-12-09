@@ -1,12 +1,14 @@
 package org.purescraps.purehtml.transformers.types;
+
+import org.jsoup.nodes.Attribute;
+import org.purescraps.purehtml.backend.PureHTMLNode;
 import org.purescraps.purehtml.transformers.TransformParams;
 import org.purescraps.purehtml.transformers.Transformer;
-import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.jsoup.nodes.Attribute;
-import org.jsoup.nodes.Element;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AttributeTransformer extends Transformer {
 
@@ -30,22 +32,30 @@ public class AttributeTransformer extends Transformer {
     // The transform method that retrieves the HTML element's attributes
     @Override
     public Object transform(TransformParams params) {
+        /**
+         * Retrieve the attributes of the HTML element.
+         * @param params: The parameters that contain the element to extract attributes from.
+         * @return: A map of attributes if multiple are requested, or a single attribute value.
+         */
+        PureHTMLNode element = params.getElement();
+        Map<String, String> attributes = new HashMap<>();
 
-        Element element = params.getElement();
-        JSONObject jsonObject = new JSONObject();
-        if (args.size() == 1)
-        {
-            return JSONStringer.valueToString(element.attr(args.getFirst().replaceAll("[()]", "")));
-        }
-        else if (args.isEmpty()) {
-            for (Attribute x : element.attributes())
-                jsonObject.put(x.getKey(), x.getValue());
+        if (args.size() == 1) {
+            // If only one argument is provided, return the value of that attribute
+            String attributeName = args.getFirst().replace("(", "").replace(")", "");
+            return element.attr(attributeName);
+        } else if (args.isEmpty()) {
+            // If no arguments are provided, return all attributes
+            return element.attr().asList().stream()
+                    .collect(Collectors.toMap(Attribute::getKey, Attribute::getValue));
         } else {
+            // If multiple arguments are provided, return the specified attributes
             for (String arg : args) {
-                jsonObject.put(arg, element.attr(arg));
+                attributes.put(arg, element.attr().get(arg)); // Assuming `get` fetches the attribute by name
             }
         }
-        return jsonObject;
+        System.out.println(attributes);
+        return attributes;
     }
 }
 

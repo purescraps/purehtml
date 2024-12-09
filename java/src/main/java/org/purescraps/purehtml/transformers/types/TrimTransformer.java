@@ -2,24 +2,27 @@ package org.purescraps.purehtml.transformers.types;
 
 import org.purescraps.purehtml.transformers.TransformParams;
 import org.purescraps.purehtml.transformers.Transformer;
-import org.json.JSONStringer;
 
 import java.util.List;
 
 public class TrimTransformer extends Transformer {
     @SuppressWarnings("unused")
-    private List<String>  args;
+    private List<String> args;
+
     @SuppressWarnings("unused")
-    public TrimTransformer(List<String>  args) {
+    public TrimTransformer(List<String> args) {
         this.args = args;
     }
+
     @SuppressWarnings("unused")
-    public TrimTransformer(){
+    public TrimTransformer() {
         this.args = null;
     }
-    public void setArgs(List<String> args){
+
+    public void setArgs(List<String> args) {
         this.args = args;
     }
+
     // Static method to return the name of the transformer
     public String getName() {
         return "trim";
@@ -37,7 +40,7 @@ public class TrimTransformer extends Transformer {
 
         // If the value is a string, trim it
         if (val instanceof String) {
-            return JSONStringer.valueToString(val.toString().trim());
+            return val.toString().trim();
         }
 
         // If the value is not a string, throw an error

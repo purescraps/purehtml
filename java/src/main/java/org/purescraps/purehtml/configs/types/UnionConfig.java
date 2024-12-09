@@ -1,15 +1,14 @@
 package org.purescraps.purehtml.configs.types;
+
 import org.purescraps.purehtml.ExtractParamsBuilder;
+import org.purescraps.purehtml.backend.PureHTMLNode;
+import org.purescraps.purehtml.configs.Config;
 import org.purescraps.purehtml.interfaces.ExtractParams;
 import org.purescraps.purehtml.interfaces.GetSelectorMatchesParams;
-import org.purescraps.purehtml.configs.Config;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UnionConfig extends Config {
     private final List<Config> configs;
@@ -19,13 +18,11 @@ public class UnionConfig extends Config {
         super();
         this.configs = configs;
     }
+
     // The extract method
     public Object extract(ExtractParams params) {
 
-        Elements parentElement = params.node();
-        List<Object> result = new ArrayList<>();
-        int configIndex = 0;
-        int elementIndex = 0;
+        List<PureHTMLNode> parentElement = params.node();
         for (Config config : configs) {
             if (config instanceof ConfigWithSelector configWithSelector) {
                 GetSelectorMatchesParams param = new GetSelectorMatchesParams() {
@@ -39,52 +36,33 @@ public class UnionConfig extends Config {
                         return true;
                     }
 
-                    @Override
-                    public Document doc() {
-                        return params.document();
-                    }
                 };
-                Element element=null;
-                //element = (Element) configWithSelector.getAtIndex(parentElement, param, index);
-                Elements elements =(Elements)  configWithSelector.getAllMatches(parentElement, param);
-                if (elements == null) {
-                    if(configIndex != configs.size() - 1)
-                    {
-                        configIndex++;
-                        continue;
-                    }
+
+                PureHTMLNode elements = configWithSelector.getFirstMatch(parentElement, param, params.document());
+                if (elements == null && !(config instanceof ConstantConfig)) {
+                    continue;
                 }
-                else{
-                    element = elements.get(elementIndex);
-                    elementIndex++;
-                }
+
                 ExtractParams extractParams = new ExtractParamsBuilder()
                         .setDocument(params.document())
-                        .setNode(params.node())
+                        .setNode(new ArrayList<>(Collections.singletonList(elements)))
                         .setUrl(params.url())
                         .setElementAlreadyMatched(true)
-                        .setElement(element)
                         .build();
-                result.add(config.extract(extractParams));
-            }
-            else {
+                return config.extract(extractParams);
+            } else {
                 ExtractParams extractParams = new ExtractParamsBuilder()
                         .setDocument(params.document())
                         .setNode(params.node())
                         .setUrl(params.url())
                         .setElementAlreadyMatched(params.getElementAlreadyMatched())
-                        .setElement(params.element())
                         .build();
-                result.add(config.extract(extractParams));
+                return config.extract(extractParams);
             }
 
         }
-        // Convert each object to its string representation
-        // Join with a separator
-        return result.stream()
-                .map(String::valueOf) // Convert each object to its string representation
-                .collect(Collectors.joining(", "));
 
+        return null;
     }
 
 }

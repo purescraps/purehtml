@@ -1,8 +1,10 @@
 package org.purescraps.purehtml.transformers;
+
 import org.purescraps.purehtml.transformers.types.*;
 
 import java.util.Arrays;
 import java.util.List;
+
 public class Transformers {
 
     // List of transformer classes

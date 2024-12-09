@@ -7,19 +7,22 @@ import java.util.List;
 
 public class LengthTransformer extends Transformer {
     @SuppressWarnings("unused")
-    private List<String>  args;
+    private List<String> args;
+
     @SuppressWarnings("unused")
-    public LengthTransformer(List<String>  args) {
+    public LengthTransformer(List<String> args) {
         this.args = args;
     }
+
     @SuppressWarnings("unused")
-    public LengthTransformer(){
+    public LengthTransformer() {
         this.args = null;
     }
 
-    public void setArgs(List<String> args){
+    public void setArgs(List<String> args) {
         this.args = args;
     }
+
     // Static method to return the name of the transformer
     public String getName() {
         return "length";

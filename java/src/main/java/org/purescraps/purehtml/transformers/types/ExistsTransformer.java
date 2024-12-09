@@ -7,20 +7,23 @@ import java.util.List;
 
 public class ExistsTransformer extends Transformer {
     @SuppressWarnings("unused")
-    private List<String>  args;
+    private List<String> args;
+
     @SuppressWarnings("unused")
-    public ExistsTransformer(List<String>  args) {
+    public ExistsTransformer(List<String> args) {
         this.args = args;
     }
+
     @SuppressWarnings("unused")
-    public ExistsTransformer(){
+    public ExistsTransformer() {
         this.args = null;
     }
 
-    public void setArgs(List<String> args){
+    public void setArgs(List<String> args) {
         this.args = args;
     }
-        // Static method to get the name of the transformer
+
+    // Static method to get the name of the transformer
     public String getName() {
         return "exists";
     }
