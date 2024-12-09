@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=../spec.schema.yaml
+
+description: Object Configuration Tests
+
+specs:
+  - description: should extract object properties
+
+    input: &input |
+      <div id="outside"></div>
+      <div id="root">
+        <div id="a">foo</div>
+        <div id="b">bar</div>
+        <div id="c">baz</div>
+      </div>
+
+    configuration:
+      selector: "#root"
+      type: object
+      properties:
+        a: { selector: "#a" }
+        b: { selector: "#b" }
+        c: { selector: "#c" }
+
+    expected: { a: "foo", b: "bar", c: "baz" }
+
+  - description: should only match child elements
+
+    input: *input
+
+    configuration:
+      selector: "#root"
+      type: object
+      properties:
+        childDivs:
+          selector: div
+          type: array
+          items: {}
+
+    expected:
+      childDivs: [foo, bar, baz]

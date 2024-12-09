@@ -69,7 +69,6 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                            <finalName>${project.artifactId}-${project.version}</finalName>
                         </configuration>
                     </execution>
                 </executions>
@@ -120,12 +119,4 @@
             </dependencies>
         </profile>
     </profiles>
-
-
-
-
-
 </project>
-
-
-

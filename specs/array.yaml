@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=../spec.schema.yaml
+
+description: Array Configuration Tests
+
+specs:
+  - description: should extract a basic array
+
+    input: |
+      <div id="root">
+        <div>foo</div>
+        <div>bar</div>
+        <div>baz</div>
+      </div>
+
+    configuration:
+      selector: "#root div"
+      type: array
+      items: {}
+
+    expected: [foo, bar, baz]
+
+  - description: extract complex array
+    input: &complex |
+      <div>
+        <div data-foo="foo"></div>
+        <div data-bar="bar"></div>
+        <div data-baz="baz"></div>
+      </div>
+    configuration:
+      selector: div[data-foo], div[data-bar], div[data-baz]
+      items:
+        union:
+          - selector: "[data-foo]"
+            transform: attr(data-foo)
+          - selector: "[data-bar]"
+            transform: attr(data-bar)
+          - selector: "[data-baz]"
+            transform: attr(data-baz)
+    expected: [foo, bar, baz]
+
+  - description: extract an array of complex objects
+    input: *complex
+    configuration:
+      selector: div div
+      type: array
+      items:
+        transform: attr # return an object with all attributes
+    expected:
+      - { data-foo: foo }
+      - { data-bar: bar }
+      - { data-baz: baz }

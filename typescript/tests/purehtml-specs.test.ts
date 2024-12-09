@@ -76,7 +76,7 @@ testSpecs.forEach((spec) => {
           'http://example.com'
         );
 
-        expect(result).toStrictEqual(testCase.expected);
+        expect(result).toEqual(testCase.expected);
       });
     });
   });

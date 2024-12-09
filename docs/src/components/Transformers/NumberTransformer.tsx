@@ -29,6 +29,17 @@ export function NumberTransformer() {
             />
           </Accordion.Panel>
         </Accordion.Item>
+        <Accordion.Item value="example">
+          <Accordion.Control h={rem(35)}>
+            Handling non-existing selectors
+          </Accordion.Control>
+          <Accordion.Panel>
+            <PureHtmlSnippet
+              inputHtml="<div>1234</div>"
+              configYaml="{ selector: p, transform: number }"
+            />
+          </Accordion.Panel>
+        </Accordion.Item>
       </Accordion>
     </>
   );
