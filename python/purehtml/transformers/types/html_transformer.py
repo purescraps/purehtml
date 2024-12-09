@@ -1,6 +1,7 @@
 from abc import ABC
 from typing import List
 
+from purehtml.transformers.transform_params import TransformParams
 from purehtml.transformers.transformer import Transformer
 
 
@@ -27,7 +28,7 @@ class HTMLTransformer(Transformer, ABC):
         """
         return "html"
 
-    def transform(self, params) -> str:
+    def transform(self, params: TransformParams) -> str:
         """
         Retrieve the HTML content of the given element.
         :param params: The parameters that contain the element to extract HTML content from.

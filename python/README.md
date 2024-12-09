@@ -11,10 +11,6 @@ To install **PureHTML**, you can use `pip` with following command:
 ```bash
   pip install purehtml
 ```
-* You also need **html5lib** to be installed.
-```bash
-  pip install html5lib
-```
 
 ## Usage
 
@@ -47,6 +43,16 @@ print(f"Expected  output : {expected_output}")
 For testing, we use test specifications defined in `<purehtml root>/specs`.
 You may run `python3 run_tests.py` to check if the python implementation
 is working correctly or has some incompatibilities.
+
+#### Building
+
+1. Install `build` pip with this command: `python3 -m pip install --upgrade build`
+2. Execute `make clean build` to create a clean build output. The output will be placed in `dist/`
+
+#### Publishing to Python Package Index
+
+1. Install the `twine` package: `python3 -m pip install --upgrade twine`
+2. Publish to pypi: `python3 -m twine upload dist/*` or with `make publish`
 
 ## License
 
