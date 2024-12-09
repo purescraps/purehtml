@@ -1,3 +1,5 @@
+name: Publish python package
+
 on:
   push:
     branches: ["master"]
