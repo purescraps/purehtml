@@ -1,13 +1,12 @@
 from typing import Any
 from typing import Union
 
-from bs4 import BeautifulSoup
 
-from purehtml.backend.backend import BeautifulSoupBackend
+from purehtml.backend.backend import BeautifulSoupBackend, PureHTMLDocument
 from purehtml.configs.extract_params import ExtractParams
 
 
-def extract(config, html: Union[str, BeautifulSoup], url: str) -> Any:
+def extract(config, html: Union[str, PureHTMLDocument], url: str) -> Any:
     """
     Initialize the backend and load the HTML
     """

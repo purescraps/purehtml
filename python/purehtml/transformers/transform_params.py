@@ -27,8 +27,5 @@ class TransformParams:
     def get_element(self) -> PureHTMLNode:
         return self.element
 
-    def set_element(self, element: Tag) -> None:
-        self.element = element
-
     def get_url(self) -> str:
         return self.url

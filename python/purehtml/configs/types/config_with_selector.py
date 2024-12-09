@@ -1,8 +1,11 @@
 from abc import ABC
 from typing import Any, List, Optional, Union
 
+import bs4
+
 from purehtml.backend.backend import PureHTMLDocument, PureHTMLNode
 from purehtml.configs.configs import Config
+from purehtml.configs.selector_match_params import GetSelectorMatchesParams
 
 
 class ConfigWithSelector(Config, ABC):
@@ -60,12 +63,13 @@ class ConfigWithSelector(Config, ABC):
 
         else:
             nodes = element[0].find(self.selector)
+
             return nodes
 
     def get_first_match(
         self,
         element: Union[List[PureHTMLNode], PureHTMLNode],
-        params: Any,
+        params: GetSelectorMatchesParams,
         doc: PureHTMLDocument,
     ) -> Optional[PureHTMLNode]:
         """

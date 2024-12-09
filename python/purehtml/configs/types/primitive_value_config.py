@@ -9,7 +9,9 @@ from purehtml.transformers.transformer import Transformer
 
 
 class PrimitiveValueConfig(ConfigWithSelector):
-    def __init__(self, selector: Optional[str], transform: Optional[List[Transformer]] = None):
+    def __init__(
+        self, selector: Optional[str], transform: Optional[List[Transformer]] = None
+    ):
         """
         Initializes the PrimitiveValueConfig with a selector and optional transformers.
         :param selector: The CSS selector used to find the target element.
@@ -31,7 +33,10 @@ class PrimitiveValueConfig(ConfigWithSelector):
             include_root=False,
         )
 
-        selected_element = self.get_first_match(params.node(), selector_params, params.document())
+        selected_element = self.get_first_match(
+            params.node(), selector_params, params.document()
+        )
+
         if selected_element:
             val = selected_element.text()
 
@@ -39,11 +44,11 @@ class PrimitiveValueConfig(ConfigWithSelector):
             return val
 
         transform_params = TransformParams(val, selected_element, params.url())
+
         return self._transform_val(self.transform, transform_params, val)
 
     @staticmethod
     def _transform_val(transformers, transform_params, val):
-
         """
         Applies transformations sequentially if multiple transformers exist.
         :param transformers: A list of transformer objects.

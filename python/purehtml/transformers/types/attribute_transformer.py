@@ -2,7 +2,10 @@ from abc import ABC
 from typing import List
 from typing import Union
 
+import bs4
+
 from purehtml.transformers.transformer import Transformer
+from purehtml.transformers.transform_params import TransformParams
 
 
 class AttributeTransformer(Transformer, ABC):
@@ -28,7 +31,7 @@ class AttributeTransformer(Transformer, ABC):
         """
         return "attr"
 
-    def transform(self, params) -> Union[dict, str]:
+    def transform(self, params: TransformParams) -> Union[dict, str]:
         """
         Retrieve the attributes of the HTML element.
         :param params: The parameters that contain the element to extract attributes from.

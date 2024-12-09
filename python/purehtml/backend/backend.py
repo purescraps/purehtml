@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, element
 
 
 class BeautifulSoupBackend:
@@ -19,7 +19,7 @@ class PureHTMLDocument:
     A document implementation using BeautifulSoup.
     """
 
-    def __init__(self, soup):
+    def __init__(self, soup: BeautifulSoup):
         self._soup = soup
 
     def select(self, selector):
@@ -27,6 +27,7 @@ class PureHTMLDocument:
         Select elements based on a CSS selector and wrap them in PureHTMLBeautifulSoupNode objects.
         """
         elements = self._soup.select(selector)
+
         return [PureHTMLNode(self._soup, el) for el in elements]
 
     def root(self):
@@ -41,7 +42,7 @@ class PureHTMLNode:
     A node implementation using BeautifulSoup.
     """
 
-    def __init__(self, soup, element):
+    def __init__(self, soup: BeautifulSoup, element: element.Tag):
         self._soup = soup
         self._element = element
 
@@ -51,6 +52,7 @@ class PureHTMLNode:
         """
         if name:
             return self._element.get(name, None)
+
         return self._element.attrs
 
     def find(self, selector):
@@ -79,7 +81,7 @@ class PureHTMLNode:
             selector
         )  # Store the matched elements in a variable
         return (
-                self._element in matched_elements
+            self._element in matched_elements
         )  # Check if current element is in the matched list
 
     def text(self):

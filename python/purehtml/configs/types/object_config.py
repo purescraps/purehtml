@@ -1,6 +1,4 @@
-from typing import Any
-from typing import Dict
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from purehtml.configs.configs import Config
 from purehtml.configs.extract_params import ExtractParams
@@ -52,10 +50,12 @@ class ObjectConfig(ConfigWithSelector):
 
         for key in props:
             config = props[key]
-            extract_params = ExtractParams(document=params.document(),
-                                           nodes=[element],
-                                           url=params.url(),
-                                           element_already_matched=False)
+            extract_params = ExtractParams(
+                document=params.document(),
+                nodes=[element],
+                url=params.url(),
+                element_already_matched=False,
+            )
 
             result[key] = config.extract(extract_params)
 
