@@ -1,11 +1,7 @@
 from abc import ABC
-from typing import Any
-from typing import List
-from typing import Optional
-from typing import Union
+from typing import Any, List, Optional, Union
 
-from purehtml.backend.backend import PureHTMLDocument
-from purehtml.backend.backend import PureHTMLNode
+from purehtml.backend.backend import PureHTMLDocument, PureHTMLNode
 from purehtml.configs.configs import Config
 
 
@@ -19,12 +15,13 @@ class ConfigWithSelector(Config, ABC):
         super().__init__()
         self.selector = selector
 
-    def get_all_matches(self, element: List, params: Any, doc: PureHTMLDocument) \
-            -> List[PureHTMLNode]:
+    def get_all_matches(
+        self, element: List, params: Any, doc: PureHTMLDocument
+    ) -> List[PureHTMLNode]:
         """
-                Get the all matches according to below conditions. It will return the given
-                element if it is already matched, no selector is provided.
-                """
+        Get the all matches according to below conditions. It will return the given
+        element if it is already matched, no selector is provided.
+        """
 
         if self.selector is None:
             # If no selector is provided, return the element as is.
@@ -65,15 +62,18 @@ class ConfigWithSelector(Config, ABC):
             nodes = element[0].find(self.selector)
             return nodes
 
-    def get_first_match(self,
-                        element: Union[List[PureHTMLNode], PureHTMLNode],
-                        params: Any,
-                        doc: PureHTMLDocument) \
-            -> Optional[PureHTMLNode]:
+    def get_first_match(
+        self,
+        element: Union[List[PureHTMLNode], PureHTMLNode],
+        params: Any,
+        doc: PureHTMLDocument,
+    ) -> Optional[PureHTMLNode]:
         """
         Get the first match for the selector.
         """
         matches = self.get_all_matches(element, params, doc)
-        if matches:
+
+        if len(matches) > 0:
             return matches[0]
+
         return None
