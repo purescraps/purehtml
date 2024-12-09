@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=../spec.schema.yaml
+
+description: purehtml basics
+
+specs:
+  - description: should extract a string
+    input: &input |
+      <div>
+        <div>
+          <span class="foo">Hello, purehtml</span>
+        </div>
+        <p class="bar">
+          123
+        </p>
+
+        <p class="baz">
+          user profile summary <!-- comment -->
+        </p>
+      </div>
+
+    expected: Hello, purehtml
+    configuration:
+      selector: .foo
+
+  - description: should extract a number
+    input: *input
+    expected: 123
+    configuration:
+      selector: .bar
+      transform: [trim, number]
+
+  - description: should ignore HTML comments
+    input: *input
+    expected: user profile summary
+    configuration:
+      selector: .baz
+      transform: trim
+
+  - description: should return null if the selector matches nothing
+    input: *input
+    expected: null
+    configuration: { selector: .non-existing }
