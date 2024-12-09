@@ -22,7 +22,7 @@ public class PureHTMLSpecsRunner {
 
     public static void main(String[] args) {
         Path repoRoot = Paths.get(System.getProperty("user.dir"));
-        Path specsDir = repoRoot.resolve("specs");
+        Path specsDir = repoRoot.resolve("../specs");
 
         try (Stream<Path> paths = Files.walk(specsDir)) {
             paths.filter(Files::isRegularFile)
@@ -56,7 +56,8 @@ public class PureHTMLSpecsRunner {
     }
 
     public static boolean validateFile(Path yamlFilePath) {
-        Path schemaPath = Paths.get("spec.schema.yaml");
+        Path schemaPath = Paths.get("../spec.schema.yaml");
+
         try {
             Yaml yaml = new Yaml();
             Map<String, Object> schemaMap = yaml.load(Files.newInputStream(schemaPath));
