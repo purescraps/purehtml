@@ -18,8 +18,7 @@ import java.util.stream.Stream;
 
 import static org.purescraps.purehtml.PureHTML.extract;
 
-
-public class Specs {
+public class PureHTMLSpecsRunner {
 
     public static void main(String[] args) {
         Path repoRoot = Paths.get(System.getProperty("user.dir"));
@@ -83,7 +82,8 @@ public class Specs {
             String html = (String) spec.get("input");
 
             Map<String, Object> configuration = (Map<String, Object>) spec.get("configuration");
-            // Create the Config object from configuration (similar to Python's `ConfigFactory.from_yaml`)
+            // Create the Config object from configuration (similar to Python's
+            // `ConfigFactory.from_yaml`)
             Config config = ConfigFactory.fromYAML(configuration);
 
             // Extract the answer using PureHTML
@@ -91,9 +91,12 @@ public class Specs {
 
             Object expected = spec.get("expected");
             String answer_string;
-            if (answer == null) answer_string = "null";
-            else if (answer.equals("[]")) answer_string = "null";
-            else answer_string = answer.toString();
+            if (answer == null)
+                answer_string = "null";
+            else if (answer.equals("[]"))
+                answer_string = "null";
+            else
+                answer_string = answer.toString();
             compareValues(answer_string, expected, filePath, spec);
         }
     }

@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.purescraps.purehtml</groupId>
@@ -88,11 +88,12 @@
                         </goals>
                         <configuration>
                             <!-- Output the fat JAR to a different folder -->
-                            <outputFile>${project.build.directory}/Specs/${project.artifactId}-${project.version}-Specs.jar</outputFile>
+                            <outputFile>${project.build.directory}/RunSpecs.jar</outputFile>
                             <!-- Specify the main class for the fat JAR -->
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.purescraps.purehtml.tests.Specs</mainClass>
+                                <transformer
+                                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.purescraps.purehtml.tests.PureHTMLSpecsRunner</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
