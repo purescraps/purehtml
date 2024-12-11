@@ -1,29 +1,58 @@
-# PureHTML Java implementation
+# PureHTML
+**PureHTML** is a parsing specification for extracting JSON from HTML.
 
+[Documentation](https://purescraps.github.io/purehtml/)
 We use maven for dependency management.
 
-1. Install the dependencies: `mvn install`
 
-### Development
+
+### Installation
+1. #### For Maven Projects:
+*  Add this dependency to your pom.xml file :
+```
+        <dependency>
+            <groupId>org.purescraps.purehtml</groupId>
+            <artifactId>purehtml</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+```
 
 Make sure you have `maven` installed in your environment.
 
-Install the dependencies:
+* Install the dependencies: `mvn clean install`
 
-```sh
-mvn install
+## Usage
+```java
+import org.purescraps.purehtml.configs.Config;
+import org.purescraps.purehtml.configs.ConfigFactory;
+
+public class Main {
+    public static void main(String[] args) {
+        String yamlString = """
+                    selector: span
+                    type: array
+                    items: {}
+                """;
+
+        String htmlString = """
+                    <div>
+                        <span>a</span>
+                        <span>b</span>
+                        <span>c</span>
+                    </div>
+                """;
+
+        String expectedOutput = "[a, b, c]";
+
+        Config config = ConfigFactory.fromYAML(yamlString);
+        Object extractedOutput = extract(config, htmlString, "http://example.com");
+
+        System.out.println("Extracted output: " + extractedOutput);
+        System.out.println("Expected output: " + expectedOutput);
+    }
+}
 ```
 
-Package the jars:
+## License
 
-```sh
-mvn clean package
-```
-
-Run the tests:
-
-```sh
-java -jar target/jar/RunSpecs.jar
-```
-
-Those tests use the common test specifications of the PureHTML library. Test specifications can be found in `https://github.com/purescraps/purehtml/tree/master/specs`
+[MIT](https://choosealicense.com/licenses/mit/)
