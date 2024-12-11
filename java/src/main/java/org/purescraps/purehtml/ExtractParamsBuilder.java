@@ -7,7 +7,7 @@ import org.purescraps.purehtml.interfaces.ExtractParams;
 import java.util.ArrayList;
 
 /**
- Used for building Extract Params.
+ * Used for building Extract Params.
  */
 public class ExtractParamsBuilder {
 

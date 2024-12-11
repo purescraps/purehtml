@@ -16,7 +16,7 @@ public class ConfigFactory {
     public static Config fromYAML(String yaml) {
         Yaml parser = new Yaml();
         Map<String, Object> plain = parser.load(yaml);
-        if(Validator.validate(yaml))
+        if (Validator.validate(yaml))
             return generate(plain);
         return null;
     }
