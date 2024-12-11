@@ -4,6 +4,7 @@ import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Test;
 import org.purescraps.purehtml.configs.Config;
 import org.purescraps.purehtml.configs.ConfigFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -16,29 +17,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.purescraps.purehtml.PureHTML.extract;
 
-public class PureHTMLSpecsRunner {
+public class PureHTMLTest {
 
-    public static void main(String[] args) {
-        Path repoRoot = Paths.get(System.getProperty("user.dir"));
-        Path specsDir = repoRoot.resolve("../specs");
+    private final Path repoRoot = Paths.get(System.getProperty("user.dir"));
+    private final Path specsDir = repoRoot.resolve("../specs");
 
+    @Test
+    void testAllSpecs() {
         try (Stream<Path> paths = Files.walk(specsDir)) {
             paths.filter(Files::isRegularFile)
-                    .forEach(filePath -> processFile(specsDir, filePath));
+                    .forEach(filePath -> {
+                        try {
+                            processFile(specsDir, filePath);
+                        } catch (Exception e) {
+                            fail("Error processing file: " + filePath.toString() + " - " + e.getMessage());
+                        }
+                    });
         } catch (IOException e) {
-            e.printStackTrace();
+            fail("Error reading specs directory: " + e.getMessage());
         }
     }
 
-    public static void processFile(Path baseDir, Path filePath) {
+    private void processFile(Path baseDir, Path filePath) {
         String relativePath = baseDir.relativize(filePath).toString();
         System.out.println("\nProcessing: " + relativePath);
 
         if (!validateFile(filePath)) {
-            System.out.println("Invalid test spec. Skipping " + relativePath);
-            return;
+            fail("Invalid test spec. Skipping " + relativePath);
         }
 
         try {
@@ -51,24 +59,19 @@ public class PureHTMLSpecsRunner {
             System.out.println("Done: " + relativePath);
 
         } catch (IOException e) {
-            System.out.println("Error processing file: " + relativePath + " - " + e.getMessage());
+            fail("Error processing file: " + relativePath + " - " + e.getMessage());
         }
     }
 
-    public static boolean validateFile(Path yamlFilePath) {
+    private boolean validateFile(Path yamlFilePath) {
         Path schemaPath = Paths.get("../spec.schema.yaml");
-
         try {
             Yaml yaml = new Yaml();
             Map<String, Object> schemaMap = yaml.load(Files.newInputStream(schemaPath));
 
-            // Convert the loaded YAML schema to a JSONObject
             JSONObject schemaJson = new JSONObject(schemaMap);
-
-            // Load the YAML content to be validated
             Map<String, Object> yamlContent = yaml.load(Files.newInputStream(yamlFilePath));
 
-            // Load and validate against the schema
             Schema schema = SchemaLoader.load(schemaJson);
             schema.validate(new JSONObject(yamlContent));
             return true;
@@ -78,40 +81,31 @@ public class PureHTMLSpecsRunner {
         }
     }
 
-    public static void processSpecs(List<Map<String, Object>> specs, String filePath) {
+    private void processSpecs(List<Map<String, Object>> specs, String filePath) {
         for (Map<String, Object> spec : specs) {
             String html = (String) spec.get("input");
 
             Map<String, Object> configuration = (Map<String, Object>) spec.get("configuration");
-            // Create the Config object from configuration (similar to Python's
-            // `ConfigFactory.from_yaml`)
             Config config = ConfigFactory.fromYAML(configuration);
 
-            // Extract the answer using PureHTML
             Object answer = extract(config, html, "http://example.com");
-
             Object expected = spec.get("expected");
-            String answer_string;
-            if (answer == null)
-                answer_string = "null";
-            else if (answer.equals("[]"))
-                answer_string = "null";
-            else
-                answer_string = answer.toString();
-            compareValues(answer_string, expected, filePath, spec);
+            String answerString = (answer == null || answer.equals("[]")) ? "null" : answer.toString();
+
+            compareValues(answerString, expected, filePath, spec);
         }
     }
 
-    public static void compareValues(String answer, Object expected, String filePath, Map<String, Object> spec) {
+    private void compareValues(String answer, Object expected, String filePath, Map<String, Object> spec) {
         if (answer.equals(expected.toString())) {
-            System.out.println("  ✔️ " + spec.get("description"));
+            System.out.println(" --Success: " + spec.get("description"));
         } else {
-            System.out.println("  ❌ " + spec.get("description"));
+            System.out.println(" --Fail: " + spec.get("description"));
             reportIncorrectValues(answer, expected);
         }
     }
 
-    public static void reportIncorrectValues(String answer, Object expected) {
+    private void reportIncorrectValues(String answer, Object expected) {
         System.out.println("    Extracted: " + answer);
         System.out.println("    Expected : " + expected);
         System.out.println("Extracted value did not match the expected");
