@@ -98,9 +98,9 @@ public class PureHTMLTest {
 
     private void compareValues(String answer, Object expected, String filePath, Map<String, Object> spec) {
         if (answer.equals(expected.toString())) {
-            System.out.println(" --Success: " + spec.get("description"));
+            System.out.println("  -- Success: " + spec.get("description"));
         } else {
-            System.out.println(" --Fail: " + spec.get("description"));
+            System.out.println("  -- Fail: " + spec.get("description"));
             reportIncorrectValues(answer, expected);
         }
     }
