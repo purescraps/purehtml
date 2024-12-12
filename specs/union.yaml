@@ -26,4 +26,6 @@ specs:
       union:
         - selector: .foo
         - selector: .bar
-    expected: null
+    expected: "null"
+    # expected: null --> this cause Validation Error: #/specs/1: required key [expected] not found
+    # Changed null to "null"
