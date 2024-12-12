@@ -1,17 +1,19 @@
 # PureHTML
+
 **PureHTML** is a parsing specification for extracting JSON from HTML.
 
 [Documentation](https://purescraps.github.io/purehtml/)
 We use maven for dependency management.
 
-
-
 ### Installation
+
 1. #### For Maven Projects:
-*  Add this dependency to your pom.xml file :
+
+- Add this dependency to your pom.xml file :
+
 ```
         <dependency>
-            <groupId>org.purescraps.purehtml</groupId>
+            <groupId>com.purescraps.purehtml</groupId>
             <artifactId>purehtml</artifactId>
             <version>0.1.0</version>
         </dependency>
@@ -19,12 +21,13 @@ We use maven for dependency management.
 
 Make sure you have `maven` installed in your environment.
 
-* Install the dependencies: `mvn clean install`
+- Install the dependencies: `mvn clean install`
 
 ## Usage
+
 ```java
-import org.purescraps.purehtml.configs.Config;
-import org.purescraps.purehtml.configs.ConfigFactory;
+import com.purescraps.purehtml.configs.Config;
+import com.purescraps.purehtml.configs.ConfigFactory;
 
 public class Main {
     public static void main(String[] args) {
@@ -55,4 +58,4 @@ public class Main {
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](https://opensource.org/license/mit)
