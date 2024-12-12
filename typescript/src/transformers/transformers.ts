@@ -1,6 +1,7 @@
 import AttributeTransformer from './attr';
 import ExistsTransformer from './exists';
 import HTMLTransformer from './html';
+import JSONTransformer from './json';
 import LengthTransformer from './length';
 import NumberTransformer from './number';
 import ResolveTransformer from './resolve';
@@ -12,6 +13,7 @@ export class Transformers {
     AttributeTransformer,
     ExistsTransformer,
     HTMLTransformer,
+    JSONTransformer,
     LengthTransformer,
     NumberTransformer,
     ResolveTransformer,

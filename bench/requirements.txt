@@ -1,0 +1,12 @@
+attrs==24.2.0
+beautifulsoup4==4.12.3
+html5lib==1.1
+jsonschema==4.23.0
+jsonschema-specifications==2024.10.1
+purehtml-purescraps==0.1.4
+PyYAML==6.0.2
+referencing==0.35.1
+rpds-py==0.22.3
+six==1.17.0
+soupsieve==2.6
+webencodings==0.5.1

@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: JSON transformer
+
+specs:
+  - description: should parse a JSON inside a script tag
+    expected: { foo: bar }
+    configuration:
+      selector: script#reduxStore
+      transform: json
+    input: |
+      <body>
+        <main></main>
+        <script id="reduxStore" type="mime/invalid">
+          {"foo": "bar"}
+        </script>
+      </body>

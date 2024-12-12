@@ -1,0 +1,7 @@
+selector: div.g.Ww4FFb
+type: array
+items:
+  type: object
+  properties:
+    title: { selector: h3 }
+    url: { selector: a, transform: attr(href) }

@@ -3,6 +3,7 @@ import { IconExternalLink } from '@tabler/icons-react';
 import { AttrTransformer } from './AttrTransformer';
 import { ExistsTransformer } from './ExistsTransformer';
 import { HtmlTransformer } from './HtmlTransformer';
+import { JSONTransformer } from './JSONTransformer';
 import { LengthTransformer } from './LengthTransformer';
 import { NumberTransformer } from './NumberTransformer';
 import { ResolveTransformer } from './ResolveTransformer';
@@ -38,6 +39,8 @@ export function Transformers() {
       <ExistsTransformer />
       {/* html transformer */}
       <HtmlTransformer />
+      {/* json transformer */}
+      <JSONTransformer />
       {/* length transformer */}
       <LengthTransformer />
       {/* number transformer */}

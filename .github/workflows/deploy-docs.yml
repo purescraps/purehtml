@@ -52,7 +52,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: pnpm@9.14.2
+          package_json_file: docs/package.json
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
