@@ -5,9 +5,10 @@ import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
-import org.purescraps.purehtml.configs.Config;
-import org.purescraps.purehtml.configs.ConfigFactory;
 import org.yaml.snakeyaml.Yaml;
+
+import com.purescraps.purehtml.configs.Config;
+import com.purescraps.purehtml.configs.ConfigFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.purescraps.purehtml.PureHTML.extract;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.purescraps.purehtml.PureHTML.extract;
 
 public class PureHTMLTest {
 
