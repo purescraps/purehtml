@@ -1,4 +1,4 @@
-package org.purescraps.purehtml.tests;
+package com.purescraps.purehtml.tests;
 
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
