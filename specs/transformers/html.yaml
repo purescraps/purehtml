@@ -27,5 +27,7 @@ specs:
       selector: .foo
       transform: html
 
-    expected: "<div class=\"bar\">\n baz\n</div>" #
-    # expected: "\n    <div class=\"bar\">\n      baz\n    </div>\n  " --> This output is not compatible with Jsoup.
+    # --> This output is not compatible with the java library "Jsoup".
+    # jsoup expects something like this:
+    # expected: "<div class=\"bar\">\n baz\n</div>" #
+    expected: "\n    <div class=\"bar\">\n      baz\n    </div>\n  " 
