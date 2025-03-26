@@ -4,6 +4,7 @@ import HTMLTransformer from './html';
 import JSONTransformer from './json';
 import LengthTransformer from './length';
 import NumberTransformer from './number';
+import RemoveUrlQueryParam from './remove-url-query-param';
 import ResolveTransformer from './resolve';
 import TrimTransformer from './trim';
 import UrlQueryParamTransformer from './url-query-param';
@@ -16,6 +17,7 @@ export class Transformers {
     JSONTransformer,
     LengthTransformer,
     NumberTransformer,
+    RemoveUrlQueryParam,
     ResolveTransformer,
     TrimTransformer,
     UrlQueryParamTransformer,
