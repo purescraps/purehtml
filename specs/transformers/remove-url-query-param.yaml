@@ -30,6 +30,20 @@ specs:
       - http://example.com/some/products/2
       - http://example.com/some/products/3
 
+  # in addition to the configuration above, we pass non_existing_parameter
+  # so the transformer should not complain if the url does not contain
+  # that query parameter
+  - description: should ignore non-existing query parameters
+    input: *input
+    configuration:
+      selector: div a
+      items:
+        transform: [attr(href), 'removeUrlQueryParam(utm_source, utm_medium, non_existing_parameter)']
+    expected:
+      - http://example.com/some/products/1
+      - http://example.com/some/products/2
+      - http://example.com/some/products/3
+
   - description: should not change the url if no arguments given
     input: *input
     configuration:
