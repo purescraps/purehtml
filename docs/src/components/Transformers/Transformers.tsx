@@ -9,6 +9,7 @@ import { NumberTransformer } from './NumberTransformer';
 import { ResolveTransformer } from './ResolveTransformer';
 import { TrimTransformer } from './TrimTransformer';
 import { UrlQueryParamTransformer } from './UrlQueryParamTransformer';
+import { RemoveUrlQueryParamTransformer } from './RemoveUrlQueryParamTransformer';
 
 export function Transformers() {
   return (
@@ -45,6 +46,8 @@ export function Transformers() {
       <LengthTransformer />
       {/* number transformer */}
       <NumberTransformer />
+      {/* removeUrlQueryParam transformer */}
+      <RemoveUrlQueryParamTransformer />
       {/* resolve transformer */}
       <ResolveTransformer />
       {/* trim transformer */}

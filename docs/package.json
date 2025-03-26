@@ -14,7 +14,7 @@
     "@mantine/core": "^7.14.1",
     "@mantine/hooks": "^7.14.1",
     "@monaco-editor/react": "^4.6.0",
-    "@purescraps/purehtml": "^0.5.0",
+    "@purescraps/purehtml": "^0.6.0",
     "@react-nano/router": "^0.15.0",
     "@tabler/icons-react": "^3.22.0",
     "cheerio": "1.0.0",
