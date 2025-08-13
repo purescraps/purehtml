@@ -5,7 +5,7 @@ import {
   PureHTMLBackend,
   PureHTMLDocument,
   PureHTMLNode,
-  PureHTMLNodeAttributes,
+  type PureHTMLNodeAttributes,
 } from '../core/backend';
 
 export class PureHTMLCheerioBackend extends PureHTMLBackend {

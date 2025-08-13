@@ -1,6 +1,6 @@
 import { PureHTMLCheerioBackend } from './backends/cheerio';
 import { Config } from './config';
-import { PureHTMLBackend, PureHTMLDocument } from './core/backend';
+import type { PureHTMLBackend, PureHTMLDocument } from './core/backend';
 import { rootProp } from './core/property';
 
 const cheerio = new PureHTMLCheerioBackend();
@@ -23,7 +23,7 @@ export function extract<T = unknown>(
   backend: PureHTMLBackend,
   $: PureHTMLDocument | string,
   config: Config<T>,
-  url: string
+  url: string,
 ): T {
   let $root = $;
 

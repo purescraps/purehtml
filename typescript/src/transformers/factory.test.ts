@@ -7,7 +7,7 @@ describe('TransformerFactory', () => {
       'foo-ttt_fff',
       'foo()',
       'foo(a)',
-      'foo(a, b, c)'
+      'foo(a, b, c)',
     ];
 
     for (const def of validTransformerDefinitions) {

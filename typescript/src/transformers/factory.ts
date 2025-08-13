@@ -1,4 +1,4 @@
-import { Transformer } from '../core/transformer';
+import type { Transformer } from '../core/transformer';
 import { Transformers } from './transformers';
 
 export const TRANSFORMER_DEFINITION_REGEX =
@@ -34,7 +34,7 @@ export class TransformerFactory {
 
   private static extractTransformerArgs(def: string) {
     const argsParanthesisMatch = def.match(
-      TRANSFORMER_ARGUMENT_PARANTHESIS_REGEX
+      TRANSFORMER_ARGUMENT_PARANTHESIS_REGEX,
     );
 
     if (argsParanthesisMatch === null) {
@@ -42,7 +42,7 @@ export class TransformerFactory {
     }
 
     const argMatches = argsParanthesisMatch[0].match(
-      TRANSFORMER_ARGUMENT_NAME_REGEX
+      TRANSFORMER_ARGUMENT_NAME_REGEX,
     );
 
     if (argMatches === null) {

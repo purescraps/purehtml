@@ -1,7 +1,10 @@
-import { Property } from '../core/property';
+import type { Property } from '../core/property';
 
 export class InvalidParseInputError extends Error {
-  constructor(readonly property: Property, message?: string) {
+  constructor(
+    readonly property: Property,
+    message?: string,
+  ) {
     super(message);
   }
 }

@@ -1,6 +1,6 @@
-import { PureHTMLNode, PureHTMLNodeAttributes } from '../core/backend';
+import type { PureHTMLNode, PureHTMLNodeAttributes } from '../core/backend';
 import { STRING } from '../core/primitive-types';
-import { TransformParams, Transformer } from '../core/transformer';
+import { type TransformParams, Transformer } from '../core/transformer';
 
 export default class AttributeTransformer extends Transformer {
   constructor(private readonly args: string[]) {

@@ -105,13 +105,13 @@ export class ConfigFactory {
 
     throw new Error(
       `Unexpected selector type: ${typeof selector}. Selector: ${JSON.stringify(
-        selector
-      )}`
+        selector,
+      )}`,
     );
   }
 
   private static generateTransform(
-    transform: string | string[]
+    transform: string | string[],
   ): Transformer | Transformer[] {
     if (typeof transform === 'string') {
       return TransformerFactory.create(transform);

@@ -1,5 +1,5 @@
 import { STRING } from '../core/primitive-types';
-import { TransformParams, Transformer } from '../core/transformer';
+import { type TransformParams, Transformer } from '../core/transformer';
 
 export default class JSONTransformer extends Transformer {
   static getName(): string {

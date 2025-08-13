@@ -24,6 +24,6 @@ export class Transformers {
   ];
 
   static getByName(name: string) {
-    return this.transformers.find((tr) => tr.getName() === name);
+    return Transformers.transformers.find((tr) => tr.getName() === name);
   }
 }

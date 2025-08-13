@@ -1,5 +1,5 @@
-import { BOOLEAN, PrimitiveTypes, STRING } from '../core/primitive-types';
-import { TransformParams, Transformer } from '../core/transformer';
+import { BOOLEAN, type PrimitiveTypes, STRING } from '../core/primitive-types';
+import { type TransformParams, Transformer } from '../core/transformer';
 
 export default class Exists extends Transformer {
   static getName(): string {
