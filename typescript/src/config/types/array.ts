@@ -1,15 +1,15 @@
-import { Property, rootProp } from '../../core/property';
-import { Config, ExtractParams } from '../config';
-import { PrimitiveValueConfig, Transform } from './primitive';
+import { type Property, rootProp } from '../../core/property';
+import type { Config, ExtractParams } from '../config';
+import { PrimitiveValueConfig, type Transform } from './primitive';
 import ConfigWithSelector, {
-  ConfigWithSelectorExtractParams,
+  type ConfigWithSelectorExtractParams,
 } from './with-selector';
 
 export class ArrayConfig extends ConfigWithSelector {
   static generate(
     selector: ConfigWithSelector['selector'],
     items?: ArrayConfig['items'],
-    transform?: Transform
+    transform?: Transform,
   ): ArrayConfig {
     const conf = new ArrayConfig();
 

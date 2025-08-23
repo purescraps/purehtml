@@ -1,6 +1,6 @@
-import { TransformParams, Transformer } from '../../core/transformer';
+import { Transformer, type TransformParams } from '../../core/transformer';
 import ConfigWithSelector, {
-  ConfigWithSelectorExtractParams,
+  type ConfigWithSelectorExtractParams,
 } from './with-selector';
 
 export type Transform = Transformer | Transformer[];
@@ -32,7 +32,7 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
 
   static generate(
     selector: ConfigWithSelector['selector'],
-    transform?: Transform
+    transform?: Transform,
   ) {
     const conf = new PrimitiveValueConfig();
 
@@ -44,7 +44,7 @@ export class PrimitiveValueConfig extends ConfigWithSelector {
 
   protected transformVal(
     transformer: Transform,
-    transformParams: TransformParams
+    transformParams: TransformParams,
   ): unknown {
     const transform = transformer;
 

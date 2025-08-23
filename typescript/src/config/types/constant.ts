@@ -1,8 +1,11 @@
-import { ExtractParams } from '../config';
+import type { ExtractParams } from '../config';
 import ConfigWithSelector from './with-selector';
 
 export default class ConstantConfig extends ConfigWithSelector {
-  private constructor(private readonly val: unknown, selector: string | null) {
+  private constructor(
+    private readonly val: unknown,
+    selector: string | null,
+  ) {
     super();
     this.selector = selector;
   }

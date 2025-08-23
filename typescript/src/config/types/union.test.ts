@@ -5,7 +5,7 @@ import ConfigWithSelector from './with-selector';
 class FakeWithSelector extends ConfigWithSelector {
   constructor(
     readonly selector: ConfigWithSelector['selector'],
-    private val: string
+    private val: string,
   ) {
     super();
   }

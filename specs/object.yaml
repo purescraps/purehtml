@@ -24,9 +24,7 @@ specs:
     expected: { a: "foo", b: "bar", c: "baz" }
 
   - description: should only match child elements
-
     input: *input
-
     configuration:
       selector: "#root"
       type: object
@@ -37,4 +35,4 @@ specs:
           items: {}
 
     expected:
-      {childDivs: ["foo", "bar", "baz"] }
+      childDivs: ["foo", "bar", "baz"]

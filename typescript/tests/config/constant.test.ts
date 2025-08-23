@@ -26,7 +26,7 @@ describe('ConstantConfig', () => {
 
   it('should return the given value if any of the nodes matches', () => {
     const conf = ConfigFactory.fromYAML(
-      '{ selector: span, constant: { custom: "object" } }'
+      '{ selector: span, constant: { custom: "object" } }',
     );
     const result = conf.extract({
       $,
@@ -41,7 +41,7 @@ describe('ConstantConfig', () => {
 
   it('should return null if nothing matches', () => {
     const conf = ConfigFactory.fromYAML(
-      '{ selector: a, constant: { custom: "object" } }'
+      '{ selector: a, constant: { custom: "object" } }',
     );
     const result = conf.extract({
       $,
