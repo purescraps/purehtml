@@ -1,4 +1,4 @@
-import { Config, ExtractParams } from '../config';
+import { Config, type ExtractParams } from '../config';
 import ConfigWithSelector from './with-selector';
 
 export default class UnionConfig extends Config {
@@ -11,23 +11,29 @@ export default class UnionConfig extends Config {
 
     for (const config of this.configs) {
       if (config instanceof ConfigWithSelector) {
-        const $el = config.getFirstMatch($parent, {
+        const $matches = config.getAllMatches($parent, {
           alreadyMatched: false,
           includeRoot: true,
         });
 
-        if (!$el) {
+        if (!$matches || (Array.isArray($matches) && $matches.length === 0))
           continue;
-        }
 
         return config.extract({
           ...params,
-          $el,
-          elementAlreadyMatched: true,
+          $el: Array.isArray($matches)
+            ? $matches.length > 1
+              ? $parent
+              : $matches[0]
+            : $matches,
+
+          // arrays must be matched again
+          elementAlreadyMatched:
+            !Array.isArray($matches) || $matches.length === 1,
         });
-      } else {
-        return config.extract({ ...params, $el: params.$el });
       }
+
+      return config.extract({ ...params, $el: params.$el });
     }
 
     return null;
