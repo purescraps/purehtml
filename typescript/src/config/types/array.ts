@@ -38,6 +38,9 @@ export class ArrayConfig extends ConfigWithSelector {
       alreadyMatched: params.elementAlreadyMatched ?? false,
       includeRoot: false,
     });
+
+    if (!$el) return null;
+
     const matches = Array.isArray($el) ? $el : [$el];
     const conf =
       this.items || PrimitiveValueConfig.generate(null, this.transform);
