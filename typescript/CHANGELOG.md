@@ -1,3 +1,7 @@
+### 0.8.0
+**BREAKING CHANGE:**
+- **removeUrlQueryParam**: remove all the search parameters if no arguments are given
+
 ### 0.7.0
 
 * Added support for array configurations inside `union` config.
