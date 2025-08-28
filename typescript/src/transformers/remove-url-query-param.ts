@@ -47,7 +47,9 @@ export default class RemoveUrlQueryParam extends Transformer {
     if (args.length === 0) {
       const keys = Array.from(url.searchParams.keys());
 
-      keys.forEach(key => url.searchParams.delete(key))
+      keys.forEach((key) => {
+        url.searchParams.delete(key);
+      });
     } else {
       for (const paramName of args) {
         url.searchParams.delete(paramName);
