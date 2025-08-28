@@ -1,10 +1,9 @@
 'use client';
 
-import { AppShell, Burger, Code, Group } from '@mantine/core';
+import { AppShell, Burger, Code, Group, TableOfContents } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconTerminal2 } from '@tabler/icons-react';
 import { usePathname } from 'next/navigation';
-import { useCallback } from 'react';
 import { ColorSchemeToggle } from '../src/components/ColorSchemeToggle';
 import { DocsAnchor } from '../src/components/DocsAnchor';
 import { DocsNavLink } from '../src/components/DocsNavLink';
@@ -13,7 +12,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const pathname = usePathname();
   const inPlayground = pathname.endsWith('playground');
-  const closeBurger = useCallback(() => toggleMobile(), [toggleMobile]);
+  // const closeBurger = useCallback(() => toggleMobile(), [toggleMobile]);
 
   return (
     <>
@@ -61,37 +60,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             label="Playground"
             leftSection={<IconTerminal2 />}
             mb="sm"
-            onClick={closeBurger}
           />
 
-          <DocsNavLink
-            label="Introduction"
-            href="/#intro"
-            onClick={closeBurger}
-          />
-          <DocsNavLink
-            label="Getting Started"
-            href="/#getting-started"
-            onClick={closeBurger}
-          />
-          <DocsNavLink label="Basics" href="/#basics" onClick={closeBurger} />
-          <DocsNavLink
-            label="Constant Config"
-            href="/#constant-config"
-            onClick={closeBurger}
-          />
-          <DocsNavLink label="Arrays" href="/#arrays" onClick={closeBurger} />
-          <DocsNavLink label="Objects" href="/#objects" onClick={closeBurger} />
-          <DocsNavLink
-            label="Transformers"
-            href="/#transformers"
-            onClick={closeBurger}
-          />
-          <DocsNavLink
-            label="Union Config"
-            href="/#union-config"
-            onClick={closeBurger}
-          />
+          <DocsNavLink label="Introduction" href="/#intro" />
+          <DocsNavLink label="Getting Started" href="/#getting-started" />
+          <DocsNavLink label="Basics" href="/#basics" />
+          <DocsNavLink label="Constant Config" href="/#constant-config" />
+          <DocsNavLink label="Arrays" href="/#arrays" />
+          <DocsNavLink label="Objects" href="/#objects" />
+          <DocsNavLink label="Transformers" href="/#transformers" />
+          <DocsNavLink label="Union Config" href="/#union-config" />
         </AppShell.Navbar>
 
         <AppShell.Main>{children}</AppShell.Main>

@@ -7,37 +7,38 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mantine/code-highlight": "^7.14.1",
-    "@mantine/core": "^7.14.1",
-    "@mantine/hooks": "^7.14.1",
-    "@monaco-editor/react": "^4.6.0",
+    "@mantine/code-highlight": "^8.2.7",
+    "@mantine/core": "^8.2.7",
+    "@mantine/hooks": "^8.2.7",
+    "@monaco-editor/react": "^4.7.0",
     "@purescraps/purehtml": "^0.8.0",
-    "@react-nano/router": "^0.15.0",
-    "@tabler/icons-react": "^3.22.0",
-    "cheerio": "1.0.0",
-    "monaco-editor": "^0.52.0",
-    "next": "^15.0.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "yaml": "^2.6.1"
+    "@react-nano/router": "^0.16.0",
+    "@tabler/icons-react": "^3.34.1",
+    "cheerio": "1.1.2",
+    "monaco-editor": "^0.52.2",
+    "next": "^15.5.2",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "yaml": "^2.8.1"
   },
   "devDependencies": {
-    "@types/cheerio": "^0.22.35",
+    "@types/cheerio": "^1.0.0",
     "@types/json-schema": "^7.0.15",
-    "@types/node": "^22.9.1",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "@typescript-eslint/eslint-plugin": "^8.0.1",
-    "@typescript-eslint/parser": "^8.0.1",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-react-refresh": "^0.4.7",
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "@typescript-eslint/eslint-plugin": "^8.41.0",
+    "@typescript-eslint/parser": "^8.41.0",
+    "eslint": "^9.34.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
     "json-schema": "^0.4.0",
-    "react-router-dom": "^7.0.0",
-    "typescript": "^5.6.3"
+    "react-router-dom": "^7.8.2",
+    "typescript": "^5.9.2"
   },
-  "packageManager": "pnpm@9.14.2+sha256.06e65a4965baff6d6097f9c8f75c35f6d420974dbc03d775009056a69edfd271"
+  "packageManager": "pnpm@10.15.0"
 }
