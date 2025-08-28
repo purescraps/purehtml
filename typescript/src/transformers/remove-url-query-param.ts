@@ -41,13 +41,17 @@ export default class RemoveUrlQueryParam extends Transformer {
       );
     }
 
-    // do not touch the url if no arguments given
-    if (args.length === 0) return val;
-
     const url = new URL(val);
 
-    for (const paramName of args) {
-      url.searchParams.delete(paramName);
+    // clear all the search params if no arguments are given
+    if (args.length === 0) {
+      const keys = Array.from(url.searchParams.keys());
+
+      keys.forEach(key => url.searchParams.delete(key))
+    } else {
+      for (const paramName of args) {
+        url.searchParams.delete(paramName);
+      }
     }
 
     return url.toString();

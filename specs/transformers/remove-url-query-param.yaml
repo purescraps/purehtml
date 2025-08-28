@@ -44,7 +44,7 @@ specs:
       - http://example.com/some/products/2
       - http://example.com/some/products/3
 
-  - description: should not change the url if no arguments given
+  - description: should clear all the search params if no arguments are given
     input: *input
     configuration:
       selector: div a
@@ -53,7 +53,6 @@ specs:
           - attr(href)
           - removeUrlQueryParam
     expected:
-      - http://example.com/some/products/1?utm_source=purescraps&utm_medium=purehtml
-      - http://example.com/some/products/2?utm_source=purescraps&utm_medium=purehtml
-      - http://example.com/some/products/3?utm_source=purescraps&utm_medium=purehtml
-
+      - http://example.com/some/products/1
+      - http://example.com/some/products/2
+      - http://example.com/some/products/3
