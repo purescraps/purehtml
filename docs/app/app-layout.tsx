@@ -1,6 +1,6 @@
 'use client';
 
-import { AppShell, Burger, Code, Group, TableOfContents } from '@mantine/core';
+import { AppShell, Burger, Code, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconTerminal2 } from '@tabler/icons-react';
 import { usePathname } from 'next/navigation';
