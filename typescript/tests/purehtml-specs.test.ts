@@ -1,9 +1,9 @@
-import { readdirSync, readFileSync, statSync } from 'fs';
-import { extname, join } from 'path';
-import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
-import { cheerio, ConfigFactory, extract } from '../src';
-import __dirname from './dirname.cjs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { extname, join } from 'node:path';
 import { validate } from 'jsonschema';
+import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
+import { ConfigFactory, cheerio, extract } from '../src';
+import __dirname from './dirname.cjs';
 
 // This type comes from spec.schema.yaml at the root directory
 interface PureHTMLTestSpec {
@@ -17,7 +17,7 @@ interface PureHTMLTestSpec {
 }
 
 const specSchema = parseYaml(
-  readFileSync(join(__dirname, '../../spec.schema.yaml')).toString()
+  readFileSync(join(__dirname, '../../spec.schema.yaml')).toString(),
 );
 
 const specsDir = join(__dirname, '../../specs');
@@ -32,7 +32,7 @@ function readSpecsDir(dirPath: string): PureHTMLTestSpec[] {
     const stats = statSync(targetPath);
 
     if (stats.isDirectory()) {
-      readSpecsDir(targetPath).forEach((subPath) => result.push(subPath));
+      result.push(...readSpecsDir(targetPath));
     } else if (stats.isFile()) {
       const ext = extname(targetPath).toLowerCase();
 
@@ -47,7 +47,7 @@ function readSpecsDir(dirPath: string): PureHTMLTestSpec[] {
           console.log('Errors:', validationResult.errors);
 
           throw new Error(
-            `Cannot validate ${targetPath}. Check the yaml if it conforms spec.schema.yaml`
+            `Cannot validate ${targetPath}. Check the yaml if it conforms spec.schema.yaml`,
           );
         }
 
@@ -62,22 +62,22 @@ function readSpecsDir(dirPath: string): PureHTMLTestSpec[] {
 }
 
 // register spec files to the jest
-testSpecs.forEach((spec) => {
+for (const spec of testSpecs) {
   describe(spec.description, () => {
-    spec.specs.forEach((testCase) => {
+    for (const testCase of spec.specs) {
       test(testCase.description, () => {
         const config = ConfigFactory.fromYAML(
-          stringifyYaml(testCase.configuration)
+          stringifyYaml(testCase.configuration),
         );
         const result = extract(
           cheerio,
           testCase.input,
           config,
-          'http://example.com'
+          'http://example.com',
         );
 
         expect(result).toEqual(testCase.expected);
       });
-    });
+    }
   });
-});
+}

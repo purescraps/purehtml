@@ -1,4 +1,4 @@
-import ConfigWithSelector from './types/with-selector';
+import type ConfigWithSelector from './types/with-selector';
 
 export type PlainConfigSelector =
   | string

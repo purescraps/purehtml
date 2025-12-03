@@ -1,5 +1,6 @@
 declare namespace jest {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-object-type
+  // biome-ignore lint/complexity/noBannedTypes: this is just from jest types themselves
+  // biome-ignore lint/correctness/noUnusedVariables: this is just from jest types themselves
   interface Matchers<R, T = {}> {
     toBeValidConfig(): void;
   }

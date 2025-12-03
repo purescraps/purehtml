@@ -1,8 +1,8 @@
 import { cheerio } from '../..';
-import { PrimitiveTypes, STRING } from '../../core/primitive-types';
+import { type PrimitiveTypes, STRING } from '../../core/primitive-types';
 import { rootProp } from '../../core/property';
-import { TransformParams, Transformer } from '../../core/transformer';
-import { ExtractParams } from '../config';
+import { Transformer, type TransformParams } from '../../core/transformer';
+import type { ExtractParams } from '../config';
 import { ArrayConfig } from './array';
 import { PrimitiveValueConfig } from './primitive';
 
@@ -39,7 +39,7 @@ describe('array', () => {
   it('should correctly set property', () => {
     const config = ArrayConfig.generate(
       '#root div',
-      PrimitiveValueConfig.generate(null)
+      PrimitiveValueConfig.generate(null),
     );
 
     const result = config.extract(params);
@@ -55,7 +55,7 @@ describe('array', () => {
       const spy = jest.spyOn(transfomer, 'transform');
       const config = ArrayConfig.generate(
         '#root div',
-        PrimitiveValueConfig.generate(null, transfomer)
+        PrimitiveValueConfig.generate(null, transfomer),
       );
 
       const property = 'some.nested.prop';

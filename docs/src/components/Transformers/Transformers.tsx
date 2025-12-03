@@ -10,6 +10,7 @@ import { ResolveTransformer } from './ResolveTransformer';
 import { TrimTransformer } from './TrimTransformer';
 import { UrlQueryParamTransformer } from './UrlQueryParamTransformer';
 import { RemoveUrlQueryParamTransformer } from './RemoveUrlQueryParamTransformer';
+import { RemoveLastPathSectionTransformer } from './RemoveLastPathSectionTransformer';
 
 export function Transformers() {
   return (
@@ -46,6 +47,8 @@ export function Transformers() {
       <LengthTransformer />
       {/* number transformer */}
       <NumberTransformer />
+      {/* removeLastPathSection transformer */}
+      <RemoveLastPathSectionTransformer/>
       {/* removeUrlQueryParam transformer */}
       <RemoveUrlQueryParamTransformer />
       {/* resolve transformer */}

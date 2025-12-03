@@ -1,21 +1,21 @@
 import { parse } from 'yaml';
-import { Transformer } from '../core/transformer';
+import type { Transformer } from '../core/transformer';
 import { TransformerFactory } from '../transformers/factory';
-import { Config } from './config';
-import { PlainConfigObject, PlainConfigSelector } from './plain-config';
+import type { Config } from './config';
+import type { PlainConfigObject, PlainConfigSelector } from './plain-config';
 import { ArrayConfig } from './types/array';
 import ConstantConfig from './types/constant';
 import { ObjectConfig } from './types/object';
 import { PrimitiveValueConfig } from './types/primitive';
 import UnionConfig from './types/union';
-import ConfigWithSelector from './types/with-selector';
+import type ConfigWithSelector from './types/with-selector';
 import { ConfigValidator } from './validator';
 
 export class ConfigFactory {
   static fromYAML<T>(yaml: string): Config<T> {
     const plain = parse(yaml);
 
-    return this.generate(plain);
+    return ConfigFactory.generate(plain);
   }
 
   private static generate<T>(plain: PlainConfigObject): Config<T> {
@@ -25,8 +25,8 @@ export class ConfigFactory {
     if (errors) {
       throw new Error(
         `Invalid config provided. Got validation errors: ${JSON.stringify(
-          errors
-        )}. Plain config: ${JSON.stringify(plain)}`
+          errors,
+        )}. Plain config: ${JSON.stringify(plain)}`,
       );
     }
 
@@ -50,14 +50,17 @@ export class ConfigFactory {
       case 'constant':
         return ConstantConfig.generate(constant, selector) as Config<T>;
       case 'object': {
-        let propConfigs: ObjectConfig['properties'] | undefined = undefined;
+        let propConfigs: ObjectConfig['properties'] | undefined;
 
         if (properties) {
-          propConfigs = Object.keys(properties).reduce((acc, key) => {
-            acc[key] = this.generate(properties[key]);
+          propConfigs = Object.keys(properties).reduce(
+            (acc, key) => {
+              acc[key] = ConfigFactory.generate(properties[key]);
 
-            return acc;
-          }, {} as Record<string, Config>);
+              return acc;
+            },
+            {} as Record<string, Config>,
+          );
         }
 
         return ObjectConfig.generate(selector, propConfigs) as Config<T>;
@@ -65,12 +68,13 @@ export class ConfigFactory {
       case 'array':
         return ArrayConfig.generate(
           selector,
-          items && this.generate(items),
-          transform
+          items && ConfigFactory.generate(items),
+          transform,
         ) as Config<T>;
       case 'union':
         return UnionConfig.generate(
-          union!.map((cfg) => this.generate(cfg))
+          // biome-ignore lint/style/noNonNullAssertion: union will be present here. because our schema already validated the input
+          union!.map((cfg) => ConfigFactory.generate(cfg)),
         ) as Config<T>;
       default:
         return PrimitiveValueConfig.generate(selector, transform) as Config<T>;
@@ -78,7 +82,7 @@ export class ConfigFactory {
   }
 
   private static generateSelector(
-    selector: PlainConfigSelector
+    selector: PlainConfigSelector,
   ): ConfigWithSelector['selector'] {
     if (typeof selector === 'string') {
       return selector || null;
@@ -105,13 +109,13 @@ export class ConfigFactory {
 
     throw new Error(
       `Unexpected selector type: ${typeof selector}. Selector: ${JSON.stringify(
-        selector
-      )}`
+        selector,
+      )}`,
     );
   }
 
   private static generateTransform(
-    transform: string | string[]
+    transform: string | string[],
   ): Transformer | Transformer[] {
     if (typeof transform === 'string') {
       return TransformerFactory.create(transform);

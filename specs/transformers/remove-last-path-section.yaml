@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: Remove last path section
+
+specs:
+  - description: remove last path section
+    input: |
+      <a href="http://example.com/foo/bar/baz">sample link</a>
+    configuration:
+      selector: a
+      transform: [attr(href), removeLastPathSection]
+    expected: "http://example.com/foo/bar"
+
+  - description: execute multiple times
+    input: |
+      <a href="http://example.com/foo/bar/baz">sample link</a>
+    configuration:
+      selector: a
+      transform: [attr(href), removeLastPathSection, removeLastPathSection]
+    expected: "http://example.com/foo"
+
+  - description: should not have any effect if no more sections left
+    input: |
+      <a href="http://example.com/foo">sample link</a>
+    configuration:
+      selector: a
+      transform: [attr(href), removeLastPathSection, removeLastPathSection, removeLastPathSection]
+    expected: "http://example.com/"

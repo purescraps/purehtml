@@ -1,5 +1,5 @@
-import { NUMBER, PrimitiveTypes, STRING } from '../core/primitive-types';
-import { TransformParams, Transformer } from '../core/transformer';
+import { NUMBER, type PrimitiveTypes, STRING } from '../core/primitive-types';
+import { type TransformParams, Transformer } from '../core/transformer';
 import { InvalidParseInputError } from '../errors/invalid-parse-input-error';
 
 export default class NumberTransformer extends Transformer {
@@ -27,8 +27,8 @@ export default class NumberTransformer extends Transformer {
     throw new InvalidParseInputError(
       property,
       `NumberTransformer.transform: invalid value type: ${typeof val}. value=${JSON.stringify(
-        val
-      )}`
+        val,
+      )}`,
     );
   }
 }

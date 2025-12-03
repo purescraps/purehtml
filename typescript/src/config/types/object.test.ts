@@ -1,9 +1,9 @@
-import assert from 'assert';
+import assert from 'node:assert';
 import { cheerio } from '../..';
-import { PrimitiveTypes, STRING } from '../../core/primitive-types';
+import { type PrimitiveTypes, STRING } from '../../core/primitive-types';
 import { rootProp } from '../../core/property';
-import { TransformParams, Transformer } from '../../core/transformer';
-import { ExtractParams } from '../config';
+import { Transformer, type TransformParams } from '../../core/transformer';
+import type { ExtractParams } from '../config';
 import { ArrayConfig } from './array';
 import { ObjectConfig } from './object';
 import { PrimitiveValueConfig } from './primitive';
@@ -86,7 +86,7 @@ describe('object', () => {
     });
   });
 
-  it.only('should only match child elements', () => {
+  it('should only match child elements', () => {
     const config = ObjectConfig.generate('#root', {
       divs: ArrayConfig.generate('div'),
     });

@@ -2,6 +2,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "strictNullChecks": true,
+    "sourceMap": true,
     "moduleResolution": "node",
     "target": "ESNext",
     "resolveJsonModule": true,

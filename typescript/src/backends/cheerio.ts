@@ -1,12 +1,13 @@
-/// <reference types="@types/cheerio/index.d.ts" />
-
-import { load } from 'cheerio';
+import { type Cheerio, type CheerioAPI, load } from 'cheerio';
+import type { AnyNode } from 'domhandler';
 import {
   PureHTMLBackend,
   PureHTMLDocument,
   PureHTMLNode,
-  PureHTMLNodeAttributes,
+  type PureHTMLNodeAttributes,
 } from '../core/backend';
+
+type CheerioRoot = CheerioAPI;
 
 export class PureHTMLCheerioBackend extends PureHTMLBackend {
   load(html: string | Buffer): PureHTMLCheerioDocument {
@@ -15,9 +16,9 @@ export class PureHTMLCheerioBackend extends PureHTMLBackend {
 }
 
 export class PureHTMLCheerioDocument extends PureHTMLDocument {
-  #root: cheerio.Root;
+  #root: CheerioRoot;
 
-  constructor(root: cheerio.Root) {
+  constructor(root: CheerioRoot) {
     super();
 
     this.#root = root;
@@ -35,10 +36,10 @@ export class PureHTMLCheerioDocument extends PureHTMLDocument {
 }
 
 export class PureHTMLCheerioNode extends PureHTMLNode {
-  #$: cheerio.Root;
-  #el: cheerio.Cheerio;
+  #$: CheerioRoot;
+  #el: Cheerio<AnyNode>;
 
-  constructor($: cheerio.Root, el: cheerio.Cheerio) {
+  constructor($: CheerioRoot, el: Cheerio<AnyNode>) {
     super();
 
     this.#$ = $;
@@ -52,7 +53,7 @@ export class PureHTMLCheerioNode extends PureHTMLNode {
       return this.#el.attr(name) ?? null;
     }
 
-    return this.#el.attr();
+    return this.#el.attr() ?? {};
   }
 
   override find(selector: string): PureHTMLCheerioNode[] {

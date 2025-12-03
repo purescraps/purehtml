@@ -1,5 +1,5 @@
-import { PrimitiveTypes, STRING } from '../core/primitive-types';
-import { TransformParams, Transformer } from '../core/transformer';
+import { type PrimitiveTypes, STRING } from '../core/primitive-types';
+import { type TransformParams, Transformer } from '../core/transformer';
 import { InvalidParseInputError } from '../errors/invalid-parse-input-error';
 
 export default class Trim extends Transformer {
@@ -26,7 +26,7 @@ export default class Trim extends Transformer {
 
     throw new InvalidParseInputError(
       property,
-      `Trim: invalid value type: ${typeof val}`
+      `Trim: invalid value type: ${typeof val}`,
     );
   }
 }

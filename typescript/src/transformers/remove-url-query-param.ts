@@ -1,16 +1,16 @@
 import { STRING } from '../core/primitive-types';
-import { TransformParams, Transformer } from '../core/transformer';
+import { type TransformParams, Transformer } from '../core/transformer';
 
 /**
  * removeUrlQueryParam: Remove Query Paramters from the url
- * 
+ *
  * Usage:
  * removeUrlQueryParam(): the url will not be touched
  * removeUrlQueryParam(foo): only the `foo` query parameter will be removed
  * removeUrlQueryParam(foo, bar): query parameters `foo` and `bar` will be removed from the url
  */
 export default class RemoveUrlQueryParam extends Transformer {
-  static transformerName = 'removeUrlQueryParam'
+  static transformerName = 'removeUrlQueryParam';
 
   constructor(private readonly args: string[]) {
     super();
@@ -36,18 +36,26 @@ export default class RemoveUrlQueryParam extends Transformer {
     if (typeof val !== 'string') {
       throw new Error(
         `${RemoveUrlQueryParam.transformerName}: expected string. Got ${JSON.stringify(
-          val
-        )}`
+          val,
+        )}`,
       );
     }
 
-    // do not touch the url if no arguments given
-    if (args.length === 0) return val; 
-
     const url = new URL(val);
 
-    args.forEach(paramName => url.searchParams.delete(paramName))
+    // clear all the search params if no arguments are given
+    if (args.length === 0) {
+      const keys = Array.from(url.searchParams.keys());
 
-    return url.toString()
+      keys.forEach((key) => {
+        url.searchParams.delete(key);
+      });
+    } else {
+      for (const paramName of args) {
+        url.searchParams.delete(paramName);
+      }
+    }
+
+    return url.toString();
   }
 }

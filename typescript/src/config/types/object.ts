@@ -1,13 +1,13 @@
-import { Property, rootProp } from '../../core/property';
-import { Config } from '../config';
+import { type Property, rootProp } from '../../core/property';
+import type { Config } from '../config';
 import ConfigWithSelector, {
-  ConfigWithSelectorExtractParams,
+  type ConfigWithSelectorExtractParams,
 } from './with-selector';
 
 export class ObjectConfig extends ConfigWithSelector {
   static generate(
     selector: ConfigWithSelector['selector'],
-    properties?: ObjectConfig['properties']
+    properties?: ObjectConfig['properties'],
   ): ObjectConfig {
     const conf = new ObjectConfig();
 
@@ -42,17 +42,20 @@ export class ObjectConfig extends ConfigWithSelector {
     const props = this.properties;
     const keys = Object.keys(props);
 
-    return keys.reduce((acc, key) => {
-      const config = props[key];
+    return keys.reduce(
+      (acc, key) => {
+        const config = props[key];
 
-      acc[key] = config.extract({
-        ...params,
-        $el,
-        property: this.makeProperty(params.property, key),
-      });
+        acc[key] = config.extract({
+          ...params,
+          $el,
+          property: this.makeProperty(params.property, key),
+        });
 
-      return acc;
-    }, {} as Record<string, unknown>);
+        return acc;
+      },
+      {} as Record<string, unknown>,
+    );
   }
 
   private makeProperty(property: Property, prop: string): Property {

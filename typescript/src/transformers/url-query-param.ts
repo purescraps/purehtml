@@ -1,5 +1,5 @@
 import { STRING } from '../core/primitive-types';
-import { TransformParams, Transformer } from '../core/transformer';
+import { type TransformParams, Transformer } from '../core/transformer';
 
 export default class UrlQueryParamTransformer extends Transformer {
   constructor(private readonly args: string[]) {
@@ -26,8 +26,8 @@ export default class UrlQueryParamTransformer extends Transformer {
     if (typeof val !== 'string') {
       throw new Error(
         `${UrlQueryParamTransformer.getName()}: expected string. Got ${JSON.stringify(
-          val
-        )}`
+          val,
+        )}`,
       );
     }
 
@@ -39,13 +39,17 @@ export default class UrlQueryParamTransformer extends Transformer {
     }
 
     if (args.length === 1) {
+      // biome-ignore lint/style/noNonNullAssertion: already verified that args is not empty
       return url.searchParams.get(args[0]!);
     }
 
-    return args.reduce((acc, arg) => {
-      acc[arg] = url.searchParams.get(arg);
+    return args.reduce(
+      (acc, arg) => {
+        acc[arg] = url.searchParams.get(arg);
 
-      return acc;
-    }, {} as Record<string, string | null>);
+        return acc;
+      },
+      {} as Record<string, string | null>,
+    );
   }
 }

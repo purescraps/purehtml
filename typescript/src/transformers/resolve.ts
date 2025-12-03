@@ -1,5 +1,5 @@
-import { PrimitiveTypes, STRING } from '../core/primitive-types';
-import { TransformParams, Transformer } from '../core/transformer';
+import { type PrimitiveTypes, STRING } from '../core/primitive-types';
+import { type TransformParams, Transformer } from '../core/transformer';
 import { InvalidParseInputError } from '../errors/invalid-parse-input-error';
 
 export default class ResolveTransformer extends Transformer {
@@ -22,7 +22,7 @@ export default class ResolveTransformer extends Transformer {
 
     throw new InvalidParseInputError(
       property,
-      `ResolveTransformer.transform: invalid value type: ${typeof val}`
+      `ResolveTransformer.transform: invalid value type: ${typeof val}`,
     );
   }
 }

@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync } from 'node:fs';
 import { ConfigFactory, cheerio } from '../../src';
 import { rootProp } from '../../src/core/property';
 
@@ -10,7 +10,7 @@ transform: html
 describe('HTML', () => {
   it('CorrectlyExtractHTML', () => {
     const $ = cheerio.load(
-      readFileSync('tests/fixtures/basic.html').toString()
+      readFileSync('tests/fixtures/basic.html').toString(),
     );
     const config = ConfigFactory.fromYAML(yaml);
     const result = config.extract({

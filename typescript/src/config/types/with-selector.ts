@@ -1,5 +1,5 @@
-import { PureHTMLNode } from '../../core/backend';
-import { Config, ExtractParams } from '../config';
+import type { PureHTMLNode } from '../../core/backend';
+import { Config, type ExtractParams } from '../config';
 
 export interface ConfigWithSelectorExtractParams extends ExtractParams {
   elementAlreadyMatched?: boolean;
@@ -11,14 +11,14 @@ export interface GetSelectorMatchesParams {
 }
 
 export default abstract class ConfigWithSelector extends Config {
-  protected selector: string | null = null;
+  public selector: string | null = null;
 
   abstract extract(params: ConfigWithSelectorExtractParams): unknown;
 
   getAllMatches(
     $: PureHTMLNode,
-    { alreadyMatched, includeRoot }: GetSelectorMatchesParams
-  ): PureHTMLNode | PureHTMLNode[] {
+    { alreadyMatched, includeRoot }: GetSelectorMatchesParams,
+  ): PureHTMLNode | PureHTMLNode[] | null {
     if (alreadyMatched) {
       return $;
     }
@@ -37,7 +37,7 @@ export default abstract class ConfigWithSelector extends Config {
 
   getFirstMatch(
     $: PureHTMLNode,
-    params: GetSelectorMatchesParams
+    params: GetSelectorMatchesParams,
   ): PureHTMLNode | null {
     const matches = this.getAllMatches($, params);
 
@@ -46,5 +46,9 @@ export default abstract class ConfigWithSelector extends Config {
     }
 
     return matches;
+  }
+
+  toString() {
+    return `ConfigWithSelector(${this.selector})`;
   }
 }

@@ -1,5 +1,5 @@
-import { PureHTMLDocument, PureHTMLNode } from '../core/backend';
-import { Property } from '../core/property';
+import type { PureHTMLDocument, PureHTMLNode } from '../core/backend';
+import type { Property } from '../core/property';
 
 export interface ExtractParams {
   $: PureHTMLDocument;

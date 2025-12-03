@@ -1,6 +1,6 @@
 import { ConfigFactory, cheerio } from '../../src';
-import { ExtractParams } from '../../src/config';
-import { PureHTMLDocument, PureHTMLNode } from '../../src/core/backend';
+import type { ExtractParams } from '../../src/config';
+import type { PureHTMLDocument, PureHTMLNode } from '../../src/core/backend';
 import { rootProp } from '../../src/core/property';
 
 const SAMPLE = `
@@ -41,7 +41,8 @@ const SAMPLE = `
 `;
 
 describe('AttrTransformer', () => {
-  let $: PureHTMLDocument, $el: PureHTMLNode;
+  let $: PureHTMLDocument;
+  let $el: PureHTMLNode;
   let extractParams: ExtractParams;
 
   beforeAll(() => {

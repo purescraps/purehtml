@@ -1,6 +1,6 @@
-import { PureHTMLNode } from './backend';
-import { PrimitiveTypes } from './primitive-types';
-import { Property } from './property';
+import type { PureHTMLNode } from './backend';
+import type { PrimitiveTypes } from './primitive-types';
+import type { Property } from './property';
 
 export interface TransformParams {
   val: unknown;

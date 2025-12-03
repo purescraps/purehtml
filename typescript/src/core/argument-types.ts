@@ -1,5 +1,10 @@
-import { ARRAY, ComplexTypes, OBJECT } from './complex-types';
-import { BOOLEAN, NUMBER, PrimitiveTypes, STRING } from './primitive-types';
+import { ARRAY, type ComplexTypes, OBJECT } from './complex-types';
+import {
+  BOOLEAN,
+  NUMBER,
+  type PrimitiveTypes,
+  STRING,
+} from './primitive-types';
 
 export type ArgumentTypes = PrimitiveTypes | ComplexTypes;
 

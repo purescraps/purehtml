@@ -1,7 +1,15 @@
+### 0.8.0
+**BREAKING CHANGE:**
+- **removeUrlQueryParam**: remove all the search parameters if no arguments are given
+
+### 0.7.0
+
+* Added support for array configurations inside `union` config.
+
 ### 0.6.0
 
-Added the `removeUrlQueryParam` transformer, along with its test specifications
+* Added the `removeUrlQueryParam` transformer, along with its test specifications
 
 ### 0.5.0
 
-Added the `json` transformer
+* Added the `json` transformer

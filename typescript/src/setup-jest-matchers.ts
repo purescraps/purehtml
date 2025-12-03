@@ -9,10 +9,11 @@ expect.extend({
 
     return {
       message: () =>
-        `Expected ${JSON.stringify(received)} ` +
-        (this.isNot
-          ? 'to be an invalid config. But it threw no validation errors'
-          : `to be a valid Config. Got: ${JSON.stringify(ajv.errors)}`),
+        `Expected ${JSON.stringify(received)} ${
+          this.isNot
+            ? 'to be an invalid config. But it threw no validation errors'
+            : `to be a valid Config. Got: ${JSON.stringify(ajv.errors)}`
+        }`,
       pass: result,
     };
   },

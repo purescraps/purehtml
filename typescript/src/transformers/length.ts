@@ -1,5 +1,5 @@
-import { NUMBER, PrimitiveTypes, STRING } from '../core/primitive-types';
-import { TransformParams, Transformer } from '../core/transformer';
+import { NUMBER, type PrimitiveTypes, STRING } from '../core/primitive-types';
+import { type TransformParams, Transformer } from '../core/transformer';
 import { InvalidParseInputError } from '../errors/invalid-parse-input-error';
 
 export default class Length extends Transformer {
@@ -22,7 +22,7 @@ export default class Length extends Transformer {
 
     throw new InvalidParseInputError(
       property,
-      `Length.transform: invalid value type: ${typeof val}`
+      `Length.transform: invalid value type: ${typeof val}`,
     );
   }
 }
