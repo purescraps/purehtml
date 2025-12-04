@@ -1,0 +1,21 @@
+selector: body
+properties:
+  title:
+    selector: .title
+    transform: trim
+  description:
+    selector: .description
+  items:
+    selector: ul.items li
+    type: array
+    items:
+      properties:
+        name:
+          selector: .name
+          transform: trim
+        price:
+          selector: .price
+          transform: [trim, number]
+  link:
+    selector: '#link'
+    transform: [attr(href), resolve(https://example.com)]
