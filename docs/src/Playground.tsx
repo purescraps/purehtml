@@ -10,6 +10,7 @@ import {
   Grid,
   Paper,
   Select,
+  Text,
   Title,
   useMantineColorScheme,
 } from '@mantine/core';
@@ -21,7 +22,7 @@ import {
   IconSettingsAutomation,
 } from '@tabler/icons-react';
 import { useCallback, useEffect, useState } from 'react';
-import { Example, exampleToComboboxItem, examples } from './examples';
+import { type Example, examples, exampleToComboboxItem } from './examples';
 import { usePureHtml } from './hooks/usePureHtml';
 
 export function Playground() {
@@ -37,22 +38,19 @@ export function Playground() {
     inputHtml: htmlFileContents ?? html,
     configYaml: config,
   });
-  const onHtmlFileChange = useCallback(
-    (file: File | null) => {
-      if (!file) {
-        return setHtmlFileContents(null);
-      }
+  const onHtmlFileChange = useCallback((file: File | null) => {
+    if (!file) {
+      return setHtmlFileContents(null);
+    }
 
-      file
-        .text()
-        .then((contents) => setHtmlFileContents(contents))
-        .catch((err) => {
-          console.error('Cannot read selected html file contents:', err);
-          alert('Cannot read the HTML contents. Please try again.');
-        });
-    },
-    [setHtmlFileContents]
-  );
+    file
+      .text()
+      .then((contents) => setHtmlFileContents(contents))
+      .catch((err) => {
+        console.error('Cannot read selected html file contents:', err);
+        alert('Cannot read the HTML contents. Please try again.');
+      });
+  }, []);
 
   useEffect(() => {
     if (!selectedExample) {
@@ -185,6 +183,10 @@ export function Playground() {
               }}
             />
           </Paper>
+          <Text size="xs" c="dimmed" mt="xs">
+            Results are refreshed automatically when the HTML or configuration
+            changes.
+          </Text>
         </Grid.Col>
       </Grid>
     </>
