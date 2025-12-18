@@ -36,14 +36,9 @@ func (c *PrimitiveValueConfig) GetTransform() []core.TransformerSpec {
 }
 
 func (c *PrimitiveValueConfig) Extract(backend core.Backend, node core.Node, url string, path string) (interface{}, error) {
-	if len(c.Selector) == 0 {
-		return nil, &core.InvalidParseInputError{
-			Message: "primitive config requires a selector",
-			Path:    path,
-		}
-	}
-
 	var value core.Node = node
+
+	// Navigate through selectors if any are specified
 	for _, selector := range c.Selector {
 		// First check if the current node itself matches the selector
 		if value.Is(selector) {
