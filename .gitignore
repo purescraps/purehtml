@@ -1,2 +1,4 @@
+.claude/*.local.json
+
 /.vscode
 /.idea
