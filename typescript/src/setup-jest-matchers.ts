@@ -1,10 +1,11 @@
+import { expect } from '@jest/globals';
 import Ajv from 'ajv';
 import * as schema from './config-schema.json';
 
 const ajv = new Ajv();
 
 expect.extend({
-  toBeValidConfig: function (received) {
+  toBeValidConfig: function (received: unknown) {
     const result = ajv.validate(schema, received);
 
     return {
