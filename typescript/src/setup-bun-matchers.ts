@@ -1,4 +1,4 @@
-import { expect } from '@jest/globals';
+import { expect } from 'bun:test';
 import Ajv from 'ajv';
 import * as schema from './config-schema.json';
 

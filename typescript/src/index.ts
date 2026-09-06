@@ -14,8 +14,9 @@ export {
   PureHTMLBackend,
   PureHTMLDocument,
   PureHTMLNode,
-  PureHTMLNodeAttributes,
 } from './core/backend';
+
+export type { PureHTMLNodeAttributes } from './core/backend';
 
 export { Config, cheerio };
 

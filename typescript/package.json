@@ -12,7 +12,7 @@
     "build:fast": "tsup",
     "format": "biome format --write",
     "lint": "biome lint --write",
-    "test": "jest",
+    "test": "bun test",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build"
   },
@@ -20,24 +20,20 @@
   "author": "Fatih Kaya <1994274@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@biomejs/biome": "^2.4.10",
-    "@jest/globals": "^30.3.0",
-    "@swc/core": "^1.15.21",
-    "@types/jest": "^30.0.0",
-    "@types/node": "^25.5.2",
-    "ajv": "^8.18.0",
+    "@biomejs/biome": "^2.5.12",
+    "@swc/core": "^1.16.2",
+    "@types/node": "^26.4.1",
+    "ajv": "^8.20.0",
     "domhandler": "^6.0.1",
-    "globals": "^17.4.0",
-    "jest": "^30.3.0",
+    "globals": "^17.12.0",
     "jsonschema": "^1.5.0",
-    "ts-jest": "^29.4.9",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
-    "typescript": "^6.0.2"
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "cheerio": "^1.2.0",
-    "yaml": "^2.8.3"
+    "yaml": "^2.9.0"
   },
-  "packageManager": "pnpm@10.33.0"
+  "packageManager": "pnpm@12.3.4"
 }
