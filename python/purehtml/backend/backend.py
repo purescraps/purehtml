@@ -1,4 +1,10 @@
 from bs4 import BeautifulSoup, element
+from bs4.element import CData, NavigableString, Script, Stylesheet, TemplateString
+
+# String types that should count as "text" (mirrors how cheerio/domhandler treat
+# raw text nodes, including the raw contents of <script>/<style>/<template>).
+# Comments, doctypes, and processing instructions are intentionally excluded.
+TEXT_STRING_TYPES = (NavigableString, CData, Script, Stylesheet, TemplateString)
 
 
 class BeautifulSoupBackend:
@@ -88,4 +94,4 @@ class PureHTMLNode:
         """
         Get the text content of the node.
         """
-        return self._element.get_text()
+        return self._element.get_text(types=TEXT_STRING_TYPES)

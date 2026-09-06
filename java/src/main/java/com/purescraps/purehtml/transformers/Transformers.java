@@ -12,8 +12,11 @@ public class Transformers {
             AttributeTransformer.class,
             ExistsTransformer.class,
             HTMLTransformer.class,
+            JSONTransformer.class,
             LengthTransformer.class,
             NumberTransformer.class,
+            RemoveLastPathSectionTransformer.class,
+            RemoveUrlQueryParamTransformer.class,
             ResolveTransformer.class,
             UrlQueryParamTransformer.class,
             TrimTransformer.class);

@@ -1,8 +1,11 @@
 from purehtml.transformers.types.attribute_transformer import AttributeTransformer
 from purehtml.transformers.types.exists_transformer import ExistsTransformer
 from purehtml.transformers.types.html_transformer import HTMLTransformer
+from purehtml.transformers.types.json_transformer import JSONTransformer
 from purehtml.transformers.types.length_transformer import LengthTransformer
 from purehtml.transformers.types.number_transformer import NumberTransformer
+from purehtml.transformers.types.remove_last_path_section_transformer import RemoveLastPathSectionTransformer
+from purehtml.transformers.types.remove_url_query_param_transformer import RemoveUrlQueryParamTransformer
 from purehtml.transformers.types.resolve_transformer import ResolveTransformer
 from purehtml.transformers.types.trim_transformer import TrimTransformer
 from purehtml.transformers.types.url_query_params_transformer import UrlQueryParamTransformer
@@ -14,8 +17,11 @@ class Transformers:
         AttributeTransformer,
         ExistsTransformer,
         HTMLTransformer,
+        JSONTransformer,
         LengthTransformer,
         NumberTransformer,
+        RemoveLastPathSectionTransformer,
+        RemoveUrlQueryParamTransformer,
         ResolveTransformer,
         UrlQueryParamTransformer,
         TrimTransformer,

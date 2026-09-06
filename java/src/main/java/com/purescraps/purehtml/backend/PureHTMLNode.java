@@ -70,4 +70,12 @@ public class PureHTMLNode {
          */
         return element.text();
     }
+
+    public String data() {
+        /*
+         * Get the raw data content of the node (e.g. the contents of a <script> or
+         * <style> element, which jsoup excludes from text()).
+         */
+        return element.data();
+    }
 }
