@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'bun:test';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import { validate } from 'jsonschema';

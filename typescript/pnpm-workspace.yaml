@@ -3,3 +3,5 @@ allowBuilds:
   '@swc/core': true
   esbuild: true
   unrs-resolver: true
+minimumReleaseAgeExclude:
+  - '@types/bun@1.4.2'

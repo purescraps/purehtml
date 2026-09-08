@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'bun:test';
 import { cheerio } from '../..';
 import UnionConfig from './union';
 import ConfigWithSelector from './with-selector';

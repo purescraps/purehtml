@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeAll, mock } from 'bun:test';
 import assert from 'node:assert';
 import { cheerio } from '../..';
 import { type PrimitiveTypes, STRING } from '../../core/primitive-types';
@@ -55,7 +56,8 @@ describe('object', () => {
 
   it('should correctly set property', () => {
     const transfomer = new FakeTransformer();
-    const spy = jest.spyOn(transfomer, 'transform');
+    const spy = mock(transfomer.transform.bind(transfomer));
+    transfomer.transform = spy;
     const config = ObjectConfig.generate('#root', {
       a: PrimitiveValueConfig.generate('#a', transfomer),
       b: PrimitiveValueConfig.generate('#b', transfomer),

@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'bun:test';
 import { ConfigFactory, cheerio, extract } from '../src';
 
 const SAMPLE = `<div>

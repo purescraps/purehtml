@@ -1,3 +1,6 @@
+import { describe, it, expect } from 'bun:test';
+import './setup-bun-matchers';
+
 describe('Base', () => {
   it('AllowEmptyConfigs', () => expect({}).toBeValidConfig());
   it('NoAdditionalProperties', () =>

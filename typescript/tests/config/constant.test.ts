@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'bun:test';
 import { ConfigFactory, cheerio } from '../../src';
 import { rootProp } from '../../src/core/property';
 

@@ -1,5 +1,5 @@
 import { type Cheerio, type CheerioAPI, load } from 'cheerio';
-import type { AnyNode } from 'domhandler';
+import type { AnyNode } from 'domhandler' with { 'resolution-mode': 'import' };
 import {
   PureHTMLBackend,
   PureHTMLDocument,

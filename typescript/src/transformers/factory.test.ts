@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'bun:test';
 import { TRANSFORMER_DEFINITION_REGEX } from './factory';
 
 describe('TransformerFactory', () => {

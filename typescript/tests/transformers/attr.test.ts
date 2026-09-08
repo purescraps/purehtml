@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeAll } from 'bun:test';
 import { ConfigFactory, cheerio } from '../../src';
 import type { ExtractParams } from '../../src/config';
 import type { PureHTMLDocument, PureHTMLNode } from '../../src/core/backend';

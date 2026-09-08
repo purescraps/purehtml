@@ -2,6 +2,16 @@ import { expect } from 'bun:test';
 import Ajv from 'ajv';
 import * as schema from './config-schema.json';
 
+interface CustomMatchers {
+  toBeValidConfig(): void;
+  toExtract(): void;
+}
+
+declare module 'bun:test' {
+  interface Matchers<T> extends CustomMatchers {}
+  interface AsymmetricMatchers extends CustomMatchers {}
+}
+
 const ajv = new Ajv();
 
 expect.extend({

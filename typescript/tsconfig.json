@@ -8,7 +8,8 @@
     "resolveJsonModule": true,
     "outDir": "dist",
     "module": "node16",
-    "types": ["node", "jest", "@jest/globals"]
+    "types": ["node", "bun"],
+    "skipLibCheck": true
   },
   "exclude": ["dist", "docs"]
 }
