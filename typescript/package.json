@@ -30,7 +30,7 @@
     "jsonschema": "^1.5.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
-    "typescript": "^7.0.2"
+    "typescript": "^6.0.3"
   },
   "dependencies": {
     "cheerio": "^1.2.0",
