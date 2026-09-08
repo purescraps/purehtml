@@ -109,6 +109,34 @@ func NewRemoveLastPathSectionTransformer() *transformer.RemoveLastPathSectionTra
 	return transformer.NewRemoveLastPathSectionTransformer()
 }
 
+func NewReplaceTransformer() *transformer.ReplaceTransformer {
+	return transformer.NewReplaceTransformer()
+}
+
+func NewSplitTransformer() *transformer.SplitTransformer {
+	return transformer.NewSplitTransformer()
+}
+
+func NewJoinTransformer() *transformer.JoinTransformer {
+	return transformer.NewJoinTransformer()
+}
+
+func NewLowerTransformer() *transformer.LowerTransformer {
+	return transformer.NewLowerTransformer()
+}
+
+func NewUpperTransformer() *transformer.UpperTransformer {
+	return transformer.NewUpperTransformer()
+}
+
+func NewCapitalizeTransformer() *transformer.CapitalizeTransformer {
+	return transformer.NewCapitalizeTransformer()
+}
+
+func NewBooleanTransformer() *transformer.BooleanTransformer {
+	return transformer.NewBooleanTransformer()
+}
+
 // GetTransformer gets a transformer by name
 func GetTransformer(name string) Transformer {
 	return transformer.GetTransformer(name)

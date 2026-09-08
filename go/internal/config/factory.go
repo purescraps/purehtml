@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/purescraps/purehtml/go/internal/core"
 	"gopkg.in/yaml.v3"
@@ -180,38 +181,68 @@ func (f *ConfigFactory) parseTransformerString(spec string) []core.TransformerSp
 		name = spec
 	}
 
+	return []core.TransformerSpec{{Name: name, Params: parseTransformerParams(params)}}
+}
+
+// parseTransformerParams splits a comma-separated argument list, honoring
+// single- and double-quoted arguments so that delimiters, regex patterns,
+// and replacement strings can contain commas, spaces, and other characters
+// that would otherwise conflict with the comma separator, e.g.
+// replace("\s+", " ") or split(", "). Inside a quoted argument, a backslash
+// escapes the matching quote character or another backslash (\" or \\);
+// any other backslash (e.g. the \s above) is left untouched so regex
+// patterns pass through unchanged. Bare (unquoted) arguments are trimmed of
+// surrounding whitespace but otherwise taken verbatim.
+func parseTransformerParams(params string) []string {
+	if params == "" {
+		return nil
+	}
+
 	var paramList []string
-	if params != "" {
-		// Split by comma and trim whitespace
-		parts := make([]string, 0)
-		current := ""
-		for _, ch := range params {
-			if ch == ',' {
-				parts = append(parts, current)
-				current = ""
-			} else {
-				current += string(ch)
-			}
+	runes := []rune(params)
+	n := len(runes)
+	i := 0
+
+	for i < n {
+		for i < n && runes[i] == ' ' {
+			i++
 		}
-		if current != "" {
-			parts = append(parts, current)
+		if i >= n {
+			break
 		}
 
-		for _, p := range parts {
-			trimmed := ""
-			inStr := false
-			for _, ch := range p {
-				if ch == ' ' && !inStr {
-					continue
+		if runes[i] == '"' || runes[i] == '\'' {
+			quote := runes[i]
+			i++
+			var value strings.Builder
+			for i < n && runes[i] != quote {
+				if runes[i] == '\\' && i+1 < n && (runes[i+1] == quote || runes[i+1] == '\\') {
+					value.WriteRune(runes[i+1])
+					i += 2
+				} else {
+					value.WriteRune(runes[i])
+					i++
 				}
-				inStr = true
-				trimmed += string(ch)
 			}
-			paramList = append(paramList, trimmed)
+			i++ // skip closing quote
+			paramList = append(paramList, value.String())
+		} else {
+			start := i
+			for i < n && runes[i] != ',' {
+				i++
+			}
+			paramList = append(paramList, strings.TrimSpace(string(runes[start:i])))
+		}
+
+		for i < n && runes[i] == ' ' {
+			i++
+		}
+		if i < n && runes[i] == ',' {
+			i++
 		}
 	}
 
-	return []core.TransformerSpec{{Name: name, Params: paramList}}
+	return paramList
 }
 
 func (f *ConfigFactory) parseUnion(unionData interface{}, path string) ([]Config, error) {

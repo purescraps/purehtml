@@ -8,6 +8,9 @@ describe('TransformerFactory', () => {
       'foo()',
       'foo(a)',
       'foo(a, b, c)',
+      'replace("\\d+", "#")',
+      "split(', ')",
+      'join("a, b")',
     ];
 
     for (const def of validTransformerDefinitions) {

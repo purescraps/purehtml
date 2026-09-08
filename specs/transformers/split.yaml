@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: split transformer
+
+specs:
+  - description: should split on a quoted literal delimiter
+    input: |
+      <p>a,b,c</p>
+    configuration:
+      selector: p
+      transform: 'split(",")'
+    expected: ["a", "b", "c"]
+
+  - description: should split on whitespace when no delimiter is given
+    input: |
+      <p>  foo   bar baz  </p>
+    configuration:
+      selector: p
+      transform: split
+    expected: ["foo", "bar", "baz"]
+
+  - description: should split on a multi-character delimiter
+    input: |
+      <p>foo::bar::baz</p>
+    configuration:
+      selector: p
+      transform: 'split("::")'
+    expected: ["foo", "bar", "baz"]

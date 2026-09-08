@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: replace transformer
+
+specs:
+  - description: should replace every regex match
+    input: |
+      <p>foo 123 bar 456</p>
+    configuration:
+      selector: p
+      transform: 'replace("\d+", "#")'
+    expected: "foo # bar #"
+
+  - description: should replace a literal (non-regex) pattern
+    input: |
+      <p>a-b-c</p>
+    configuration:
+      selector: p
+      transform: "replace(-, _)"
+    expected: "a_b_c"
+
+  - description: should collapse repeated whitespace
+    input: |
+      <p>hello   world</p>
+    configuration:
+      selector: p
+      transform: 'replace("\s+", " ")'
+    expected: "hello world"

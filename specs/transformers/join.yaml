@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: join transformer
+
+specs:
+  - description: should join array items with a delimiter
+    input: |
+      <p>a,b,c</p>
+    configuration:
+      selector: p
+      transform: ['split(",")', 'join(" - ")']
+    expected: "a - b - c"
+
+  - description: should join with an empty string when no delimiter is given
+    input: |
+      <p>a b c</p>
+    configuration:
+      selector: p
+      transform: [split, join]
+    expected: "abc"

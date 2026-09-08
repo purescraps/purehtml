@@ -107,7 +107,7 @@ selector: .conditional
 
 ## Transformers
 
-The library includes 11 built-in transformers:
+The library includes 18 built-in transformers:
 
 | Name | Input | Output | Description |
 |------|-------|--------|-------------|
@@ -123,6 +123,13 @@ The library includes 11 built-in transformers:
 | `urlQueryParam(params...)` | STRING | STRING/OBJECT | Extract URL query parameters |
 | `removeUrlQueryParam(params...)` | STRING | STRING | Remove query parameters |
 | `removeLastPathSection` | STRING | STRING | Remove last path section from URL |
+| `replace(pattern, replacement)` | STRING | STRING | Regex/string substitution |
+| `split(delimiter?)` | STRING | ARRAY | Split a string into an array (whitespace if no delimiter) |
+| `join(delimiter?)` | ARRAY | STRING | Join an array into a string (empty string if no delimiter) |
+| `lower` | STRING | STRING | Lowercase a string |
+| `upper` | STRING | STRING | Uppercase a string |
+| `capitalize` | STRING | STRING | Uppercase the first character, lowercase the rest |
+| `boolean` | * | BOOLEAN | Explicitly cast any value to a boolean using truthy semantics |
 
 ### Chaining Transformers
 
@@ -148,6 +155,18 @@ Some transformers accept parameters:
 transform: attr(href)
 transform: resolve(https://example.com)
 transform: urlQueryParam(id, page)
+```
+
+Parameters that need to contain a comma, whitespace, or regex
+metacharacters (delimiters, `replace` patterns) must be quoted with single
+or double quotes. A backslash inside a quoted argument escapes the matching
+quote or another backslash; any other backslash (e.g. `\d`, `\s`) is left
+untouched, so regex patterns pass through unchanged:
+
+```yaml
+transform: 'replace("\d+", "#")'
+transform: 'split(", ")'
+transform: 'join(" - ")'
 ```
 
 ## Advanced Usage
@@ -191,7 +210,7 @@ result, err := purehtml.ExtractFromString(purehtml.DefaultBackend, html, config,
 - `backend_goquery.go` - GoQuery backend implementation
 - `config.go` - Configuration types
 - `config_factory.go` - YAML parsing and factory
-- `transformers.go` - All 11 transformer implementations
+- `transformers.go` - All 18 transformer implementations
 - `purehtml.go` - Main extraction functions
 - `example/` - Example usage
 

@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: upper transformer
+
+specs:
+  - description: should uppercase the string
+    input: |
+      <p>Hello world</p>
+    configuration:
+      selector: p
+      transform: upper
+    expected: "HELLO WORLD"

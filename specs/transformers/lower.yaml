@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: lower transformer
+
+specs:
+  - description: should lowercase the string
+    input: |
+      <p>Hello WORLD</p>
+    configuration:
+      selector: p
+      transform: lower
+    expected: "hello world"

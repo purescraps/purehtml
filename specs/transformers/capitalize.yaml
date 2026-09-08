@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: capitalize transformer
+
+specs:
+  - description: should capitalize the first letter and lowercase the rest
+    input: |
+      <p>hELLO WORLD</p>
+    configuration:
+      selector: p
+      transform: capitalize
+    expected: "Hello world"

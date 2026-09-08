@@ -1,5 +1,5 @@
+import type { ArgumentTypes } from './argument-types';
 import type { PureHTMLNode } from './backend';
-import type { PrimitiveTypes } from './primitive-types';
 import type { Property } from './property';
 
 export interface TransformParams {
@@ -14,9 +14,9 @@ export abstract class Transformer {
     throw new Error('Not implemented');
   }
 
-  abstract inputType(): PrimitiveTypes;
+  abstract inputType(): ArgumentTypes;
 
-  abstract outputType(): PrimitiveTypes;
+  abstract outputType(): ArgumentTypes;
 
   abstract transform(params: TransformParams): unknown;
 }

@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"regexp"
 	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/purescraps/purehtml/go/internal/core"
 )
@@ -387,6 +389,220 @@ func NewRemoveLastPathSectionTransformer() *RemoveLastPathSectionTransformer {
 	}
 }
 
+// ReplaceTransformer performs a regex/string substitution
+type ReplaceTransformer struct {
+	core.BaseTransformer
+}
+
+func NewReplaceTransformer() *ReplaceTransformer {
+	return &ReplaceTransformer{
+		core.BaseTransformer{
+			Name:    "replace",
+			InType:  core.STRING,
+			OutType: core.STRING,
+			TransformFn: func(value interface{}, params []string) (interface{}, error) {
+				str, ok := value.(string)
+				if !ok {
+					return nil, fmt.Errorf("replace: expected string, got %T", value)
+				}
+				if len(params) < 2 {
+					return nil, fmt.Errorf(`replace: requires a pattern and a replacement, e.g. replace("\d+", "#")`)
+				}
+
+				re, err := regexp.Compile(params[0])
+				if err != nil {
+					return nil, fmt.Errorf("replace: invalid pattern %q: %w", params[0], err)
+				}
+
+				return re.ReplaceAllString(str, params[1]), nil
+			},
+		},
+	}
+}
+
+// SplitTransformer splits a string into an array
+type SplitTransformer struct {
+	core.BaseTransformer
+}
+
+func NewSplitTransformer() *SplitTransformer {
+	return &SplitTransformer{
+		core.BaseTransformer{
+			Name:    "split",
+			InType:  core.STRING,
+			OutType: core.ARRAY,
+			TransformFn: func(value interface{}, params []string) (interface{}, error) {
+				str, ok := value.(string)
+				if !ok {
+					return nil, fmt.Errorf("split: expected string, got %T", value)
+				}
+
+				var parts []string
+				if len(params) == 0 {
+					// No delimiter given: split on runs of whitespace, like
+					// Python's str.split().
+					parts = strings.Fields(str)
+				} else {
+					parts = strings.Split(str, params[0])
+				}
+
+				result := make([]interface{}, len(parts))
+				for i, p := range parts {
+					result[i] = p
+				}
+				return result, nil
+			},
+		},
+	}
+}
+
+// JoinTransformer joins an array of values into a string
+type JoinTransformer struct {
+	core.BaseTransformer
+}
+
+func NewJoinTransformer() *JoinTransformer {
+	return &JoinTransformer{
+		core.BaseTransformer{
+			Name:    "join",
+			InType:  core.ARRAY,
+			OutType: core.STRING,
+			TransformFn: func(value interface{}, params []string) (interface{}, error) {
+				items, ok := value.([]interface{})
+				if !ok {
+					return nil, fmt.Errorf("join: expected array, got %T", value)
+				}
+
+				delimiter := ""
+				if len(params) > 0 {
+					delimiter = params[0]
+				}
+
+				strs := make([]string, len(items))
+				for i, item := range items {
+					strs[i] = fmt.Sprintf("%v", item)
+				}
+				return strings.Join(strs, delimiter), nil
+			},
+		},
+	}
+}
+
+// LowerTransformer lowercases a string
+type LowerTransformer struct {
+	core.BaseTransformer
+}
+
+func NewLowerTransformer() *LowerTransformer {
+	return &LowerTransformer{
+		core.BaseTransformer{
+			Name:    "lower",
+			InType:  core.STRING,
+			OutType: core.STRING,
+			TransformFn: func(value interface{}, params []string) (interface{}, error) {
+				str, ok := value.(string)
+				if !ok {
+					return nil, fmt.Errorf("lower: expected string, got %T", value)
+				}
+				return strings.ToLower(str), nil
+			},
+		},
+	}
+}
+
+// UpperTransformer uppercases a string
+type UpperTransformer struct {
+	core.BaseTransformer
+}
+
+func NewUpperTransformer() *UpperTransformer {
+	return &UpperTransformer{
+		core.BaseTransformer{
+			Name:    "upper",
+			InType:  core.STRING,
+			OutType: core.STRING,
+			TransformFn: func(value interface{}, params []string) (interface{}, error) {
+				str, ok := value.(string)
+				if !ok {
+					return nil, fmt.Errorf("upper: expected string, got %T", value)
+				}
+				return strings.ToUpper(str), nil
+			},
+		},
+	}
+}
+
+// CapitalizeTransformer uppercases the first character of a string and
+// lowercases the rest
+type CapitalizeTransformer struct {
+	core.BaseTransformer
+}
+
+func NewCapitalizeTransformer() *CapitalizeTransformer {
+	return &CapitalizeTransformer{
+		core.BaseTransformer{
+			Name:    "capitalize",
+			InType:  core.STRING,
+			OutType: core.STRING,
+			TransformFn: func(value interface{}, params []string) (interface{}, error) {
+				str, ok := value.(string)
+				if !ok {
+					return nil, fmt.Errorf("capitalize: expected string, got %T", value)
+				}
+				if str == "" {
+					return str, nil
+				}
+
+				lower := []rune(strings.ToLower(str))
+				lower[0] = unicode.ToUpper(lower[0])
+				return string(lower), nil
+			},
+		},
+	}
+}
+
+// BooleanTransformer explicitly casts a value to a boolean using generic
+// truthy semantics
+type BooleanTransformer struct {
+	core.BaseTransformer
+}
+
+func NewBooleanTransformer() *BooleanTransformer {
+	return &BooleanTransformer{
+		core.BaseTransformer{
+			Name:    "boolean",
+			InType:  nil,
+			OutType: core.BOOLEAN,
+			TransformFn: func(value interface{}, params []string) (interface{}, error) {
+				return isTruthy(value), nil
+			},
+		},
+	}
+}
+
+// isTruthy applies generic truthy-cast semantics: nil, false, 0, "", and
+// empty arrays/objects are falsy; everything else is truthy.
+func isTruthy(value interface{}) bool {
+	switch v := value.(type) {
+	case nil:
+		return false
+	case bool:
+		return v
+	case string:
+		return v != ""
+	case float64:
+		return v != 0
+	case int:
+		return v != 0
+	case []interface{}:
+		return len(v) > 0
+	case map[string]interface{}:
+		return len(v) > 0
+	default:
+		return true
+	}
+}
+
 // TransformerRegistry holds all available transformers
 var transformerRegistry = map[string]func() core.Transformer{
 	"trim":                   func() core.Transformer { return NewTrimTransformer() },
@@ -401,6 +617,13 @@ var transformerRegistry = map[string]func() core.Transformer{
 	"urlQueryParam":          func() core.Transformer { return NewUrlQueryParamTransformer() },
 	"removeUrlQueryParam":    func() core.Transformer { return NewRemoveUrlQueryParamTransformer() },
 	"removeLastPathSection":  func() core.Transformer { return NewRemoveLastPathSectionTransformer() },
+	"replace":                func() core.Transformer { return NewReplaceTransformer() },
+	"split":                  func() core.Transformer { return NewSplitTransformer() },
+	"join":                   func() core.Transformer { return NewJoinTransformer() },
+	"lower":                  func() core.Transformer { return NewLowerTransformer() },
+	"upper":                  func() core.Transformer { return NewUpperTransformer() },
+	"capitalize":             func() core.Transformer { return NewCapitalizeTransformer() },
+	"boolean":                func() core.Transformer { return NewBooleanTransformer() },
 }
 
 // GetTransformer gets a transformer by name

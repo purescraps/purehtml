@@ -10,14 +10,21 @@ public class Transformers {
     // List of transformer classes
     private static final List<Class<?>> transformers = Arrays.asList(
             AttributeTransformer.class,
+            BooleanTransformer.class,
+            CapitalizeTransformer.class,
             ExistsTransformer.class,
             HTMLTransformer.class,
+            JoinTransformer.class,
             JSONTransformer.class,
             LengthTransformer.class,
+            LowerTransformer.class,
             NumberTransformer.class,
             RemoveLastPathSectionTransformer.class,
             RemoveUrlQueryParamTransformer.class,
+            ReplaceTransformer.class,
             ResolveTransformer.class,
+            SplitTransformer.class,
+            UpperTransformer.class,
             UrlQueryParamTransformer.class,
             TrimTransformer.class);
 

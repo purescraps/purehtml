@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: boolean transformer
+
+specs:
+  - description: should cast a non-empty string to true
+    input: |
+      <div><p class="msg">hello</p></div>
+    configuration:
+      selector: p.msg
+      transform: boolean
+    expected: true
+
+  - description: should cast an empty string to false
+    input: |
+      <div><p class="msg"></p></div>
+    configuration:
+      selector: p.msg
+      transform: boolean
+    expected: false
+
+  - description: should cast a zero number to false
+    input: |
+      <p></p>
+    configuration:
+      selector: p
+      transform: [length, boolean]
+    expected: false
+
+  - description: should cast a non-zero number to true
+    input: |
+      <p>hi</p>
+    configuration:
+      selector: p
+      transform: [length, boolean]
+    expected: true
