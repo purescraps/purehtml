@@ -1,5 +1,7 @@
 ### UNRELEASED
 
+### 0.9.0
+
 - feat: add string transformers (boolean, capitalize, join, lower, replace, split, upper)
 - feat(typescript): use bun test
 - fix: resolve TypeScript errors after upgrading to node16 module resolution
