@@ -135,11 +135,12 @@ items:
     url: { selector: 'span.titleline a:first-child', transform: [attr(href), resolve] }
     date: { selector: '+tr span.age', transform: attr(title) }
     score: { selector: '+tr span.score' }
-    comments: { selector: '+tr span.age a', transform: attr(href) }
+    comments: { selector: '+tr span.age a', transform: [attr(href), resolve] }
 `;
 
 export const hackernewsListing: Example = {
   name: 'Hacker News Listing Page',
   html,
   config,
+  url: 'https://news.ycombinator.com'
 };

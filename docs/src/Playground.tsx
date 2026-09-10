@@ -68,6 +68,7 @@ export function Playground() {
   const { configIsValid, result } = usePureHtml({
     inputHtml: htmlFileContents ?? html,
     configYaml: config,
+    url: selectedExample?.url,
   });
   const onHtmlFileChange = useCallback((file: File | null) => {
     if (!file) {

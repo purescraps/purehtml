@@ -12,14 +12,17 @@ import { useEffect, useMemo, useState } from 'react';
 export interface UsePureHtml {
   configIsValid: boolean;
   result: string;
+  url?: string;
 }
 
 export function usePureHtml({
   inputHtml,
   configYaml,
+  url,
 }: {
   inputHtml: string;
   configYaml: string;
+  url?: string;
 }): UsePureHtml {
   const [state, setState] = useState<UsePureHtml>({
     configIsValid: true,
@@ -59,7 +62,7 @@ export function usePureHtml({
           cheerio,
           input,
           config as unknown as Config<unknown>,
-          'https://example.com'
+          url ?? 'https://example.com'
         ),
         null,
         '  '
