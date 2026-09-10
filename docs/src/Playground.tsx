@@ -25,14 +25,45 @@ import { useCallback, useEffect, useState } from 'react';
 import { type Example, examples, exampleToComboboxItem } from './examples';
 import { usePureHtml } from './hooks/usePureHtml';
 
+const STORAGE_KEY = 'purehtml-playground-state';
+
+interface StoredState {
+  html: string;
+  config: string;
+}
+
+function loadStoredState(): StoredState | null {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      return null;
+    }
+
+    const parsed = JSON.parse(raw);
+    if (typeof parsed.html !== 'string' || typeof parsed.config !== 'string') {
+      return null;
+    }
+
+    return parsed;
+  } catch (err) {
+    console.error('Cannot read stored playground state:', err);
+    return null;
+  }
+}
+
 export function Playground() {
   const { colorScheme } = useMantineColorScheme();
   const monaco = useMonaco();
+  const [storedState] = useState(loadStoredState);
   const [selectedExample, setSelectedExample] = useState<Example | null>(
-    examples.basic[0]
+    storedState ? null : examples.basic[0]
   );
-  const [config, setConfig] = useState('');
-  const [html, setHtml] = useState('');
+  const [config, setConfig] = useState(storedState?.config ?? '');
+  const [html, setHtml] = useState(storedState?.html ?? '');
   const [htmlFileContents, setHtmlFileContents] = useState<string | null>(null);
   const { configIsValid, result } = usePureHtml({
     inputHtml: htmlFileContents ?? html,
@@ -65,6 +96,16 @@ export function Playground() {
   useEffect(() => {
     monaco?.editor.setTheme(colorScheme === 'dark' ? 'vs-dark' : 'vs');
   }, [monaco, colorScheme]);
+
+  // remember the last html/config so it survives a page reload
+  useEffect(() => {
+    try {
+      const state: StoredState = { html, config };
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (err) {
+      console.error('Cannot persist playground state:', err);
+    }
+  }, [html, config]);
 
   return (
     <>
