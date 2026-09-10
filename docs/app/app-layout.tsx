@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { ColorSchemeToggle } from '../src/components/ColorSchemeToggle';
 import { DocsAnchor } from '../src/components/DocsAnchor';
 import { DocsNavLink } from '../src/components/DocsNavLink';
+import { GithubIcon } from '../src/components/github-icon';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -41,15 +42,25 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
             <ColorSchemeToggle />
 
-            <DocsAnchor
-              href="/playground"
-              pos="absolute"
-              right="1em"
-              size="sm"
-              visibleFrom="xs"
-            >
-              Playground
-            </DocsAnchor>
+            <Group pos="absolute" right="1em" gap="md" wrap="nowrap">
+              <DocsAnchor
+                href="https://github.com/purescraps/purehtml"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View source on GitHub"
+                c="dimmed"
+              >
+                <GithubIcon fill="currentColor" width={24} height={24} />
+              </DocsAnchor>
+
+              <DocsAnchor
+                href="/playground"
+                size="sm"
+                visibleFrom="xs"
+              >
+                Playground
+              </DocsAnchor>
+            </Group>
           </Group>
         </AppShell.Header>
 

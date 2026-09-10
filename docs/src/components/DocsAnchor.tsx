@@ -1,6 +1,6 @@
 import { Anchor, AnchorProps } from '@mantine/core';
 import Link from 'next/link';
-import { ReactNode } from 'react';
+import { HTMLAttributeAnchorTarget, ReactNode } from 'react';
 
 export function DocsAnchor({
   children,
@@ -9,9 +9,11 @@ export function DocsAnchor({
 }: {
   children: ReactNode;
   href: string;
+  target?: HTMLAttributeAnchorTarget;
+  rel?: string
 } & Omit<AnchorProps, 'href'>) {
   return (
-    <Anchor component={Link} href={href} {...rest}>
+    <Anchor component={Link} href={href}  {...rest}>
       {children}
     </Anchor>
   );
