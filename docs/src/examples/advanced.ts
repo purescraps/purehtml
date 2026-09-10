@@ -1,4 +1,5 @@
 import { Example } from './example';
+import { hackernewsListing } from './advanced.hackernews-listing';
 
 export const advanced: Example[] = [
   {
@@ -47,4 +48,5 @@ properties:
     transform: exists
 `,
   },
+  hackernewsListing
 ];

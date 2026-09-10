@@ -2,7 +2,6 @@ import { ComboboxItem } from '@mantine/core';
 import { advanced } from './advanced';
 import { basic } from './basic';
 import { Example } from './example';
-
 export type { Example } from './example';
 
 export function exampleToComboboxItem(example: Example): ComboboxItem {
