@@ -1,3 +1,4 @@
+**/.maki/permissions.toml
 .claude/*.local.json
 
 /.vscode
