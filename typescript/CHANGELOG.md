@@ -1,5 +1,6 @@
 ### UNRELEASED
 
+- feat: support a per-field `default` config option, returning the configured fallback value instead of `null` when a selector (or every union member) matches nothing
 - feat: support `type: number` and `type: boolean` on primitive values, coercing the extracted (and optionally transformed) value without requiring an explicit `number`/`boolean` transformer
 
 ### 0.9.0

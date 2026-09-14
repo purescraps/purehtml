@@ -80,6 +80,9 @@ public class Validator {
                         "minItems": 1
                       }
                     ]
+                  },
+                  "default": {
+                    "$comment": "fallback value returned in place of null when the selector matches nothing"
                   }
                 },
                 "additionalProperties": false,
@@ -132,6 +135,9 @@ public class Validator {
                     "type": "array",
                     "items": { "$ref": "config-schema.json" },
                     "minItems": 1
+                  },
+                  "default": {
+                    "$comment": "fallback value returned in place of null when no union member matches"
                   }
                 },
                 "required": ["union"],
@@ -139,7 +145,13 @@ public class Validator {
               },
               {
                 "type": "object",
-                "properties": { "selector": { "type": "string" }, "constant": {} },
+                "properties": {
+                  "selector": { "type": "string" },
+                  "constant": {},
+                  "default": {
+                    "$comment": "fallback value returned in place of null when the selector matches nothing"
+                  }
+                },
                 "required": ["constant"],
                 "additionalProperties": false
               }

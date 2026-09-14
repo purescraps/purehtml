@@ -5,6 +5,7 @@ import type { Config } from './config';
 import type { PlainConfigObject, PlainConfigSelector } from './plain-config';
 import { ArrayConfig } from './types/array';
 import ConstantConfig from './types/constant';
+import DefaultValueConfig from './types/default';
 import { ObjectConfig } from './types/object';
 import { PrimitiveValueConfig } from './types/primitive';
 import UnionConfig from './types/union';
@@ -37,6 +38,7 @@ export class ConfigFactory {
       properties,
       items,
       union,
+      default: defaultValue,
     } = plain;
 
     const selector = ConfigFactory.generateSelector(selectorOrig);
@@ -46,42 +48,50 @@ export class ConfigFactory {
       ? ConfigFactory.generateTransform(transformOrig)
       : undefined;
 
-    switch (expectedType) {
-      case 'constant':
-        return ConstantConfig.generate(constant, selector) as Config<T>;
-      case 'object': {
-        let propConfigs: ObjectConfig['properties'] | undefined;
+    const config = ((): Config => {
+      switch (expectedType) {
+        case 'constant':
+          return ConstantConfig.generate(constant, selector);
+        case 'object': {
+          let propConfigs: ObjectConfig['properties'] | undefined;
 
-        if (properties) {
-          propConfigs = Object.keys(properties).reduce(
-            (acc, key) => {
-              acc[key] = ConfigFactory.generate(properties[key]);
+          if (properties) {
+            propConfigs = Object.keys(properties).reduce(
+              (acc, key) => {
+                acc[key] = ConfigFactory.generate(properties[key]);
 
-              return acc;
-            },
-            {} as Record<string, Config>,
-          );
+                return acc;
+              },
+              {} as Record<string, Config>,
+            );
+          }
+
+          return ObjectConfig.generate(selector, propConfigs);
         }
-
-        return ObjectConfig.generate(selector, propConfigs) as Config<T>;
+        case 'array':
+          return ArrayConfig.generate(
+            selector,
+            items && ConfigFactory.generate(items),
+            transform,
+          );
+        case 'union':
+          return UnionConfig.generate(
+            // biome-ignore lint/style/noNonNullAssertion: union will be present here. because our schema already validated the input
+            union!.map((cfg) => ConfigFactory.generate(cfg)),
+          );
+        default:
+          return PrimitiveValueConfig.generate(
+            selector,
+            ConfigFactory.appendTypeCoercion(plain.type, transform),
+          );
       }
-      case 'array':
-        return ArrayConfig.generate(
-          selector,
-          items && ConfigFactory.generate(items),
-          transform,
-        ) as Config<T>;
-      case 'union':
-        return UnionConfig.generate(
-          // biome-ignore lint/style/noNonNullAssertion: union will be present here. because our schema already validated the input
-          union!.map((cfg) => ConfigFactory.generate(cfg)),
-        ) as Config<T>;
-      default:
-        return PrimitiveValueConfig.generate(
-          selector,
-          ConfigFactory.appendTypeCoercion(plain.type, transform),
-        ) as Config<T>;
+    })();
+
+    if (defaultValue !== undefined) {
+      return DefaultValueConfig.generate(config, defaultValue) as Config<T>;
     }
+
+    return config as Config<T>;
   }
 
   /**

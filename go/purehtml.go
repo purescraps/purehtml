@@ -34,6 +34,7 @@ type ObjectConfig = config.ObjectConfig
 type ArrayConfig = config.ArrayConfig
 type ConstantConfig = config.ConstantConfig
 type UnionConfig = config.UnionConfig
+type DefaultValueConfig = config.DefaultValueConfig
 type ConfigFactory = config.ConfigFactory
 
 // Extract extracts data from HTML according to a config

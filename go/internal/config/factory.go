@@ -17,6 +17,7 @@ type PlainConfig struct {
 	Transform  interface{}            `yaml:"transform"`
 	Constant   interface{}            `yaml:"constant"`
 	Union      interface{}            `yaml:"union"`
+	Default    interface{}            `yaml:"default"`
 }
 
 // ConfigFactory creates Config objects from YAML
@@ -44,6 +45,27 @@ func (f *ConfigFactory) parseConfig(data interface{}, path string) (Config, erro
 		return nil, fmt.Errorf("config must be an object at path %s", path)
 	}
 
+	config, err := f.buildConfig(m, path)
+	if err != nil {
+		return nil, err
+	}
+
+	// A present "default" key (even with a literal null value) wraps the
+	// resulting config so that a nil extraction result falls back to it. Use
+	// comma-ok to tell "key absent" apart from "key present with a nil/null
+	// value", since both are valid YAML.
+	if defaultValue, hasDefault := m["default"]; hasDefault {
+		return &DefaultValueConfig{Inner: config, Default: defaultValue}, nil
+	}
+
+	return config, nil
+}
+
+// buildConfig builds the type-specific Config for the given plain map,
+// without applying the `default` wrapper. Split out from parseConfig so the
+// `default` handling above stays in one place regardless of which config
+// type was built.
+func (f *ConfigFactory) buildConfig(m map[string]interface{}, path string) (Config, error) {
 	// Check for constant config
 	if constant, ok := m["constant"]; ok {
 		return &ConstantConfig{

@@ -14,6 +14,7 @@ export type PlainConfigObject = {
   transform?: string | string[];
   items?: PlainConfigObject;
   union?: PlainConfigObject[];
+  default?: unknown;
 };
 
 export type PlainConfig = PlainConfigObject | ConfigWithSelector;

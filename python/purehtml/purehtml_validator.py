@@ -74,6 +74,9 @@ def is_valid_config_yaml(yaml_string) -> bool:
                           "minItems": 1
                         }
                       ]
+                    },
+                    "default": {
+                      "$comment": "fallback value returned in place of null when the selector matches nothing"
                     }
                   },
                   "additionalProperties": false,
@@ -126,6 +129,9 @@ def is_valid_config_yaml(yaml_string) -> bool:
                       "type": "array",
                       "items": { "$ref": "config-schema.json" },
                       "minItems": 1
+                    },
+                    "default": {
+                      "$comment": "fallback value returned in place of null when no union member matches"
                     }
                   },
                   "required": ["union"],
@@ -133,7 +139,13 @@ def is_valid_config_yaml(yaml_string) -> bool:
                 },
                 {
                   "type": "object",
-                  "properties": { "selector": { "type": "string" }, "constant": {} },
+                  "properties": {
+                    "selector": { "type": "string" },
+                    "constant": {},
+                    "default": {
+                      "$comment": "fallback value returned in place of null when the selector matches nothing"
+                    }
+                  },
                   "required": ["constant"],
                   "additionalProperties": false
                 }

@@ -37,3 +37,12 @@ specs:
         - selector: .foo
         - selector: .bar
     expected: null
+
+  - description: Should fall back to the configured default if nothing matches
+    input: *input
+    configuration:
+      union:
+        - selector: .foo
+        - selector: .bar
+      default: unknown
+    expected: unknown

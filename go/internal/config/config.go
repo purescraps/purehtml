@@ -311,6 +311,29 @@ func (c *ConstantConfig) Extract(backend core.Backend, node core.Node, url strin
 	return c.Constant, nil
 }
 
+// DefaultValueConfig wraps another config and substitutes a fallback value
+// whenever the wrapped config's extraction result is nil (a non-matching
+// selector, an empty union, etc.). This is what powers the per-field
+// `default: <value>` config option, and applies uniformly regardless of the
+// wrapped config's type.
+type DefaultValueConfig struct {
+	Inner   Config
+	Default interface{}
+}
+
+func (c *DefaultValueConfig) Extract(backend core.Backend, node core.Node, url string, path string) (interface{}, error) {
+	val, err := c.Inner.Extract(backend, node, url, path)
+	if err != nil {
+		return nil, err
+	}
+
+	if val == nil {
+		return c.Default, nil
+	}
+
+	return val, nil
+}
+
 // UnionConfig tries multiple configs
 type UnionConfig struct {
 	Configs []Config

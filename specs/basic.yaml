@@ -45,6 +45,16 @@ specs:
     expected: null
     configuration: { selector: .non-existing }
 
+  - description: should fall back to the configured default if the selector matches nothing
+    input: *input
+    expected: unknown
+    configuration: { selector: .non-existing, default: unknown }
+
+  - description: should ignore the default when the selector matches
+    input: *input
+    expected: Hello, purehtml
+    configuration: { selector: .foo, default: unknown }
+
   - description: should coerce to a number using type number
     input: *input
     expected: 42

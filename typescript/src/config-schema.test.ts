@@ -202,6 +202,52 @@ describe('Transform', () => {
   });
 });
 
+describe('Default', () => {
+  it('AllowedOnPrimitive', () => {
+    expect({ selector: '.foo', default: 'unknown' }).toBeValidConfig();
+  });
+
+  it('AllowsAnyValueType', () => {
+    expect({ selector: '.foo', default: 0 }).toBeValidConfig();
+    expect({ selector: '.foo', default: false }).toBeValidConfig();
+    expect({ selector: '.foo', default: null }).toBeValidConfig();
+    expect({ selector: '.foo', default: { foo: 'bar' } }).toBeValidConfig();
+    expect({ selector: '.foo', default: ['foo'] }).toBeValidConfig();
+  });
+
+  it('AllowedOnObject', () => {
+    expect({
+      selector: '.foo',
+      type: 'object',
+      properties: { x: { selector: '.x' } },
+      default: {},
+    }).toBeValidConfig();
+  });
+
+  it('AllowedOnArray', () => {
+    expect({
+      selector: '.foo',
+      items: { selector: '.tt' },
+      default: [],
+    }).toBeValidConfig();
+  });
+
+  it('AllowedOnUnion', () => {
+    expect({
+      union: [{ selector: '.foo' }],
+      default: 'unknown',
+    }).toBeValidConfig();
+  });
+
+  it('AllowedOnConstant', () => {
+    expect({
+      selector: '.foo',
+      constant: 'bar',
+      default: 'unknown',
+    }).toBeValidConfig();
+  });
+});
+
 describe('Constant', () => {
   it('String', () => {
     expect({ constant: 'foo' }).toBeValidConfig();

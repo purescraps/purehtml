@@ -39,9 +39,11 @@ public class ConfigFactory {
         String expectedType = detectExpectedType(plain);
         List<Transformer> transformers;
         transformers = generateTransform(transformOrig);
+        Config config;
         switch (expectedType) {
             case "constant":
-                return new ConstantConfig(constant, selector);
+                config = new ConstantConfig(constant, selector);
+                break;
             case "object":
                 Map<String, Config> propConfigs = null;
                 if (properties instanceof Map<?, ?>) {
@@ -58,19 +60,27 @@ public class ConfigFactory {
                                         return generate(valueMap);
                                     }));
                 }
-                return new ObjectConfig(selector, propConfigs);
+                config = new ObjectConfig(selector, propConfigs);
+                break;
             case "array":
-                return new ArrayConfig(selector, items != null ? generate((Map<String, Object>) items) : null,
+                config = new ArrayConfig(selector, items != null ? generate((Map<String, Object>) items) : null,
                         transformers);
+                break;
             case "union":
-
-                return new UnionConfig(((List<Map<String, Object>>) union).stream()
+                config = new UnionConfig(((List<Map<String, Object>>) union).stream()
                         .map(ConfigFactory::generate)
                         .collect(Collectors.toList()));
+                break;
             default:
-                return new PrimitiveValueConfig(selector, appendTypeCoercion(plain.get("type"), transformers));
+                config = new PrimitiveValueConfig(selector, appendTypeCoercion(plain.get("type"), transformers));
 
         }
+
+        if (plain.containsKey("default")) {
+            return new DefaultValueConfig(config, plain.get("default"));
+        }
+
+        return config;
     }
 
     /**

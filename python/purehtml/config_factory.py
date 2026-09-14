@@ -10,6 +10,7 @@ import yaml
 from purehtml.configs.configs import Config
 from purehtml.configs.types.array_config import ArrayConfig
 from purehtml.configs.types.constant_config import ConstantConfig
+from purehtml.configs.types.default_value_config import DefaultValueConfig
 from purehtml.configs.types.object_config import ObjectConfig
 from purehtml.configs.types.primitive_value_config import PrimitiveValueConfig
 from purehtml.configs.types.union_config import UnionConfig
@@ -38,7 +39,7 @@ class ConfigFactory:
     def from_dict(
             plain: Dict[str, Any]
     ) -> (
-            ConstantConfig | ObjectConfig | ArrayConfig | UnionConfig | PrimitiveValueConfig
+            ConstantConfig | ObjectConfig | ArrayConfig | UnionConfig | PrimitiveValueConfig | DefaultValueConfig
     ):
         """
         Generating a Config object based on the input dictionary.
@@ -55,7 +56,7 @@ class ConfigFactory:
         transformers = ConfigFactory.generate_transform(transform_orig)
 
         if expected_type == "constant":
-            return ConstantConfig(constant, selector)
+            config = ConstantConfig(constant, selector)
 
         elif expected_type == "object":
 
@@ -68,24 +69,29 @@ class ConfigFactory:
                 else None
             )
 
-            return ObjectConfig(selector, prop_configs)
+            config = ObjectConfig(selector, prop_configs)
 
         elif expected_type == "array":
 
-            return ArrayConfig(
+            config = ArrayConfig(
                 selector, ConfigFactory.from_dict(items) if items else None, transformers
             )
 
         elif expected_type == "union":
 
-            return UnionConfig([ConfigFactory.from_dict(u) for u in union])
+            config = UnionConfig([ConfigFactory.from_dict(u) for u in union])
 
         else:
 
-            return PrimitiveValueConfig(
+            config = PrimitiveValueConfig(
                 selector,
                 ConfigFactory.append_type_coercion(plain.get("type"), transformers),
             )
+
+        if "default" in plain:
+            return DefaultValueConfig(config, plain.get("default"))
+
+        return config
 
     @staticmethod
     def generate_selector(selector_orig: Any) -> Optional[str]:
