@@ -82,7 +82,10 @@ class ConfigFactory:
 
         else:
 
-            return PrimitiveValueConfig(selector, transformers)
+            return PrimitiveValueConfig(
+                selector,
+                ConfigFactory.append_type_coercion(plain.get("type"), transformers),
+            )
 
     @staticmethod
     def generate_selector(selector_orig: Any) -> Optional[str]:
@@ -118,6 +121,23 @@ class ConfigFactory:
             return [TransformerFactory.create(t) for t in transform_orig]
 
         raise ValueError(f"Unexpected transform type: {type(transform_orig).__name__}")
+
+    @staticmethod
+    def append_type_coercion(
+            type_: Optional[str], transformers: Optional[List[Any]]
+    ) -> Optional[List[Any]]:
+        """
+        `type: number` / `type: boolean` on a primitive value are sugar for
+        appending the corresponding transformer to the end of the transform
+        chain, so the extracted value is coerced even when no explicit
+        `transform` is provided. `type: string` (or no type) is left as-is.
+        """
+        if type_ not in ("number", "boolean"):
+            return transformers
+
+        coercion = TransformerFactory.create(type_)
+
+        return (transformers or []) + [coercion]
 
     @staticmethod
     def detect_expected_type(conf: Dict[str, Any]) -> str:

@@ -67,6 +67,48 @@ describe('String', () => {
   it('Selector', () => expect({ selector: '.foo' }).toBeValidConfig());
 });
 
+describe('Number', () => {
+  it('Selector', () =>
+    expect({ selector: '.foo', type: 'number' }).toBeValidConfig());
+
+  it('AllowsTransform', () => {
+    expect({
+      selector: '.foo',
+      type: 'number',
+      transform: 'trim',
+    }).toBeValidConfig();
+  });
+
+  it('CannotHaveProperties', () => {
+    expect({
+      selector: '.foo',
+      type: 'number',
+      properties: { foo: { selector: '.bar' } },
+    }).not.toBeValidConfig();
+  });
+
+  it('CannotHaveItems', () => {
+    expect({
+      selector: '.foo',
+      type: 'number',
+      items: { selector: '.bar' },
+    }).not.toBeValidConfig();
+  });
+});
+
+describe('Boolean', () => {
+  it('Selector', () =>
+    expect({ selector: '.foo', type: 'boolean' }).toBeValidConfig());
+
+  it('AllowsTransform', () => {
+    expect({
+      selector: '.foo',
+      type: 'boolean',
+      transform: 'trim',
+    }).toBeValidConfig();
+  });
+});
+
 describe('Object', () => {
   it('ImplyTypeToBeObjectWhenPropertiesPresent', () => {
     expect({

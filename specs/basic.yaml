@@ -16,6 +16,10 @@ specs:
         <p class="baz">
           user profile summary <!-- comment -->
         </p>
+
+        <span class="qty">42</span>
+        <span class="truthy-flag">in stock</span>
+        <span class="falsy-flag"></span>
       </div>
 
     expected: Hello, purehtml
@@ -40,3 +44,32 @@ specs:
     input: *input
     expected: null
     configuration: { selector: .non-existing }
+
+  - description: should coerce to a number using type number
+    input: *input
+    expected: 42
+    configuration:
+      selector: .qty
+      type: number
+
+  - description: should apply type number after the transform chain
+    input: *input
+    expected: 123
+    configuration:
+      selector: .bar
+      type: number
+      transform: trim
+
+  - description: should coerce to true using type boolean
+    input: *input
+    expected: true
+    configuration:
+      selector: .truthy-flag
+      type: boolean
+
+  - description: should coerce to false using type boolean
+    input: *input
+    expected: false
+    configuration:
+      selector: .falsy-flag
+      type: boolean

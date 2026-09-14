@@ -117,8 +117,22 @@ func (f *ConfigFactory) parseConfig(data interface{}, path string) (Config, erro
 	// Default: primitive value config
 	return &PrimitiveValueConfig{
 		Selector:  selector,
-		Transform: transform,
+		Transform: appendTypeCoercion(m["type"], transform),
 	}, nil
+}
+
+// appendTypeCoercion implements `type: number` / `type: boolean` on a
+// primitive value as sugar for appending the corresponding transformer to
+// the end of the transform chain, so the extracted value is coerced even
+// when no explicit `transform` is provided. `type: string` (or no type) is
+// left as-is.
+func appendTypeCoercion(configType interface{}, transform []core.TransformerSpec) []core.TransformerSpec {
+	typeStr, ok := configType.(string)
+	if !ok || (typeStr != "number" && typeStr != "boolean") {
+		return transform
+	}
+
+	return append(transform, core.TransformerSpec{Name: typeStr})
 }
 
 func (f *ConfigFactory) parseSelector(selectorData interface{}) []string {

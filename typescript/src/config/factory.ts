@@ -77,8 +77,36 @@ export class ConfigFactory {
           union!.map((cfg) => ConfigFactory.generate(cfg)),
         ) as Config<T>;
       default:
-        return PrimitiveValueConfig.generate(selector, transform) as Config<T>;
+        return PrimitiveValueConfig.generate(
+          selector,
+          ConfigFactory.appendTypeCoercion(plain.type, transform),
+        ) as Config<T>;
     }
+  }
+
+  /**
+   * `type: number` / `type: boolean` on a primitive value are sugar for
+   * appending the corresponding transformer to the end of the transform
+   * chain, so the extracted value is coerced even when no explicit
+   * `transform` is provided. `type: string` (or no type) is left as-is.
+   */
+  private static appendTypeCoercion(
+    type: PlainConfigObject['type'],
+    transform?: Transformer | Transformer[],
+  ): Transformer | Transformer[] | undefined {
+    if (type !== 'number' && type !== 'boolean') {
+      return transform;
+    }
+
+    const coercion = TransformerFactory.create(type);
+
+    if (!transform) {
+      return coercion;
+    }
+
+    return (Array.isArray(transform) ? transform : [transform]).concat(
+      coercion,
+    );
   }
 
   private static generateSelector(

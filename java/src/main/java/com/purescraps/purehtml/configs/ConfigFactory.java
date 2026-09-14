@@ -68,9 +68,25 @@ public class ConfigFactory {
                         .map(ConfigFactory::generate)
                         .collect(Collectors.toList()));
             default:
-                return new PrimitiveValueConfig(selector, transformers);
+                return new PrimitiveValueConfig(selector, appendTypeCoercion(plain.get("type"), transformers));
 
         }
+    }
+
+    /**
+     * `type: number` / `type: boolean` on a primitive value are sugar for
+     * appending the corresponding transformer to the end of the transform
+     * chain, so the extracted value is coerced even when no explicit
+     * `transform` is provided. `type: string` (or no type) is left as-is.
+     */
+    private static List<Transformer> appendTypeCoercion(Object type, List<Transformer> transformers) {
+        if (!"number".equals(type) && !"boolean".equals(type)) {
+            return transformers;
+        }
+
+        List<Transformer> result = transformers != null ? new ArrayList<>(transformers) : new ArrayList<>();
+        result.add(TransformerFactory.create((String) type));
+        return result;
     }
 
     private static String generateSelector(Object selectorOrig) {

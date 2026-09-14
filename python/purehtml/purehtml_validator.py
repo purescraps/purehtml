@@ -52,7 +52,7 @@ def is_valid_config_yaml(yaml_string) -> bool:
                     },
                     "type": {
                       "type": "string",
-                      "enum": ["string", "object", "array", "union"]
+                      "enum": ["string", "number", "boolean", "object", "array", "union"]
                     },
                     "items": { "$ref": "config-schema.json" },
                     "properties": {

@@ -1,5 +1,7 @@
 ### UNRELEASED
 
+- feat: support `type: number` and `type: boolean` on primitive values, coercing the extracted (and optionally transformed) value without requiring an explicit `number`/`boolean` transformer
+
 ### 0.9.0
 
 - feat: add string transformers (boolean, capitalize, join, lower, replace, split, upper)

@@ -9,7 +9,7 @@ export type PlainConfigSelector =
 export type PlainConfigObject = {
   selector?: PlainConfigSelector;
   properties?: Record<string, PlainConfigObject>;
-  type?: 'string' | 'object' | 'array';
+  type?: 'string' | 'number' | 'boolean' | 'object' | 'array';
   constant?: unknown;
   transform?: string | string[];
   items?: PlainConfigObject;
