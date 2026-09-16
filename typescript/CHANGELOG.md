@@ -1,5 +1,10 @@
 ### UNRELEASED
 
+**BREAKING CHANGE (Go):**
+
+- **go**: `ConfigFactory.FromYAML` now validates configs against the shared config schema and returns a `*purehtml.ValidationError` for invalid input. Configs the schema rejects but Go previously accepted (e.g. `type: object` without `properties`) now fail, matching the other ports.
+
+- feat(go): add config schema validation, embedding a copy of `config-schema.json` that a test keeps in sync with the TypeScript copy
 - feat: support a per-field `default` config option, returning the configured fallback value instead of `null` when a selector (or every union member) matches nothing
 - feat: support `type: number` and `type: boolean` on primitive values, coercing the extracted (and optionally transformed) value without requiring an explicit `number`/`boolean` transformer
 

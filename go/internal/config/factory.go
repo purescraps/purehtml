@@ -31,6 +31,10 @@ func (f *ConfigFactory) FromYAML(yamlStr string) (Config, error) {
 		return nil, fmt.Errorf("yaml parse error: %w", err)
 	}
 
+	if err := Validate(plain); err != nil {
+		return nil, err
+	}
+
 	config, err := f.parseConfig(plain, "")
 	if err != nil {
 		return nil, err

@@ -204,6 +204,12 @@ properties:
 result, err := purehtml.ExtractFromString(purehtml.DefaultBackend, html, config, "")
 ```
 
+`FromYAML` validates the config against the same JSON schema as the other
+ports (`typescript/src/config-schema.json`, embedded at
+`internal/config/config-schema.json`) before building it. An invalid config
+returns a `*purehtml.ValidationError` whose message lists the offending
+location, e.g. `at '/properties/title/transform': got number, want string`.
+
 ## Package Structure
 
 - `core.go` - Core types and interfaces
@@ -215,6 +221,17 @@ result, err := purehtml.ExtractFromString(purehtml.DefaultBackend, html, config,
 - `example/` - Example usage
 
 ## Error Handling
+
+`FromYAML` returns `*purehtml.ValidationError` when the config does not match
+the schema:
+
+```go
+config, err := factory.FromYAML(yamlStr)
+var validationErr *purehtml.ValidationError
+if errors.As(err, &validationErr) {
+	fmt.Println(validationErr)
+}
+```
 
 The library returns `InvalidParseInputError` on extraction failure:
 

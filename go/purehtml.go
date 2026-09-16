@@ -36,6 +36,7 @@ type ConstantConfig = config.ConstantConfig
 type UnionConfig = config.UnionConfig
 type DefaultValueConfig = config.DefaultValueConfig
 type ConfigFactory = config.ConfigFactory
+type ValidationError = config.ValidationError
 
 // Extract extracts data from HTML according to a config
 func Extract(backend Backend, html []byte, cfg Config, baseURL string) (interface{}, error) {
