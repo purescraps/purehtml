@@ -16,6 +16,7 @@ public class Transformers {
             HTMLTransformer.class,
             JoinTransformer.class,
             JSONTransformer.class,
+            JSONPathTransformer.class,
             LengthTransformer.class,
             LowerTransformer.class,
             NumberTransformer.class,

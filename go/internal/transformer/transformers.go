@@ -213,6 +213,163 @@ func NewJsonTransformer() *JsonTransformer {
 	}
 }
 
+// jsonPathSegment is a single step in a parsed jsonpath expression: either
+// an object-key lookup or an array-index lookup.
+type jsonPathSegment struct {
+	isIndex bool
+	key     string
+	index   int
+}
+
+func isJsonPathIdentChar(c byte) bool {
+	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_'
+}
+
+// parseJsonPath parses a minimal jsonpath subset: dot notation for object
+// keys (`$.a.b`), bracket notation with a quoted key for keys with special
+// characters (`$["a-b"]`), and bracket notation with an integer for array
+// indices, including negative indices counted from the end (`$.a[-1]`).
+func parseJsonPath(path string) ([]jsonPathSegment, error) {
+	if len(path) == 0 || path[0] != '$' {
+		return nil, fmt.Errorf("jsonpath: invalid path %q: must start with \"$\"", path)
+	}
+
+	var segments []jsonPathSegment
+	i := 1
+	n := len(path)
+
+	for i < n {
+		switch path[i] {
+		case '.':
+			i++
+			start := i
+			for i < n && isJsonPathIdentChar(path[i]) {
+				i++
+			}
+			if i == start {
+				return nil, fmt.Errorf("jsonpath: invalid path %q: expected a name after \".\"", path)
+			}
+			segments = append(segments, jsonPathSegment{key: path[start:i]})
+		case '[':
+			i++
+			if i >= n {
+				return nil, fmt.Errorf("jsonpath: invalid path %q: unterminated \"[\"", path)
+			}
+			if path[i] == '"' || path[i] == '\'' {
+				quote := path[i]
+				i++
+				var key strings.Builder
+				for i < n && path[i] != quote {
+					if path[i] == '\\' && i+1 < n && (path[i+1] == quote || path[i+1] == '\\') {
+						key.WriteByte(path[i+1])
+						i += 2
+					} else {
+						key.WriteByte(path[i])
+						i++
+					}
+				}
+				if i >= n {
+					return nil, fmt.Errorf("jsonpath: invalid path %q: unterminated quoted key", path)
+				}
+				i++ // skip closing quote
+				segments = append(segments, jsonPathSegment{key: key.String()})
+			} else if path[i] == '-' || (path[i] >= '0' && path[i] <= '9') {
+				start := i
+				if path[i] == '-' {
+					i++
+				}
+				digitsStart := i
+				for i < n && path[i] >= '0' && path[i] <= '9' {
+					i++
+				}
+				if i == digitsStart {
+					return nil, fmt.Errorf("jsonpath: invalid path %q: expected an index inside \"[]\"", path)
+				}
+				idx, err := strconv.Atoi(path[start:i])
+				if err != nil {
+					return nil, fmt.Errorf("jsonpath: invalid path %q: %w", path, err)
+				}
+				segments = append(segments, jsonPathSegment{isIndex: true, index: idx})
+			} else {
+				return nil, fmt.Errorf("jsonpath: invalid path %q: expected an index or quoted key inside \"[]\"", path)
+			}
+			if i >= n || path[i] != ']' {
+				return nil, fmt.Errorf("jsonpath: invalid path %q: expected \"]\"", path)
+			}
+			i++
+		default:
+			return nil, fmt.Errorf("jsonpath: invalid path %q: unexpected character %q at position %d", path, path[i], i)
+		}
+	}
+
+	return segments, nil
+}
+
+func evaluateJsonPath(root interface{}, segments []jsonPathSegment) interface{} {
+	current := root
+
+	for _, seg := range segments {
+		if current == nil {
+			return nil
+		}
+
+		if seg.isIndex {
+			arr, ok := current.([]interface{})
+			if !ok {
+				return nil
+			}
+			idx := seg.index
+			if idx < 0 {
+				idx += len(arr)
+			}
+			if idx < 0 || idx >= len(arr) {
+				return nil
+			}
+			current = arr[idx]
+		} else {
+			obj, ok := current.(map[string]interface{})
+			if !ok {
+				return nil
+			}
+			value, exists := obj[seg.key]
+			if !exists {
+				return nil
+			}
+			current = value
+		}
+	}
+
+	return current
+}
+
+// JsonPathTransformer extracts a value from a parsed JSON value by path
+type JsonPathTransformer struct {
+	core.BaseTransformer
+}
+
+func NewJsonPathTransformer() *JsonPathTransformer {
+	return &JsonPathTransformer{
+		core.BaseTransformer{
+			Name:    "jsonpath",
+			InType:  nil,
+			OutType: nil, // Can return any type
+			TransformFn: func(value interface{}, params []string) (interface{}, error) {
+				if value == nil {
+					return nil, nil
+				}
+				if len(params) < 1 {
+					return nil, fmt.Errorf(`jsonpath: requires a path, e.g. jsonpath("$.a.b")`)
+				}
+				segments, err := parseJsonPath(params[0])
+				if err != nil {
+					return nil, err
+				}
+				return evaluateJsonPath(value, segments), nil
+			},
+		},
+	}
+}
+
 // ResolveTransformer resolves relative URLs
 type ResolveTransformer struct {
 	core.BaseTransformer
@@ -613,6 +770,7 @@ var transformerRegistry = map[string]func() core.Transformer{
 	"exists":                 func() core.Transformer { return NewExistsTransformer() },
 	"length":                 func() core.Transformer { return NewLengthTransformer() },
 	"json":                   func() core.Transformer { return NewJsonTransformer() },
+	"jsonpath":               func() core.Transformer { return NewJsonPathTransformer() },
 	"resolve":                func() core.Transformer { return NewResolveTransformer() },
 	"urlQueryParam":          func() core.Transformer { return NewUrlQueryParamTransformer() },
 	"removeUrlQueryParam":    func() core.Transformer { return NewRemoveUrlQueryParamTransformer() },

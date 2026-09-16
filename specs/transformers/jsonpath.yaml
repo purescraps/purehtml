@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: jsonpath transformer
+
+specs:
+  - description: should extract a nested object property
+    input: |
+      <script id="data" type="application/json">
+        {"offers": {"price": 42.5, "currency": "USD"}}
+      </script>
+    configuration:
+      selector: script#data
+      transform: [json, 'jsonpath("$.offers.price")']
+    expected: 42.5
+
+  - description: should extract an array element by index
+    input: |
+      <script id="data" type="application/json">
+        {"items": ["a", "b", "c"]}
+      </script>
+    configuration:
+      selector: script#data
+      transform: [json, 'jsonpath("$.items[1]")']
+    expected: "b"
+
+  - description: should extract an array element with a negative index
+    input: |
+      <script id="data" type="application/json">
+        {"items": ["a", "b", "c"]}
+      </script>
+    configuration:
+      selector: script#data
+      transform: [json, 'jsonpath("$.items[-1]")']
+    expected: "c"
+
+  - description: should extract a key with special characters using bracket notation
+    input: |
+      <script id="data" type="application/json">
+        {"offers": {"list-price": 99}}
+      </script>
+    configuration:
+      selector: script#data
+      transform: [json, 'jsonpath("$.offers[\"list-price\"]")']
+    expected: 99
+
+  - description: should return null when the path does not resolve to a value
+    input: |
+      <script id="data" type="application/json">
+        {"offers": {"price": 42.5}}
+      </script>
+    configuration:
+      selector: script#data
+      transform: [json, 'jsonpath("$.offers.missing")']
+    expected: null

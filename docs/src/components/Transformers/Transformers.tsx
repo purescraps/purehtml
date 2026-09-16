@@ -7,6 +7,7 @@ import { ExistsTransformer } from './ExistsTransformer';
 import { HtmlTransformer } from './HtmlTransformer';
 import { JoinTransformer } from './JoinTransformer';
 import { JSONTransformer } from './JSONTransformer';
+import { JSONPathTransformer } from './JSONPathTransformer';
 import { LengthTransformer } from './LengthTransformer';
 import { LowerTransformer } from './LowerTransformer';
 import { NumberTransformer } from './NumberTransformer';
@@ -56,6 +57,8 @@ export function Transformers() {
       <JoinTransformer />
       {/* json transformer */}
       <JSONTransformer />
+      {/* jsonpath transformer */}
+      <JSONPathTransformer />
       {/* length transformer */}
       <LengthTransformer />
       {/* lower transformer */}

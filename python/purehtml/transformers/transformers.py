@@ -5,6 +5,7 @@ from purehtml.transformers.types.exists_transformer import ExistsTransformer
 from purehtml.transformers.types.html_transformer import HTMLTransformer
 from purehtml.transformers.types.join_transformer import JoinTransformer
 from purehtml.transformers.types.json_transformer import JSONTransformer
+from purehtml.transformers.types.jsonpath_transformer import JSONPathTransformer
 from purehtml.transformers.types.length_transformer import LengthTransformer
 from purehtml.transformers.types.lower_transformer import LowerTransformer
 from purehtml.transformers.types.number_transformer import NumberTransformer
@@ -28,6 +29,7 @@ class Transformers:
         HTMLTransformer,
         JoinTransformer,
         JSONTransformer,
+        JSONPathTransformer,
         LengthTransformer,
         LowerTransformer,
         NumberTransformer,

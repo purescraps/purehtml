@@ -5,6 +5,7 @@ import ExistsTransformer from './exists';
 import HTMLTransformer from './html';
 import JoinTransformer from './join';
 import JSONTransformer from './json';
+import JSONPathTransformer from './jsonpath';
 import LengthTransformer from './length';
 import LowerTransformer from './lower';
 import NumberTransformer from './number';
@@ -26,6 +27,7 @@ export class Transformers {
     HTMLTransformer,
     JoinTransformer,
     JSONTransformer,
+    JSONPathTransformer,
     LengthTransformer,
     LowerTransformer,
     NumberTransformer,
