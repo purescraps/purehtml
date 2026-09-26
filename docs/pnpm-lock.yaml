@@ -21,8 +21,8 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0(monaco-editor@0.52.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@purescraps/purehtml':
-        specifier: ^0.9.0
-        version: 0.9.0
+        specifier: ^0.10.0
+        version: 0.10.0
       '@react-nano/router':
         specifier: ^0.16.0
         version: 0.16.0(react@19.2.8)
@@ -389,8 +389,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@purescraps/purehtml@0.9.0':
-    resolution: {integrity: sha512-MUTrTnr/AsHQ7VD5rwnDO959BOYU2pZRQFMxUNKgVOKm2xcaWQst5OfhiEg2b+0PtWg1Fi8yEu0ie2J8EYq5ww==}
+  '@purescraps/purehtml@0.10.0':
+    resolution: {integrity: sha512-571q/Qh9YBgKvFmpMbovzxrMaUenZWF2ndqoHEKHI0GnMsMttpuaofgndfWMUYo8EMLFNgFiZ6CsxzZ8QwgkGg==}
 
   '@react-nano/router@0.16.0':
     resolution: {integrity: sha512-iT3OdVzYrwb3Y/OL6sZjLFSycsy6OKzK/8ZZ+AgLJpUniPYgSCoX9l5eaHkGb7Z+ZVOHT0Te4vNaHFq9t/ud0A==}
@@ -1421,7 +1421,7 @@ snapshots:
   '@next/swc-win32-x64-msvc@15.5.2':
     optional: true
 
-  '@purescraps/purehtml@0.9.0':
+  '@purescraps/purehtml@0.10.0':
     dependencies:
       cheerio: 1.2.0
       yaml: 2.9.0
