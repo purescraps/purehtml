@@ -20,6 +20,28 @@ const numberExample = {
   config: `selector: '#price' # do not forget the quotes!`,
 };
 
+const typeNumberExample = {
+  html: `
+<div>
+  <p id="price">12.99</p>
+</div>`,
+  config: `selector: '#price'
+type: number # same as transform: number`,
+};
+
+const defaultExample = {
+  html: `
+<div>
+  <p id="title">Hello</p>
+</div>`,
+  config: `type: object
+properties:
+  title: '#title'
+  subtitle:
+    selector: '#subtitle' # does not exist in the HTML
+    default: No subtitle`,
+};
+
 const numberCastExample = {
   html: `
 <div>
@@ -114,6 +136,40 @@ export function Basics() {
       <PureHtmlSnippet
         inputHtml={numberCastExample.html}
         configYaml={numberCastExample.config}
+      />
+
+      <Title mt="md" order={5}>
+        Declaring the type (<Code>type: number</Code> /{' '}
+        <Code>type: boolean</Code>)
+      </Title>
+
+      <Text>
+        As a shorthand, you can declare the type of a primitive value instead of
+        writing a transformer. <Code>type: number</Code> and{' '}
+        <Code>type: boolean</Code> cast the final result, after any explicit{' '}
+        <Code>transform</Code> has run. <Code>type: string</Code> (or no type)
+        leaves the value as is.
+      </Text>
+
+      <PureHtmlSnippet
+        inputHtml={typeNumberExample.html}
+        configYaml={typeNumberExample.config}
+      />
+
+      <Title mt="md" order={5}>
+        Default Values (<Code>default</Code>)
+      </Title>
+
+      <Text>
+        When a selector matches nothing, the output is <Code>null</Code>. Add a{' '}
+        <Code>default</Code> to any field to get a fallback value instead. It
+        is ignored when the selector matches, and it also applies when every
+        member of a <Code>union</Code> matches nothing.
+      </Text>
+
+      <PureHtmlSnippet
+        inputHtml={defaultExample.html}
+        configYaml={defaultExample.config}
       />
 
       <Title mt="md" order={5}>
