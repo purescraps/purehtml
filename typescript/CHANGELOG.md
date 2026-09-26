@@ -1,5 +1,7 @@
 ### UNRELEASED
 
+### 0.10.0
+
 **BREAKING CHANGE (Go):**
 
 - **go**: `ConfigFactory.FromYAML` now validates configs against the shared config schema and returns a `*purehtml.ValidationError` for invalid input. Configs the schema rejects but Go previously accepted (e.g. `type: object` without `properties`) now fail, matching the other ports.

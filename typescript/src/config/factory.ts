@@ -88,7 +88,10 @@ export class ConfigFactory {
     })();
 
     if (defaultValue !== undefined) {
-      return DefaultValueConfig.generate(config, defaultValue) as Config<T>;
+      return DefaultValueConfig.generate(
+        config,
+        defaultValue,
+      ) as unknown as Config<T>;
     }
 
     return config as Config<T>;

@@ -21,10 +21,7 @@ function fakeParams(): ExtractParams {
 
 describe('DefaultValueConfig', () => {
   it('ReturnsDefaultWhenInnerResultIsNull', () => {
-    const conf = DefaultValueConfig.generate(
-      new FakeConfig(null),
-      'unknown',
-    );
+    const conf = DefaultValueConfig.generate(new FakeConfig(null), 'unknown');
 
     expect(conf.extract(fakeParams())).toBe('unknown');
   });
@@ -40,9 +37,10 @@ describe('DefaultValueConfig', () => {
 
   it('PassesThroughFalsyNonNullValues', () => {
     expect(
-      DefaultValueConfig.generate(new FakeConfig(0), 'unknown').extract(
-        fakeParams(),
-      ),
+      DefaultValueConfig.generate<unknown>(
+        new FakeConfig(0),
+        'unknown',
+      ).extract(fakeParams()),
     ).toBe(0);
     expect(
       DefaultValueConfig.generate(new FakeConfig(''), 'unknown').extract(
@@ -50,9 +48,10 @@ describe('DefaultValueConfig', () => {
       ),
     ).toBe('');
     expect(
-      DefaultValueConfig.generate(new FakeConfig(false), 'unknown').extract(
-        fakeParams(),
-      ),
+      DefaultValueConfig.generate<unknown>(
+        new FakeConfig(false),
+        'unknown',
+      ).extract(fakeParams()),
     ).toBe(false);
   });
 });
