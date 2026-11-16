@@ -3,13 +3,13 @@
   "version": "0.10.0",
   "description": "",
   "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "files": [
     "dist/**",
     "src/config-schema.json"
   ],
   "scripts": {
-    "build": "tsc --noEmit && tsup",
-    "build:fast": "tsup",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
     "format": "biome format --write",
     "lint": "biome lint --write",
     "test": "bun test",
@@ -20,21 +20,21 @@
   "author": "Fatih Kaya <1994274@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@biomejs/biome": "^2.5.12",
-    "@swc/core": "^1.16.2",
-    "@types/bun": "^1.4.2",
-    "@types/node": "^26.5.0",
+    "@biomejs/biome": "^2.6.8",
+    "@swc/core": "^1.16.22",
+    "@types/bun": "^1.4.4",
+    "@types/node": "^26.6.6",
+    "@typescript/typescript6": "^6.0.2",
     "ajv": "^8.20.0",
     "domhandler": "^6.0.1",
-    "globals": "^17.12.0",
+    "globals": "^17.14.0",
     "jsonschema": "^1.5.0",
     "ts-node": "^10.9.2",
-    "tsup": "^8.5.1",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "cheerio": "^1.2.0",
-    "yaml": "^2.9.0"
+    "yaml": "^2.9.1"
   },
-  "packageManager": "pnpm@12.3.4"
+  "packageManager": "pnpm@12.21.0"
 }

@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "rootDir": "."
+  },
+  "include": ["src", "examples"],
+  "exclude": ["**/*.test.ts", "src/setup-bun-matchers.ts"]
+}
