@@ -10,8 +10,11 @@ import com.purescraps.purehtml.interfaces.ExtractParams;
 public class PureHTML {
 
     public static Object extract(Config config, String html, String url) {
-
         PureHTMLDocument doc = JsoupBackend.load(html);
+        return extract(config, doc, url);
+    }
+
+    public static Object extract(Config config, PureHTMLDocument doc, String url) {
         ExtractParams extractParams = new ExtractParamsBuilder()
                 .setDocument(doc)
                 .setNode(new ArrayList<>())
@@ -20,7 +23,6 @@ public class PureHTML {
                 .build();
 
         return config.extract(extractParams);
-
     }
 
 }

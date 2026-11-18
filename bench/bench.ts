@@ -1,22 +1,26 @@
-import { cheerio, ConfigFactory, extract } from "@purescraps/purehtml";
+import { cheerio, ConfigFactory, extract } from "../typescript/src";
 import { readFileSync } from "fs";
+import { resolve } from "path";
 
-const iterations = 10000;
-const html = readFileSync("files/sample-1.html").toString();
+const currentDir = typeof __dirname !== "undefined" ? __dirname : ".";
+
+const iterations = 5000;
+const html = readFileSync(resolve(currentDir, "files/sample-1.html"), "utf-8");
 const config = ConfigFactory.fromYAML(
-  readFileSync("files/sample-1.yaml").toString()
+  readFileSync(resolve(currentDir, "files/sample-1.yaml"), "utf-8")
 );
 const doc = cheerio.load(html);
 
 console.log(`Running benchmark for ${iterations} iterations.`);
 
 console.log(
-  `extract result: ${extract(cheerio, doc, config, "http://example.com")}`
+  "extract result:",
+  extract(cheerio, doc, config, "http://example.com")
 );
 
 const start = Date.now();
 for (let i = 0; i < iterations; i++) {
-  extract(cheerio, doc, config, "https://example.com");
+  extract(cheerio, doc, config, "http://example.com");
 }
 const duration = Date.now() - start;
 const throughput = (iterations * 1000) / duration;

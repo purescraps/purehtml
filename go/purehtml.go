@@ -54,6 +54,11 @@ func ExtractFromString(backend Backend, html string, cfg Config, baseURL string)
 	return Extract(backend, []byte(html), cfg, baseURL)
 }
 
+// ExtractDoc extracts data from a pre-loaded Document according to a config
+func ExtractDoc(backend Backend, doc Document, cfg Config, baseURL string) (interface{}, error) {
+	return cfg.Extract(backend, doc.Root(), baseURL, "")
+}
+
 // Default backend instance
 var DefaultBackend = backend.NewGoQueryBackend()
 
