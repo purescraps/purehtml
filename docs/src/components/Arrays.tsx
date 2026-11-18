@@ -42,7 +42,7 @@ export function Arrays() {
       <PureHtmlSnippet inputHtml={basic.html} configYaml={basic.config} />
 
       <Title mt="md" order={5}>
-        Appying transformers to the items:
+        Applying transformers to the items:
       </Title>
 
       <Text>
@@ -56,7 +56,7 @@ export function Arrays() {
       />
 
       <Alert icon={<IconInfoCircle />} mt="sm">
-        It's possible to omit <Code>type: array</Code> part if provide{' '}
+        It's possible to omit <Code>type: array</Code> part if you provide{' '}
         <Code>items</Code>
       </Alert>
     </Box>

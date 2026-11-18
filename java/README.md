@@ -28,6 +28,7 @@ Make sure you have `maven` installed in your environment.
 ```java
 import com.purescraps.purehtml.configs.Config;
 import com.purescraps.purehtml.configs.ConfigFactory;
+import static com.purescraps.purehtml.PureHTML.extract;
 
 public class Main {
     public static void main(String[] args) {

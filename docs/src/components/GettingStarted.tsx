@@ -14,7 +14,7 @@ const input = \`<div>
   <p>baz</p>
 </div>\`;
 const config = ConfigFactory.fromYAML('selector: p');
-const result = extract(inputHtml, config, 'https://example.com');`;
+const result = extract(input, config, 'https://example.com');`;
 
 export function GettingStarted() {
   return (

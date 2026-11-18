@@ -107,7 +107,7 @@ selector: .conditional
 
 ## Transformers
 
-The library includes 18 built-in transformers:
+The library includes 20 built-in transformers:
 
 | Name | Input | Output | Description |
 |------|-------|--------|-------------|
@@ -119,6 +119,7 @@ The library includes 18 built-in transformers:
 | `exists` | STRING | BOOLEAN | Check if element exists |
 | `length` | STRING/ARRAY | NUMBER | Get length |
 | `json` | STRING | * | Parse JSON from text |
+| `jsonpath(path)` | * | * | Extract a value from parsed JSON by path |
 | `resolve(baseUrl)` | STRING | STRING | Resolve relative URLs |
 | `urlQueryParam(params...)` | STRING | STRING/OBJECT | Extract URL query parameters |
 | `removeUrlQueryParam(params...)` | STRING | STRING | Remove query parameters |

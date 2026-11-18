@@ -39,7 +39,7 @@ export function Objects() {
       <Title order={3}>Objects</Title>
 
       <Text>
-        Extracting an array can be done by setting <br />
+        Extracting an object can be done by setting <br />
         <Code>
           {'{ type: object, properties: { property: <configuration> } } '}
         </Code>
@@ -49,12 +49,14 @@ export function Objects() {
       <PureHtmlSnippet inputHtml={basic.html} configYaml={basic.config} />
 
       <Title mt="md" order={5}>
-        Appying transformers to the items:
+        Applying transformers to properties:
       </Title>
 
       <Text>
-        Let's say, we want to extract attributes of the matched items. We can
-        use <Code>attr(...name: string[])</Code> transformer.
+        If no selector is provided for a property, transformers will run
+        directly on the parent element. For example, we can extract an attribute
+        from the parent element using the <Code>attr(...name: string[])</Code>{' '}
+        transformer.
       </Text>
 
       <PureHtmlSnippet
@@ -63,7 +65,7 @@ export function Objects() {
       />
 
       <Alert icon={<IconInfoCircle />} mt="sm">
-        It's possible to omit <Code>type: object</Code> part if provide{' '}
+        It's possible to omit <Code>type: object</Code> part if you provide{' '}
         <Code>properties</Code>
       </Alert>
     </Box>

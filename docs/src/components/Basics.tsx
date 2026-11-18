@@ -96,7 +96,7 @@ export function Basics() {
     <Box id="basics" mt="md">
       <Title order={3}>Basics</Title>
 
-      <Text>Let's consider the this HTML:</Text>
+      <Text>Let's consider this HTML:</Text>
 
       <HtmlSnippet code={html1} />
 
@@ -214,7 +214,7 @@ export function Basics() {
 
       <Text mt="md">
         We will explore the other transformers in{' '}
-        <Anchor href="#transformers">Transormers</Anchor> section.
+        <Anchor href="#transformers">Transformers</Anchor> section.
       </Text>
     </Box>
   );
