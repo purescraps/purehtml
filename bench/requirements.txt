@@ -8,5 +8,5 @@ PyYAML==6.0.2
 referencing==0.35.1
 rpds-py==0.22.3
 six==1.17.0
-soupsieve==2.6
+soupsieve==4.1.2
 webencodings==0.5.1

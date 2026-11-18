@@ -64,6 +64,25 @@ public class PureHTMLTest {
         }
     }
 
+    private static Object toJsonObject(Object obj) {
+        if (obj instanceof Map<?, ?> map) {
+            JSONObject json = new JSONObject();
+            for (Map.Entry<?, ?> entry : map.entrySet()) {
+                String key = String.valueOf(entry.getKey());
+                Object val = entry.getValue();
+                json.put(key, val == null ? JSONObject.NULL : toJsonObject(val));
+            }
+            return json;
+        } else if (obj instanceof List<?> list) {
+            org.json.JSONArray array = new org.json.JSONArray();
+            for (Object item : list) {
+                array.put(item == null ? JSONObject.NULL : toJsonObject(item));
+            }
+            return array;
+        }
+        return obj;
+    }
+
     private boolean validateFile(Path yamlFilePath) {
         Path schemaPath = Paths.get("../spec.schema.yaml");
         try {
@@ -74,7 +93,7 @@ public class PureHTMLTest {
             Map<String, Object> yamlContent = yaml.load(Files.newInputStream(yamlFilePath));
 
             Schema schema = SchemaLoader.load(schemaJson);
-            schema.validate(new JSONObject(yamlContent));
+            schema.validate(toJsonObject(yamlContent));
             return true;
         } catch (IOException | ValidationException e) {
             System.out.println("Validation Error: " + e.getMessage());
@@ -98,7 +117,8 @@ public class PureHTMLTest {
     }
 
     private void compareValues(String answer, Object expected, String filePath, Map<String, Object> spec) {
-        if (answer.equals(expected.toString())) {
+        String expectedString = expected == null ? "null" : expected.toString();
+        if (answer.equals(expectedString)) {
             System.out.println("  -- Success: " + spec.get("description"));
         } else {
             System.out.println("  -- Fail: " + spec.get("description"));

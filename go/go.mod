@@ -1,8 +1,6 @@
 module github.com/purescraps/purehtml/go
 
-go 1.24.0
-
-toolchain go1.24.2
+go 1.26.0
 
 require (
 	github.com/PuerkitoBio/goquery v1.11.0
@@ -12,6 +10,6 @@ require (
 
 require (
 	github.com/andybalholm/cascadia v1.3.3 // indirect
-	golang.org/x/net v0.48.0 // indirect
-	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/net v0.63.0 // indirect
+	golang.org/x/text v0.44.0 // indirect
 )
