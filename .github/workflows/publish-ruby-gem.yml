@@ -1,0 +1,43 @@
+name: Publish Ruby gem
+
+on:
+  push:
+    branches: ["master"]
+    paths: ["ruby/**"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Upload release to RubyGems
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Mandatory for Trusted Publishing (OIDC) on RubyGems
+    defaults:
+      run:
+        working-directory: ruby
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby 4
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '4.0'
+          bundler-cache: true
+
+      - name: Run Tests
+        run: bundle exec rake test
+
+      - name: Configure RubyGems credentials (Trusted Publishing / OIDC)
+        if: ${{ !secrets.RUBYGEMS_API_KEY }}
+        uses: rubygems/configure-rubygems-credentials@v1
+
+      - name: Build and Publish Gem
+        env:
+          GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+        run: |
+          gem build purehtml.gemspec
+          gem push purehtml-*.gem
