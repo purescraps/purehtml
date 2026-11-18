@@ -123,6 +123,7 @@ public class PureHTMLTest {
         } else {
             System.out.println("  -- Fail: " + spec.get("description"));
             reportIncorrectValues(answer, expected);
+            fail("Spec failed: " + filePath + " - " + spec.get("description") + ". Expected: " + expectedString + ", Got: " + answer);
         }
     }
 

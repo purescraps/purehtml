@@ -27,43 +27,27 @@ public abstract class ConfigWithSelector extends Config {
             return element;
         }
 
-        if (params.isIncludeRoot()) {
-            if (element.isEmpty()) {
-                List<PureHTMLNode> root = doc.select(this.selector);
-
-                for (PureHTMLNode node : root) {
-                    if (node.isSelector(this.selector)) {
-                        return Collections.singletonList(node);
-
-                    } else {
-                        return root;
-                    }
-                }
-            } else {
-                for (PureHTMLNode node : element) {
-                    if (node.isSelector(this.selector)) {
-                        return Collections.singletonList(node);
-                    }
-                }
-                return new ArrayList<>();
-            }
-        }
-
         if (element.isEmpty()) {
-            List<PureHTMLNode> nodes = doc.select(selector);
-            List<PureHTMLNode> results = new ArrayList<>();
+            return doc.select(this.selector);
+        }
 
-            for (PureHTMLNode node : nodes) {
-                if (params.isIncludeRoot()) {
-                    results = node.find(selector);
+        if (params.isIncludeRoot()) {
+            List<PureHTMLNode> matching = new ArrayList<>();
+            for (PureHTMLNode node : element) {
+                if (node.isSelector(this.selector)) {
+                    matching.add(node);
                 }
             }
-            return params.isIncludeRoot() ? results : nodes;
-
-        } else {
-            return element.getFirst().find(selector);
-
+            if (!matching.isEmpty()) {
+                return matching;
+            }
         }
+
+        List<PureHTMLNode> results = new ArrayList<>();
+        for (PureHTMLNode node : element) {
+            results.addAll(node.find(this.selector));
+        }
+        return results;
     }
 
     public PureHTMLNode getFirstMatch(List<PureHTMLNode> element,

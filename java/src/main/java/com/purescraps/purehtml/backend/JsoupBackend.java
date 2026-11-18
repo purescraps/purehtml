@@ -12,6 +12,7 @@ public class JsoupBackend {
          * Load an HTML string into a PureHTMLDocument.
          */
         Document document = Jsoup.parse(html);
+        document.outputSettings().prettyPrint(false);
         return new PureHTMLDocument(document);
     }
 }

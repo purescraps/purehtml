@@ -32,13 +32,30 @@ public class NumberTransformer extends Transformer {
     @Override
     public Object transform(TransformParams params) {
         Object val = params.getVal();
-        // If the value is a string, convert it to a number
-        if (val instanceof String) {
-
-            return Double.parseDouble(val.toString().replace("\"", "").trim()); // Using Double to represent numbers
-        }
         if (val == null) {
             return null;
+        }
+        if (val instanceof Number num) {
+            double d = num.doubleValue();
+            if (d == (long) d) {
+                long l = (long) d;
+                if (l >= Integer.MIN_VALUE && l <= Integer.MAX_VALUE) {
+                    return (int) l;
+                }
+                return l;
+            }
+            return num;
+        }
+        if (val instanceof String) {
+            double d = Double.parseDouble(val.toString().replace("\"", "").trim());
+            if (d == (long) d) {
+                long l = (long) d;
+                if (l >= Integer.MIN_VALUE && l <= Integer.MAX_VALUE) {
+                    return (int) l;
+                }
+                return l;
+            }
+            return d;
         }
         // If the value is not a valid type, throw an error
         System.out.println("NumberTransformer --> Not valid type.");

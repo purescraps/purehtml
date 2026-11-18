@@ -38,26 +38,33 @@ public class UnionConfig extends Config {
 
                 };
 
-                PureHTMLNode elements = configWithSelector.getFirstMatch(parentElement, param, params.document());
-                if (elements == null && !(config instanceof ConstantConfig)) {
+                List<PureHTMLNode> matches = configWithSelector.getAllMatches(parentElement, param, params.document());
+                if ((matches == null || matches.isEmpty()) && !(config instanceof ConstantConfig)) {
                     continue;
                 }
 
+                boolean isArray = matches != null && matches.size() > 1;
+                List<PureHTMLNode> matchedNode = isArray ? parentElement : (matches != null ? matches : new ArrayList<>());
+                boolean elementAlreadyMatched = !isArray;
+
                 ExtractParams extractParams = new ExtractParamsBuilder()
                         .setDocument(params.document())
-                        .setNode(new ArrayList<>(Collections.singletonList(elements)))
+                        .setNode(new ArrayList<>(matchedNode))
                         .setUrl(params.url())
-                        .setElementAlreadyMatched(true)
+                        .setElementAlreadyMatched(elementAlreadyMatched)
                         .build();
                 return config.extract(extractParams);
             } else {
                 ExtractParams extractParams = new ExtractParamsBuilder()
                         .setDocument(params.document())
-                        .setNode(params.node())
+                        .setNode(new ArrayList<>(parentElement))
                         .setUrl(params.url())
                         .setElementAlreadyMatched(params.getElementAlreadyMatched())
                         .build();
-                return config.extract(extractParams);
+                Object val = config.extract(extractParams);
+                if (val != null) {
+                    return val;
+                }
             }
 
         }

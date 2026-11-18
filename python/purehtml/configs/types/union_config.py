@@ -29,32 +29,36 @@ class UnionConfig(Config):
         for config in self.configs:
 
             if isinstance(config, ConfigWithSelector):
-                # Creating an instance of GetSelectorMatchesParams
                 selector_params = GetSelectorMatchesParams(
                     already_matched=False,
                     include_root=True,
                 )
 
-                elements = config.get_first_match(parent_element, selector_params, params.document())
+                matches = config.get_all_matches(parent_element, selector_params, params.document())
 
-                if not elements and not isinstance(config, ConstantConfig):
+                if (matches is None or len(matches) == 0) and not isinstance(config, ConstantConfig):
                     continue
 
-                # Build ExtractParams for this element
+                is_array = matches is not None and len(matches) > 1
+                matched_nodes = parent_element if is_array else (matches or [])
+                element_already_matched = not is_array
+
                 extract_params = ExtractParams(document=params.document(),
-                                               nodes=[elements],
+                                               nodes=matched_nodes,
                                                url=params.url(),
-                                               element_already_matched=True)
+                                               element_already_matched=element_already_matched)
 
                 return config.extract(extract_params)
 
             else:
                 # For other types of configs (non ConfigWithSelector)
                 extract_params = ExtractParams(document=params.document(),
-                                               nodes=params.node(),
+                                               nodes=parent_element,
                                                url=params.url(),
                                                element_already_matched=params.get_element_already_matched())
 
-                return config.extract(extract_params)
+                val = config.extract(extract_params)
+                if val is not None:
+                    return val
 
         return None

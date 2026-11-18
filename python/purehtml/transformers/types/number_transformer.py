@@ -34,21 +34,18 @@ class NumberTransformer(Transformer, ABC):
         :return: The transformed number.
         """
         val = params.get_val()
-
-        # If the value is a string, convert it to a number
-        if isinstance(val, str):
-            try:
-
-                value = int(val.replace("\"", "").strip())
-                return value
-
-            except ValueError:
-
-                raise ValueError("NumberTransformer --> Not a valid number format.")
-
-        # If the value is None, return None
         if val is None:
             return None
 
-        # If the value is not a string or valid number, throw an error
+        if isinstance(val, (int, float)):
+            return int(val) if isinstance(val, float) and val.is_integer() else val
+
+        if isinstance(val, str):
+            clean = val.replace("\"", "").strip()
+            try:
+                f = float(clean)
+                return int(f) if f.is_integer() else f
+            except ValueError:
+                raise ValueError("NumberTransformer --> Not a valid number format.")
+
         raise TypeError("NumberTransformer --> Input is not a valid number or string representation of a number.")

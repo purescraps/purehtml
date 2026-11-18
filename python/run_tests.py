@@ -1,4 +1,5 @@
 import json
+import sys
 from pathlib import Path
 
 import yaml
@@ -8,6 +9,8 @@ from jsonschema import validate
 from purehtml import ConfigFactory
 from purehtml import extract
 
+has_failures = False
+
 
 def run():
     """Main function to walk through specs directory and process files."""
@@ -15,16 +18,21 @@ def run():
     specs_dir = repo_root / "specs"
 
     try:
-        for file_path in specs_dir.rglob("*"):
+        for file_path in sorted(specs_dir.rglob("*")):
             if file_path.is_file():  # Process only files
                 process_file(specs_dir, file_path)
 
     except Exception as e:
         print(f"Exception: {str(e)}")
 
+    if has_failures:
+        print("\nSome spec tests failed!")
+        sys.exit(1)
+
 
 def process_file(base_dir: Path, file_path: Path):
     """Process each file in the specs' directory."""
+    global has_failures
     relative_path = file_path.name.replace(base_dir.name, "")
 
     print(f"\nProcessing: {relative_path}")
@@ -46,6 +54,7 @@ def process_file(base_dir: Path, file_path: Path):
         print(f"Done: {relative_path}")
 
     except Exception as e:
+        has_failures = True
         print(f"Test failed: {relative_path}: {str(e)}")
 
 
