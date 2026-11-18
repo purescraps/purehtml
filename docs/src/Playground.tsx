@@ -140,7 +140,7 @@ export function Playground() {
               </Accordion.Control>
               <Accordion.Panel>
                 <Paper shadow="sm" pt="sm" withBorder>
-                  <Collapse in={htmlFileContents === null}>
+                  <Collapse expanded={htmlFileContents === null}>
                     <Editor
                       height="25vh"
                       language="html"
@@ -156,7 +156,7 @@ export function Playground() {
                     />
                   </Collapse>
 
-                  <Collapse in={htmlFileContents !== null} p="sm">
+                  <Collapse expanded={htmlFileContents !== null} p="sm">
                     <Code>Deselect HTML file to re-open the editor.</Code>
                   </Collapse>
 
