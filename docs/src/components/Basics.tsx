@@ -42,6 +42,34 @@ properties:
     default: No subtitle`,
 };
 
+const fallbackSelectorsExample = {
+  html: `
+<div class="product-item">
+  <!-- Website runs an A/B test: .sale-price is rendered instead of .regular-price -->
+  <span class="sale-price">$19.99</span>
+</div>`,
+  config: `selector:
+  - .flash-deal
+  - .sale-price
+  - .regular-price
+transform: trim`,
+};
+
+const sampleHtmlSelectorExample = {
+  html: `
+<div class="product-item">
+  <span class="promo-price">$14.99</span>
+</div>`,
+  config: `selector:
+  - selector: .promo-price
+    sampleHTMLs:
+      - fixtures/promo.html
+  - selector: .standard-price
+    sampleHTMLs:
+      - fixtures/standard.html
+transform: trim`,
+};
+
 const numberCastExample = {
   html: `
 <div>
@@ -170,6 +198,36 @@ export function Basics() {
       <PureHtmlSnippet
         inputHtml={defaultExample.html}
         configYaml={defaultExample.config}
+      />
+
+      <Title mt="md" order={5}>
+        Fallback Selectors (<Code>selector: [...]</Code>)
+      </Title>
+
+      <Text>
+        Websites frequently redesign markup, change class names, or run A/B
+        tests that alter DOM structure. PureHTML allows <Code>selector</Code> to
+        be an array of selector strings instead of a single string. The parser
+        treats them as a fallback list and extracts data from the first selector
+        that matches:
+      </Text>
+
+      <PureHtmlSnippet
+        inputHtml={fallbackSelectorsExample.html}
+        configYaml={fallbackSelectorsExample.config}
+      />
+
+      <Text mt="md">
+        The schema also supports selector objects with <Code>sampleHTMLs</Code>{' '}
+        (e.g.{' '}
+        <Code>{`{ selector: '...', sampleHTMLs: ['...'] }`}</Code>). This allows
+        you to document or link test fixture HTML files directly alongside each
+        DOM variant while remaining fully valid:
+      </Text>
+
+      <PureHtmlSnippet
+        inputHtml={sampleHtmlSelectorExample.html}
+        configYaml={sampleHtmlSelectorExample.config}
       />
 
       <Title mt="md" order={5}>

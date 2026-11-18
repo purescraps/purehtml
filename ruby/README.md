@@ -122,6 +122,43 @@ selector: .non-existent
 default: "N/A"
 ```
 
+### Fallback Selectors
+
+Specify an array of fallback selectors for resilient scraping across redesigns or A/B tests:
+
+```yaml
+selector:
+  - .flash-deal-price
+  - .sale-price
+  - .regular-price
+transform: trim
+```
+
+The schema also supports selector objects with `sampleHTMLs`:
+
+```yaml
+selector:
+  - selector: .promo-price
+    sampleHTMLs:
+      - tests/fixtures/promo.html
+  - selector: .standard-price
+    sampleHTMLs:
+      - tests/fixtures/standard.html
+```
+
+### Transformer Argument Quoting Rules
+
+When transformer arguments contain spaces, commas, or regex escape sequences (e.g. `replace`, `split`, `join`, `urlQueryParam`), enclose them in single or double quotes:
+
+```yaml
+transform:
+  - 'replace("\\s+", " ")'
+  - 'split(", ")'
+  - 'join(" - ")'
+```
+
+Inside quotes, a backslash escapes matching quotes (`\"` or `\'`) or literal backslashes (`\\`), while regex escapes (`\s`, `\d`) pass through untouched.
+
 ## Development
 
 Run tests with `rake`:

@@ -105,6 +105,30 @@ constant: "static_value"
 selector: .conditional
 ```
 
+### Fallback Selectors
+
+Specify an array of selectors to resiliently match DOM variations, redesigns, or A/B tests:
+
+```yaml
+selector:
+  - .flash-deal-price
+  - .sale-price
+  - .regular-price
+transform: trim
+```
+
+Or use selector objects with `sampleHTMLs` to associate test fixtures with each variant:
+
+```yaml
+selector:
+  - selector: .promo-price
+    sampleHTMLs:
+      - tests/fixtures/promo.html
+  - selector: .standard-price
+    sampleHTMLs:
+      - tests/fixtures/standard.html
+```
+
 ## Transformers
 
 The library includes 20 built-in transformers:

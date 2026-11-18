@@ -95,9 +95,51 @@ result = PureHTML.extract(config, htmlString, "https://example.com")
 ## Key Features
 
 - **Declarative Schemas**: YAML-based definitions for extracting primitives, nested objects, arrays, constants, unions, and default fallbacks.
-- **Chainable Transformers**: 20+ built-in transformers including `trim`, `number`, `boolean`, `attr`, `html`, `text`, `replace`, `split`, `join`, `json`, `jsonpath`, `resolve`, `urlQueryParam`, and more.
+- **Fallback Selectors**: Supply an array of selectors (`selector: ['.sale-price', '.price']`) or selector objects with `sampleHTMLs` for resilient scraping when websites A/B test or change their DOM structure.
+- **Chainable Transformers**: 20+ built-in transformers including `trim`, `number`, `boolean`, `attr`, `html`, `text`, `replace`, `split`, `join`, `json`, `jsonpath`, `resolve`, `urlQueryParam`, and more with support for quoted arguments and regex patterns.
 - **Cross-Language Compliance**: All ports are continuously tested against shared test fixtures in [`specs/`](specs/) to guarantee identical parsing and transformation behavior.
 - **Zero Runtime Overhead Schemas**: Pre-compile schemas once and execute them efficiently over millions of documents.
+
+---
+
+## Specification Highlights
+
+### Fallback Selectors (Resilient Scraping & A/B Testing)
+
+Websites often vary their DOM structure across A/B test variants or responsive views. `selector` can be configured as an array of fallback selectors evaluated in order:
+
+```yaml
+selector:
+  - .flash-deal-price
+  - .sale-price
+  - .regular-price
+transform: trim
+```
+
+The schema also supports selector objects with `sampleHTMLs`, allowing you to document and reference HTML fixtures alongside each selector variant:
+
+```yaml
+selector:
+  - selector: .promo-price
+    sampleHTMLs:
+      - tests/fixtures/promo.html
+  - selector: .standard-price
+    sampleHTMLs:
+      - tests/fixtures/standard.html
+```
+
+### Transformer Argument Quoting Rules
+
+Transformers support parameter lists, but arguments containing spaces, commas, colons, or regex escape sequences must follow quoting rules:
+
+- **Bare (unquoted) arguments**: Simple alphanumeric identifiers matching `[\w-]+` can be written without quotes (e.g. `attr(href)`, `trim`, `split(-)`).
+- **Quoted arguments (`"..."` or `'...'`)**: Required when arguments contain spaces, commas, colons, or regex metacharacters:
+  - `replace("\s+", " ")` or `'replace(",", "")'`
+  - `split(", ")` or `'split("::")'`
+  - `join(" - ")` or `join(", ")`
+  - `urlQueryParam("utm_source")` or `urlQueryParam('ref')`
+- **Escaping inside quotes**: Backslashes escape matching quote characters (`\"` or `\'`) or literal backslashes (`\\`). Regex escape sequences like `\s`, `\d`, and `\w` pass through untouched to regex engines.
+- **YAML tip**: In YAML schemas, wrap transform expressions in outer quotes (e.g. `transform: 'replace("\s+", " ")'`) or use YAML array syntax (`- replace("\s+", " ")`) to prevent YAML parsing conflicts.
 
 ---
 

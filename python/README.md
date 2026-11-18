@@ -38,6 +38,24 @@ print(f"Expected  output : {expected_output}")
 
 ```
 
+### Fallback Selectors & Transformer Quoting
+
+PureHTML schemas allow resilient scraping with fallback selectors and parameter quoting:
+
+```yaml
+# Fallback selectors for A/B tested DOM structures
+selector:
+  - .flash-deal
+  - .sale-price
+  - .regular-price
+
+# Quoted transformer arguments containing spaces, commas, or regex escapes
+transform:
+  - 'replace("\\s+", " ")'
+  - 'split(", ")'
+  - 'join(" - ")'
+```
+
 ## Development
 
 For testing, we use test specifications defined in `<purehtml root>/specs`.

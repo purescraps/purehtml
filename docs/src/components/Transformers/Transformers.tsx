@@ -1,5 +1,5 @@
-import { Anchor, Box, Code, Title } from '@mantine/core';
-import { IconExternalLink } from '@tabler/icons-react';
+import { Alert, Anchor, Box, Code, List, Text, Title } from '@mantine/core';
+import { IconExternalLink, IconInfoCircle } from '@tabler/icons-react';
 import { AttrTransformer } from './AttrTransformer';
 import { BooleanTransformer } from './BooleanTransformer';
 import { CapitalizeTransformer } from './CapitalizeTransformer';
@@ -43,6 +43,65 @@ export function Transformers() {
       cast output to <Code>number</Code>. Or you may also need to extract an{' '}
       <Code>attribute</Code> of the matched element. These cases and more can be
       handled by the use of transformers.
+
+      <Alert
+        icon={<IconInfoCircle />}
+        title="Transformer Argument Quoting Rules"
+        color="blue"
+        radius="md"
+        mt="md"
+        mb="md"
+      >
+        <Text size="sm">
+          PureHTML transformers support flexible parameter syntax, but arguments
+          containing spaces, commas, colons, or regex escape sequences require
+          specific quoting rules:
+        </Text>
+
+        <List size="sm" mt="xs" spacing="xs">
+          <List.Item>
+            <b>Bare (unquoted) arguments:</b> Simple identifiers matching{' '}
+            <Code>[\w-]+</Code> (letters, digits, underscores, hyphens) can be
+            written without quotes, e.g.{' '}
+            <Code>attr(href)</Code>, <Code>trim</Code>, or <Code>split(-)</Code>.
+          </List.Item>
+          <List.Item>
+            <b>Quoted arguments (<Code>"..."</Code> or <Code>'...'</Code>):</b>{' '}
+            Arguments containing <b>spaces</b>, <b>commas</b>, <b>colons</b>, or{' '}
+            <b>regex metacharacters</b> must be enclosed in single or double
+            quotes. Examples:
+            <List size="xs" mt={4} spacing={2}>
+              <List.Item>
+                <Code>replace("\s+", " ")</Code> or <Code>replace(",", "")</Code>
+              </List.Item>
+              <List.Item>
+                <Code>split(", ")</Code> or <Code>split("::")</Code>
+              </List.Item>
+              <List.Item>
+                <Code>join(" - ")</Code> or <Code>join(", ")</Code>
+              </List.Item>
+              <List.Item>
+                <Code>urlQueryParam("utm_source")</Code> or{' '}
+                <Code>urlQueryParam('ref')</Code>
+              </List.Item>
+            </List>
+          </List.Item>
+          <List.Item>
+            <b>Escaping inside quotes:</b> A backslash escapes the enclosing
+            quote character (<Code>\"</Code> inside <Code>"..."</Code> or{' '}
+            <Code>\'</Code> inside <Code>'...'</Code>) or a literal backslash (
+            <Code>\\</Code>). Regex escape sequences like <Code>\s</Code>,{' '}
+            <Code>\d</Code>, and <Code>\w</Code> are preserved verbatim and
+            passed untouched to regex engines.
+          </List.Item>
+          <List.Item>
+            <b>YAML quoting tip:</b> In YAML schemas, prevent YAML parser syntax
+            collisions by quoting the entire transform expression (e.g.{' '}
+            <Code>transform: 'replace("\s+", " ")'</Code>) or using YAML list
+            notation (<Code>- replace("\s+", " ")</Code>).
+          </List.Item>
+        </List>
+      </Alert>
       {/* attr transformer */}
       <AttrTransformer />
       {/* boolean transformer */}
