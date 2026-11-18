@@ -9,6 +9,7 @@ import { Intro } from '../src/components/Intro';
 import { Objects } from '../src/components/Objects';
 import { Transformers } from '../src/components/Transformers/Transformers';
 import { UnionConfig } from '../src/components/UnionConfig';
+import { Recipes } from '../src/components/Recipes';
 import { AppLayout } from './app-layout';
 
 export default function Page() {
@@ -24,6 +25,7 @@ export default function Page() {
           <Objects />
           <Transformers />
           <UnionConfig />
+          <Recipes />
         </Grid.Col>
       </Grid>
     </AppLayout>

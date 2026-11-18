@@ -73,7 +73,7 @@ export function usePureHtml({
 
       setState((s) => ({ ...s, result: '' }));
     }
-  }, [config, input]);
+  }, [config, input, url]);
 
   return state;
 }

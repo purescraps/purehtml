@@ -143,6 +143,129 @@ Transformers support parameter lists, but arguments containing spaces, commas, c
 
 ---
 
+## Recipes & Real-World Patterns
+
+### 1. Scraping Next.js / Nuxt / JSON-LD Data
+
+Modern frameworks (Next.js, Nuxt, Remix) and SEO-rich web pages embed structured JSON data directly inside `<script>` tags (`script#__NEXT_DATA__`, `script#__NUXT_DATA__`, or `script[type="application/ld+json"]`). Extracting directly from these hydration scripts is vastly faster and more durable than querying volatile presentation CSS classes.
+
+Combine `json` with `jsonpath` to pluck properties directly:
+
+```yaml
+properties:
+  productId:
+    selector: script#__NEXT_DATA__
+    transform:
+      - json
+      - 'jsonpath("$.props.pageProps.product.id")'
+  productName:
+    selector: script#__NEXT_DATA__
+    transform:
+      - json
+      - 'jsonpath("$.props.pageProps.product.title")'
+  price:
+    selector: script#__NEXT_DATA__
+    transform:
+      - json
+      - 'jsonpath("$.props.pageProps.product.price")'
+  jsonLdPrice:
+    selector: 'script[type="application/ld+json"]'
+    transform:
+      - json
+      - 'jsonpath("$.offers.price")'
+      - number
+```
+
+### 2. Handling Pagination & Relative Links
+
+Scrapers and crawlers frequently encounter relative links in pagination navigation (`<a class="next" href="/catalog/page-3">Next</a>`) or listing item anchors (`<a href="details/401">`).
+
+Combine `attr(href)` with `resolve` to automatically resolve relative URLs against the base URL provided to `extract()`:
+
+```yaml
+properties:
+  currentPage:
+    selector: .pagination .current
+    transform:
+      - 'replace("Page ", "")'
+      - trim
+      - number
+  nextPageUrl:
+    selector: .pagination a.next
+    transform:
+      - attr(href)
+      - resolve
+  items:
+    selector: ul.items li a
+    type: array
+    items:
+      properties:
+        name:
+          transform: trim
+        url:
+          transform:
+            - attr(href)
+            - resolve
+```
+
+### 3. Resilient Data Extraction: Combining Union and Default
+
+Real-world pages frequently exhibit variable markup due to A/B testing, promo badges, or optional fields (e.g., discounted sale prices vs. standard prices, out-of-stock items missing prices, or promotional items marked "FREE").
+
+Combine `union` with a fallback `constant` value at the end to gracefully handle variant structures with reliable defaults:
+
+```yaml
+selector: .products .product
+type: array
+items:
+  properties:
+    name:
+      selector: .name
+      transform: trim
+    price:
+      union:
+        - selector: .sale-price
+          transform:
+            - 'replace("\$", "")'
+            - trim
+            - number
+        - selector: .price
+          transform:
+            - 'replace("\$", "")'
+            - trim
+            - number
+        - selector: .free-text
+          transform:
+            - 'replace("FREE", "0")'
+            - number
+        - constant: 0
+    status:
+      union:
+        - selector: .badge
+          transform: trim
+        - constant: "Standard"
+```
+
+### 4. Real-World Case Study: Hacker News Scraper
+
+See [`docs/src/examples/advanced.hackernews-listing.ts`](docs/src/examples/advanced.hackernews-listing.ts) for a production-ready Hacker News listing scraper that extracts post IDs, titles, URLs, timestamps, scores, and comment links:
+
+```yaml
+selector: tr.athing.submission
+items:
+  properties:
+    id: { transform: attr(id) }
+    title: { selector: span.titleline }
+    url: { selector: 'span.titleline a:first-child', transform: [attr(href), resolve] }
+    date: { selector: '+tr span.age', transform: attr(title) }
+    score: { selector: '+tr span.score' }
+    comments: { selector: '+tr span.age a', transform: [attr(href), resolve] }
+```
+
+Explore and test this example interactively in the **[Playground](https://purescraps.github.io/purehtml/playground)**.
+
+---
+
 ## Specification & Testing
 
 The PureHTML schema definition is located at [`spec.schema.yaml`](spec.schema.yaml) and [`typescript/src/config-schema.json`](typescript/src/config-schema.json).

@@ -81,6 +81,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <DocsNavLink label="Objects" href="/#objects" />
           <DocsNavLink label="Transformers" href="/#transformers" />
           <DocsNavLink label="Union Config" href="/#union-config" />
+          <DocsNavLink label="Recipes & Patterns" href="/#recipes" />
         </AppShell.Navbar>
 
         <AppShell.Main>{children}</AppShell.Main>

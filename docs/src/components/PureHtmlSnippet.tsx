@@ -4,11 +4,13 @@ import { usePureHtml } from '../hooks/usePureHtml';
 export function PureHtmlSnippet({
   inputHtml,
   configYaml,
+  url,
 }: {
   inputHtml: string;
   configYaml: string;
+  url?: string;
 }) {
-  const { result } = usePureHtml({ inputHtml, configYaml });
+  const { result } = usePureHtml({ inputHtml, configYaml, url });
 
   return (
     <CodeHighlightTabs
