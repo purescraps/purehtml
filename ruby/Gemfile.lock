@@ -38,9 +38,9 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  minitest (~> 5.11)
+  minitest (>= 5.0)
   purehtml!
-  rake (~> 12.3)
+  rake (>= 12.0)
 
 CHECKSUMS
   minitest (5.27.0) sha256=2d3b17f8a36fe7801c1adcffdbc38233b938eb0b4966e97a6739055a45fa77d5
