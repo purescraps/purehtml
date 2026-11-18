@@ -34,13 +34,10 @@ jobs:
       - name: Run Tests
         run: bundle exec rake test
 
-      - name: Configure RubyGems credentials (Trusted Publishing / OIDC)
-        if: ${{ !secrets.RUBYGEMS_API_KEY }}
+      - name: Configure RubyGems credentials (Trusted Publishing)
         uses: rubygems/configure-rubygems-credentials@v1
 
       - name: Build and Publish Gem
-        env:
-          GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
         run: |
           gem build purehtml.gemspec
           gem push purehtml-*.gem
