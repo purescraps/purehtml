@@ -1,6 +1,6 @@
 [project]
 name = "purehtml-purescraps"
-version = "0.1.4"
+version = "0.1.5"
 authors = [
   { name="Onur C. Güven", email="onurcguven09@gmail.com" },
 ]
