@@ -3,7 +3,9 @@ name: Publish Ruby gem
 on:
   push:
     branches: ["master"]
-    paths: ["ruby/**"]
+    paths:
+      - "ruby/**"
+      - ".github/workflows/publish-ruby-gem.yml"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
