@@ -16,9 +16,12 @@ Gem::Specification.new do |spec|
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/purescraps/purehtml"
+  spec.metadata["changelog_uri"] = "https://github.com/purescraps/purehtml/blob/master/ruby/CHANGELOG.md"
+  spec.metadata["bug_tracker_uri"] = "https://github.com/purescraps/purehtml/issues"
+  spec.metadata["documentation_uri"] = spec.homepage
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    Dir.glob("{lib}/**/*") + %w[README.md LICENSE purehtml.gemspec Rakefile]
+    Dir.glob("{lib}/**/*") + %w[README.md LICENSE CHANGELOG.md purehtml.gemspec Rakefile]
   end
   spec.require_paths = ["lib"]
 
