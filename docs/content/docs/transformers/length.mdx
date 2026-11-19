@@ -1,0 +1,27 @@
+---
+title: length
+description: Count array items, object keys, or string character length.
+---
+
+The `length` transformer returns the character length of a string or the number of elements in an array.
+
+## String Length
+
+<PureHtmlSnippet
+  inputHtml="<div>Hello, world!</div>"
+  configYaml="{ selector: div, transform: length }"
+/>
+
+## Array Length
+
+<PureHtmlSnippet
+  inputHtml="<div><span>hello</span> <span>foo</span> <span>bar baz</span></div>"
+  configYaml={`{ selector: span, type: array, items: {}, transform: length }`}
+/>
+
+## Lengths of Individual Array Elements
+
+<PureHtmlSnippet
+  inputHtml="<div><span>hello</span> <span>foo</span> <span>bar baz</span></div>"
+  configYaml={`{ selector: span, type: array, items: { transform: length } }`}
+/>

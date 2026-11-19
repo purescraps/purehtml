@@ -1,0 +1,20 @@
+---
+title: replace
+description: Replace substrings or regular expression matches.
+---
+
+The `replace` transformer substitutes all matches of a literal string or regular expression pattern with a replacement string.
+
+## Regex Pattern
+
+<PureHtmlSnippet
+  inputHtml="<div>foo 123 bar 456</div>"
+  configYaml={`{ selector: div, transform: 'replace("\\\\d+", "#")' }`}
+/>
+
+## Literal String Replacement
+
+<PureHtmlSnippet
+  inputHtml="<div>a-b-c</div>"
+  configYaml="{ selector: div, transform: 'replace(-, _)' }"
+/>

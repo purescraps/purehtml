@@ -1,0 +1,20 @@
+---
+title: removeUrlQueryParam
+description: Strip specific query parameters from URLs.
+---
+
+The `removeUrlQueryParam` transformer strips designated tracking or session parameters (e.g. `utm_source`, `ref`) from URL strings.
+
+## Removing a Single Query Parameter
+
+<PureHtmlSnippet
+  inputHtml={`<a href="http://example.com/products/1?utm_source=twitter&ref=share">product 1</a>`}
+  configYaml="{ selector: a, transform: [attr(href), removeUrlQueryParam(utm_source)] }"
+/>
+
+## Removing Multiple Query Parameters
+
+<PureHtmlSnippet
+  inputHtml={`<a href="http://example.com/products/1?utm_source=twitter&utm_medium=social&category=books">product 1</a>`}
+  configYaml="{ selector: a, transform: [attr(href), 'removeUrlQueryParam(utm_source, utm_medium)'] }"
+/>

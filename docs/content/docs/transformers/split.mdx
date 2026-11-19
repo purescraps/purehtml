@@ -1,0 +1,20 @@
+---
+title: split
+description: Split a string into an array of substrings.
+---
+
+The `split` transformer splits a string into an array. If called without arguments (`split` or `split()`), it splits on runs of whitespace. Pass an argument to split by a custom delimiter.
+
+## Splitting on a Delimiter
+
+<PureHtmlSnippet
+  inputHtml="<div>apple,banana,cherry</div>"
+  configYaml={`{ selector: div, transform: 'split(",")' }`}
+/>
+
+## Splitting on Whitespace
+
+<PureHtmlSnippet
+  inputHtml="<div>quick brown fox</div>"
+  configYaml="{ selector: div, transform: split }"
+/>

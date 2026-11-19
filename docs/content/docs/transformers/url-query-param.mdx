@@ -1,0 +1,20 @@
+---
+title: urlQueryParam
+description: Extract query parameters from URL strings.
+---
+
+The `urlQueryParam` transformer extracts query parameter values from URLs.
+
+## Extract a Single Query Parameter
+
+<PureHtmlSnippet
+  inputHtml="<span>https://example.com/search?q=purehtml&lang=en</span>"
+  configYaml="{ selector: span, transform: 'urlQueryParam(q)' }"
+/>
+
+## Extract All Query Parameters as an Object
+
+<PureHtmlSnippet
+  inputHtml="<span>https://example.com/search?q=purehtml&lang=en</span>"
+  configYaml="{ selector: span, transform: urlQueryParam }"
+/>

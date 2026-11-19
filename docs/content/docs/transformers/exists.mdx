@@ -1,0 +1,20 @@
+---
+title: exists
+description: Check whether a selector matched any element in the DOM.
+---
+
+The `exists` transformer returns `true` if the selector matched one or more elements in the document, and `false` otherwise.
+
+## Element Exists
+
+<PureHtmlSnippet
+  inputHtml="<div>Hello, world!</div>"
+  configYaml="{ selector: div, transform: exists }"
+/>
+
+## Element Does Not Exist
+
+<PureHtmlSnippet
+  inputHtml="<div>Hello, world!</div>"
+  configYaml="{ selector: span, transform: exists }"
+/>

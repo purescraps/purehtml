@@ -1,0 +1,41 @@
+---
+title: Arrays
+description: Extract collections and lists of elements into JSON arrays.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+## Basic Array Extraction
+
+Extracting an array is defined using `type: array` together with an `items:` sub-configuration. PureHTML queries all matching elements and runs the `items` configuration against each element:
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <span>a</span>
+  <span>b</span>
+  <span>c</span>
+</div>`}
+  configYaml={`selector: span
+type: array
+items: {}`}
+/>
+
+## Applying Transformers to Items
+
+You can configure child selectors or transformer pipelines inside the `items` block:
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <a href="https://example.com/foo">a</a>
+  <a href="https://example.com/bar">b</a>
+  <a href="https://example.com/baz">c</a>
+</div>`}
+  configYaml={`selector: a
+type: array
+items:
+  transform: attr(href)`}
+/>
+
+<Callout type="info">
+  You can omit `type: array` if the `items` property is present in the configuration.
+</Callout>

@@ -1,0 +1,17 @@
+---
+title: jsonpath
+description: Query and pluck fields from parsed JSON objects using JSONPath syntax.
+---
+
+The `jsonpath` transformer queries a parsed JSON structure (typically downstream of the `json` transformer) by path.
+
+Use standard JSONPath dot notation (`$.offers.price`) or bracket notation (`$['key']`). Returns `null` if the path does not resolve.
+
+## Example: Plucking from JSON-LD
+
+<PureHtmlSnippet
+  inputHtml={`<script type="application/ld+json">
+  {"offers": {"price": 42.5, "currency": "USD"}}
+</script>`}
+  configYaml={`{ selector: 'script[type="application/ld+json"]', transform: [json, 'jsonpath("$.offers.price")'] }`}
+/>

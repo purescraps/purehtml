@@ -1,10 +1,14 @@
-import { ComboboxItem } from '@mantine/core';
 import { advanced } from './advanced';
 import { basic } from './basic';
-import { Example } from './example';
+import type { Example } from './example';
 export type { Example } from './example';
 
-export function exampleToComboboxItem(example: Example): ComboboxItem {
+export interface SelectItem {
+  value: string;
+  label: string;
+}
+
+export function exampleToComboboxItem(example: Example): SelectItem {
   return {
     value: example.name,
     label: example.name,

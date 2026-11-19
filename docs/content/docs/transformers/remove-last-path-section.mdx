@@ -1,0 +1,24 @@
+---
+title: removeLastPathSection
+description: Strip the trailing path segment from a URL.
+---
+
+The `removeLastPathSection` transformer strips the last directory or slug segment from a URL path while preserving query parameters and hashes.
+
+## Basic Usage
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <a href="http://example.com/some/products/1">product 1</a>
+  <a href="http://example.com/some/products/2">product 2</a>
+</div>`}
+  configYaml="{ selector: a, items: { transform: [attr(href), removeLastPathSection] } }"
+/>
+
+## Preserving Search Query Parameters
+
+<PureHtmlSnippet
+  inputHtml={`<a href="http://example.com/foo/bar/baz?search=sample+search">example link</a>`}
+  configYaml={`selector: a
+transform: [attr(href), removeLastPathSection]`}
+/>

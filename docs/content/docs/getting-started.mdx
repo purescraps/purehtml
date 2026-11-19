@@ -1,0 +1,169 @@
+---
+title: Getting Started
+description: Install and run PureHTML across TypeScript, Go, Python, Java, and Ruby.
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## Installation & Usage
+
+PureHTML is supported across multiple languages. Choose your runtime below:
+
+<Tabs items={['TypeScript / Node.js', 'Go', 'Python', 'Java', 'Ruby']}>
+  <Tab value="TypeScript / Node.js">
+    ### Installation
+
+    ```bash
+    npm install @purescraps/purehtml
+    # or
+    pnpm add @purescraps/purehtml
+    # or
+    yarn add @purescraps/purehtml
+    ```
+
+    ### Usage
+
+    ```typescript
+    import { ConfigFactory, extract } from '@purescraps/purehtml';
+
+    const input = `<div>
+      <p>foo</p>
+      <p>bar</p>
+      <p>baz</p>
+    </div>`;
+
+    const config = ConfigFactory.fromYAML('selector: p');
+    const result = extract(input, config, 'https://example.com');
+
+    console.log(result);
+    // => "foo"
+    ```
+  </Tab>
+
+  <Tab value="Go">
+    ### Installation
+
+    ```bash
+    go get github.com/purescraps/purehtml/go
+    ```
+
+    ### Usage
+
+    ```go
+    package main
+
+    import (
+      "fmt"
+      "log"
+
+      "github.com/purescraps/purehtml/go"
+    )
+
+    func main() {
+      html := `<div>
+        <p>foo</p>
+        <p>bar</p>
+        <p>baz</p>
+      </div>`
+
+      factory := purehtml.NewConfigFactory()
+      config, err := factory.FromYAML("selector: p")
+      if err != nil {
+        log.Fatal(err)
+      }
+
+      result, err := purehtml.ExtractFromString(purehtml.DefaultBackend, html, config, "https://example.com")
+      if err != nil {
+        log.Fatal(err)
+      }
+
+      fmt.Println(result)
+    }
+    ```
+  </Tab>
+
+  <Tab value="Python">
+    ### Installation
+
+    ```bash
+    pip install purehtml
+    ```
+
+    ### Usage
+
+    ```python
+    from purehtml import ConfigFactory, extract
+
+    html = """<div>
+      <p>foo</p>
+      <p>bar</p>
+      <p>baz</p>
+    </div>"""
+
+    config = ConfigFactory.from_yaml("selector: p")
+    result = extract(config, html, "https://example.com")
+
+    print(result)
+    ```
+  </Tab>
+
+  <Tab value="Java">
+    ### Installation (Gradle)
+
+    ```groovy
+    implementation 'com.purescraps.purehtml:purehtml:0.10.1'
+    ```
+
+    ### Usage
+
+    ```java
+    import com.purescraps.purehtml.configs.Config;
+    import com.purescraps.purehtml.configs.ConfigFactory;
+    import static com.purescraps.purehtml.PureHTML.extract;
+
+    public class Main {
+      public static void main(String[] args) {
+        String html = """
+          <div>
+            <p>foo</p>
+            <p>bar</p>
+            <p>baz</p>
+          </div>
+        """;
+
+        Config config = ConfigFactory.fromYAML("selector: p");
+        Object result = extract(config, html, "https://example.com");
+
+        System.out.println(result);
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab value="Ruby">
+    ### Installation
+
+    ```bash
+    gem install purehtml
+    ```
+
+    ### Usage
+
+    ```ruby
+    require 'purehtml'
+
+    html = <<~HTML
+      <div>
+        <p>foo</p>
+        <p>bar</p>
+        <p>baz</p>
+      </div>
+    HTML
+
+    config = PureHTML::ConfigFactory.from_yaml("selector: p")
+    result = PureHTML.extract(config, html, "https://example.com")
+
+    puts result
+    ```
+  </Tab>
+</Tabs>

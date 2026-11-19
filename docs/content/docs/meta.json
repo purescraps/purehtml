@@ -1,0 +1,14 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "index",
+    "getting-started",
+    "basics",
+    "constant-config",
+    "arrays",
+    "objects",
+    "transformers",
+    "union-config",
+    "recipes"
+  ]
+}

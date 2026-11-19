@@ -1,0 +1,25 @@
+{
+  "title": "Transformers",
+  "pages": [
+    "index",
+    "attr",
+    "boolean",
+    "capitalize",
+    "exists",
+    "html",
+    "join",
+    "json",
+    "jsonpath",
+    "length",
+    "lower",
+    "number",
+    "remove-last-path-section",
+    "remove-url-query-param",
+    "replace",
+    "resolve",
+    "split",
+    "trim",
+    "upper",
+    "url-query-param"
+  ]
+}

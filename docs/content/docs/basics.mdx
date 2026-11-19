@@ -1,0 +1,123 @@
+---
+title: Basics
+description: Fundamental concepts of PureHTML selectors, type casts, defaults, and transformer pipelines.
+---
+
+## Basic CSS Selector
+
+The simplest PureHTML configuration specifies a CSS selector to extract the inner text of an element:
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <span class="foo">Hello, PureHTML!</span>
+</div>`}
+  configYaml={`selector: .foo`}
+/>
+
+## Extracting Numbers & Type Casts
+
+By default, DOM text extractions yield `string` values. When you need a numeric value, add `transform: number`:
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <p id="price">12.99</p>
+</div>`}
+  configYaml={`selector: '#price'
+transform: number`}
+/>
+
+## Declaring the Type (`type: number` / `type: boolean`)
+
+As a concise alternative to adding a transformer, you can specify `type: number` or `type: boolean`. The cast runs automatically after any other transformation:
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <p id="price">12.99</p>
+</div>`}
+  configYaml={`selector: '#price'
+type: number`}
+/>
+
+## Default Values (`default`)
+
+When a selector matches nothing, the extracted value is `null`. You can provide a fallback value with `default`. The default value is returned whenever the selector does not match in the document:
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <p id="title">Hello</p>
+</div>`}
+  configYaml={`type: object
+properties:
+  title: '#title'
+  subtitle:
+    selector: '#subtitle'
+    default: No subtitle`}
+/>
+
+## Fallback Selectors (`selector: [...]`)
+
+Websites frequently redesign layouts, run A/B experiments, or rename CSS classes. PureHTML allows `selector` to be an array of CSS selector strings. The parser evaluates them in order and extracts data from the first matching selector:
+
+<PureHtmlSnippet
+  inputHtml={`<div class="product-item">
+  <!-- Website runs an A/B test: .sale-price is rendered instead of .regular-price -->
+  <span class="sale-price">$19.99</span>
+</div>`}
+  configYaml={`selector:
+  - .flash-deal
+  - .sale-price
+  - .regular-price
+transform: trim`}
+/>
+
+### Selector Objects & Fixture References
+
+You can also write selectors as objects with `sampleHTMLs`. This allows test fixture files to be linked alongside individual DOM variations:
+
+<PureHtmlSnippet
+  inputHtml={`<div class="product-item">
+  <span class="promo-price">$14.99</span>
+</div>`}
+  configYaml={`selector:
+  - selector: .promo-price
+    sampleHTMLs:
+      - fixtures/promo.html
+  - selector: .standard-price
+    sampleHTMLs:
+      - fixtures/standard.html
+transform: trim`}
+/>
+
+## Trimming Text (`trim`)
+
+Web pages frequently contain excess whitespace, indentation, or newline characters around text. Use `trim` to clean them up:
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <p id="product-title">
+  
+    Awesome Product
+  
+  </p>
+</div>`}
+  configYaml={`selector: '#product-title'
+transform: trim`}
+/>
+
+## Combining Multiple Transformers
+
+Transformers can be composed as an array pipeline. The result of each transformer is passed as the input to the next:
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <span id="product-price">
+  
+    12.99
+  
+  </span>
+</div>`}
+  configYaml={`selector: 'span#product-price'
+transform: [trim, number]`}
+/>
+
+Next, see the [Transformers](/docs/transformers) reference for a comprehensive breakdown of all available transformers.

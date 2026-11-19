@@ -1,0 +1,20 @@
+---
+title: boolean
+description: Cast any extracted value to a boolean using truthy semantics.
+---
+
+The `boolean` transformer casts the input value to a boolean using truthy/falsy semantics. Unlike `exists` (which checks if an element or attribute was found in the DOM), `boolean` evaluates the value itself: `""`, `0`, `null`, and empty arrays/objects evaluate to `false`; everything else evaluates to `true`.
+
+## Non-empty Value
+
+<PureHtmlSnippet
+  inputHtml="<div>hello</div>"
+  configYaml="{ selector: div, transform: boolean }"
+/>
+
+## Empty Value
+
+<PureHtmlSnippet
+  inputHtml="<div></div>"
+  configYaml="{ selector: div, transform: boolean }"
+/>

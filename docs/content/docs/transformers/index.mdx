@@ -1,0 +1,66 @@
+---
+title: Transformers Overview
+description: Transform, clean, parse, and re-format DOM data with composable transformers.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+## What are Transformers?
+
+By default, CSS selectors extract the `innerText` of matching HTML elements as a string.
+
+In real-world web data extraction, raw text often needs formatting: trimming whitespace, casting to numbers, parsing embedded JSON, extracting attribute values, or resolving relative URLs. Transformers provide a declarative, chained pipeline to perform these manipulations.
+
+```yaml
+selector: .price
+transform:
+  - trim
+  - 'replace("$", "")'
+  - number
+```
+
+## Argument Syntax & Quoting Rules
+
+Transformers support parameter syntax with specific quoting rules:
+
+1. **Bare (unquoted) arguments**: Simple identifiers matching `[\w-]+` (letters, digits, underscores, hyphens) can be written without quotes:
+   - `attr(href)`
+   - `trim`
+   - `split(-)`
+
+2. **Quoted arguments (`"..."` or `'...'`)**: Arguments containing spaces, commas, colons, or regex metacharacters must be enclosed in single or double quotes:
+   - `replace("\s+", " ")`
+   - `split(", ")`
+   - `join(" - ")`
+   - `urlQueryParam("utm_source")`
+
+3. **Escaping inside quotes**: A backslash escapes the enclosing quote character (`\"` inside `"..."` or `\'` inside `'...'`) or a literal backslash (`\\`). Regex escape sequences like `\s`, `\d`, and `\w` are passed untouched to regex engines.
+
+4. **YAML quoting tip**: In YAML configurations, enclose the transform expression in quotes to avoid syntax collisions with YAML parsers:
+   ```yaml
+   transform: 'replace("\s+", " ")'
+   ```
+
+## Available Transformers
+
+| Transformer | Description |
+|---|---|
+| [`attr`](/docs/transformers/attr) | Extract element attributes |
+| [`boolean`](/docs/transformers/boolean) | Cast values to boolean using truthy semantics |
+| [`capitalize`](/docs/transformers/capitalize) | Uppercase the first character, lowercase the rest |
+| [`exists`](/docs/transformers/exists) | Check whether a selector matched any element |
+| [`html`](/docs/transformers/html) | Extract `innerHTML` of the element |
+| [`join`](/docs/transformers/join) | Join array elements into a string with a delimiter |
+| [`json`](/docs/transformers/json) | Parse JSON string into an object or array |
+| [`jsonpath`](/docs/transformers/jsonpath) | Query JSON structures using JSONPath syntax |
+| [`length`](/docs/transformers/length) | Count array items, object keys, or string length |
+| [`lower`](/docs/transformers/lower) | Convert string to lowercase |
+| [`number`](/docs/transformers/number) | Parse string into a numeric value |
+| [`removeLastPathSection`](/docs/transformers/remove-last-path-section) | Remove the trailing segment from a URL path |
+| [`removeUrlQueryParam`](/docs/transformers/remove-url-query-param) | Remove query parameters from a URL |
+| [`replace`](/docs/transformers/replace) | Replace substrings or regex patterns |
+| [`resolve`](/docs/transformers/resolve) | Resolve relative URLs against the document base URL |
+| [`split`](/docs/transformers/split) | Split string into an array by delimiter or whitespace |
+| [`trim`](/docs/transformers/trim) | Remove leading and trailing whitespace |
+| [`upper`](/docs/transformers/upper) | Convert string to uppercase |
+| [`urlQueryParam`](/docs/transformers/url-query-param) | Extract query parameters from a URL string |

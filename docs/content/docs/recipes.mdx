@@ -1,0 +1,238 @@
+---
+title: Recipes & Real-World Patterns
+description: Production-grade scraping patterns for modern websites, hydration state, pagination, and resilient selectors.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Real-world web scraping frequently presents challenging DOM patterns: Single Page App (SPA) hydration scripts, paginated listing pages with relative URLs, variant DOM structures caused by A/B testing, and adjacent sibling table layouts. PureHTML handles these scenarios cleanly and declaratively.
+
+---
+
+## 1. Scraping Next.js / Nuxt / JSON-LD Data
+
+Modern web applications built with Next.js, Nuxt, Remix, and SEO-oriented sites embed pre-rendered structured state directly within `<script>` tags (such as `script#__NEXT_DATA__`, `script#__NUXT_DATA__`, or `script[type="application/ld+json"]`).
+
+Extracting from these hydration script tags directly is vastly faster and less brittle than targeting presentation classes in the rendered DOM. You can chain `json` and `jsonpath` to query the state directly:
+
+<PureHtmlSnippet
+  inputHtml={`<script id="__NEXT_DATA__" type="application/json">
+{
+  "props": {
+    "pageProps": {
+      "product": {
+        "id": "prod_9876",
+        "title": "Ergonomic Mechanical Keyboard",
+        "price": 149.99,
+        "inStock": true,
+        "tags": ["electronics", "keyboards"]
+      }
+    }
+  },
+  "page": "/products/[id]"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "Ergonomic Mechanical Keyboard",
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "USD",
+    "price": "149.99",
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>`}
+  configYaml={`properties:
+  id:
+    selector: script#__NEXT_DATA__
+    transform:
+      - json
+      - 'jsonpath("$.props.pageProps.product.id")'
+  title:
+    selector: script#__NEXT_DATA__
+    transform:
+      - json
+      - 'jsonpath("$.props.pageProps.product.title")'
+  price:
+    selector: script#__NEXT_DATA__
+    transform:
+      - json
+      - 'jsonpath("$.props.pageProps.product.price")'
+  inStock:
+    selector: script#__NEXT_DATA__
+    transform:
+      - json
+      - 'jsonpath("$.props.pageProps.product.inStock")'
+  jsonLdPrice:
+    selector: 'script[type="application/ld+json"]'
+    transform:
+      - json
+      - 'jsonpath("$.offers.price")'
+      - number`}
+/>
+
+---
+
+## 2. Handling Pagination & Relative Links
+
+Web crawlers and list-detail scrapers frequently extract pagination links ("Next Page", "Previous Page") and item links. In most HTML documents, these links are stored as relative URLs (`/catalog/page-3` or `details/401`).
+
+Combine `attr(href)` with `resolve` to automatically resolve relative links against the base URL passed to `extract()`:
+
+<PureHtmlSnippet
+  inputHtml={`<nav class="pagination">
+  <a class="prev" href="/catalog/page-1">Previous</a>
+  <span class="current">Page 2</span>
+  <a class="next" href="/catalog/page-3">Next</a>
+</nav>
+<ul class="items">
+  <li><a href="details/401">Ergonomic Keyboard</a></li>
+  <li><a href="details/402">Vertical Mouse</a></li>
+</ul>`}
+  configYaml={`properties:
+  currentPage:
+    selector: .pagination .current
+    transform:
+      - 'replace("Page ", "")'
+      - trim
+      - number
+  nextPageUrl:
+    selector: .pagination a.next
+    transform:
+      - attr(href)
+      - resolve
+  items:
+    selector: ul.items li a
+    type: array
+    items:
+      properties:
+        name:
+          transform: trim
+        url:
+          transform:
+            - attr(href)
+            - resolve`}
+  url="https://example.com/catalog/page-2"
+/>
+
+---
+
+## 3. Resilient Data Extraction: Combining Union and Default
+
+Real-world web pages often exhibit variant markup due to A/B testing, conditional UI, or optional data:
+
+- A product price might be in `.sale-price`, `.price`, or marked with a `.free-text` badge.
+- Optional badges or metadata may be missing altogether on some items.
+
+PureHTML's `union` evaluates candidates in order, and adding a `constant` entry at the end guarantees a safe fallback value:
+
+<PureHtmlSnippet
+  inputHtml={`<div class="products">
+  <div class="product">
+    <h3 class="name">Wireless Headphones</h3>
+    <span class="sale-price">$79.99</span>
+    <span class="badge">In Stock</span>
+  </div>
+  <div class="product">
+    <h3 class="name">Bluetooth Speaker</h3>
+    <span class="price">$49.99</span>
+  </div>
+  <div class="product">
+    <h3 class="name">VIP Membership</h3>
+    <span class="free-text">FREE</span>
+    <span class="badge">Special</span>
+  </div>
+</div>`}
+  configYaml={`selector: .products .product
+type: array
+items:
+  properties:
+    name:
+      selector: .name
+      transform: trim
+    price:
+      union:
+        - selector: .sale-price
+          transform:
+            - 'replace("\\\\$", "")'
+            - trim
+            - number
+        - selector: .price
+          transform:
+            - 'replace("\\\\$", "")'
+            - trim
+            - number
+        - selector: .free-text
+          transform:
+            - 'replace("FREE", "0")'
+            - number
+        - constant: 0
+    status:
+      union:
+        - selector: .badge
+          transform: trim
+        - constant: "Standard"`}
+/>
+
+---
+
+## 4. Real-World Case Study: Hacker News Scraper
+
+This production-ready scraper extracts submissions from Hacker News (`news.ycombinator.com`). It demonstrates multiple advanced patterns working together:
+
+- **Sibling Row Navigation**: Hacker News structures posts across adjacent `<tr>` rows. PureHTML uses CSS adjacent sibling combinators (`+tr span.age`, `+tr span.score`) to query metadata from sibling rows within each item.
+- **Attribute Extraction**: Extracts item ID with `attr(id)` on the row, and exact ISO timestamp with `attr(title)`.
+- **Full Link Resolution**: Uses `[attr(href), resolve]` to ensure outbound article links and relative HN comment links (`item?id=...`) resolve to canonical absolute URLs.
+
+<PureHtmlSnippet
+  inputHtml={`<table>
+  <tr class="athing submission" id="39401234">
+    <td class="title">
+      <span class="titleline">
+        <a href="https://example.org/cool-project">Show HN: My Cool Project</a>
+      </span>
+    </td>
+  </tr>
+  <tr>
+    <td class="subtext">
+      <span class="score" id="score_39401234">158 points</span>
+      <a href="user?id=johndoe" class="hnuser">johndoe</a>
+      <span class="age" title="2024-02-16T18:30:00"><a href="item?id=39401234">3 hours ago</a></span>
+      <a href="item?id=39401234">42 comments</a>
+    </td>
+  </tr>
+</table>`}
+  configYaml={`selector: tr.athing
+type: array
+items:
+  properties:
+    id:
+      transform:
+        - attr(id)
+        - number
+    title:
+      selector: span.titleline > a
+      transform: trim
+    url:
+      selector: span.titleline > a
+      transform:
+        - attr(href)
+        - resolve
+    points:
+      selector: '+tr span.score'
+      transform:
+        - 'replace(" points", "")'
+        - number
+    author:
+      selector: '+tr a.hnuser'
+      transform: trim
+    commentsCount:
+      selector: '+tr a[href^="item?id="]:last-of-type'
+      transform:
+        - 'replace(" comments", "")'
+        - number`}
+  url="https://news.ycombinator.com"
+/>

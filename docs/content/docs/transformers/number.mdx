@@ -1,0 +1,15 @@
+---
+title: number
+description: Parse string values into integer or floating-point numbers.
+---
+
+The `number` transformer casts string values to numbers.
+
+## Example
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <span class="price">49.99</span>
+</div>`}
+  configYaml="{ selector: .price, transform: number }"
+/>

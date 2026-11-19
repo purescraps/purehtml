@@ -1,0 +1,69 @@
+---
+title: Introduction
+description: A declarative, schema-driven specification for HTML data extraction.
+---
+
+## What is PureHTML?
+
+**PureHTML** is a cross-language specification designed to extract structured JSON data from arbitrary HTML documents.
+
+Instead of writing brittle, imperative scraper code filled with DOM queries, regexes, and manual string manipulations, PureHTML lets you define your extraction rules **declaratively** using YAML or JSON.
+
+```yaml
+title:
+  selector: h1
+  transform: trim
+
+price:
+  selector: .price
+  transform: [trim, number]
+
+inStock:
+  selector: .stock-status
+  transform: exists
+```
+
+## Why PureHTML?
+
+- **Language Independent**: PureHTML is a unified specification implemented natively across **TypeScript/JavaScript**, **Go**, **Python**, **Java**, and **Ruby**. Write rules once, evaluate them in any backend or environment.
+- **Resilient to Markup Changes**: Websites change layout and classes constantly. PureHTML supports fallback selector chains, union patterns, and default values to prevent scrapers from breaking when pages undergo A/B testing or redesigns.
+- **Clean Transformation Pipelines**: Chain built-in transformers such as `trim`, `number`, `attr`, `resolve`, `jsonpath`, and `regex` directly on extracted values.
+- **Strictly Typed & Schema-Backed**: A complete JSON schema and TypeScript types validate your rules at authoring time.
+
+## Quick Example
+
+Here is a quick demonstration of extracting data from a product listing:
+
+<PureHtmlSnippet
+  inputHtml={`<div class="product-card">
+  <h2 class="title">  Wireless Noise-Canceling Headphones  </h2>
+  <span class="price">$199.99</span>
+  <span class="badge">In Stock</span>
+  <a class="buy" href="/checkout?id=4567">Buy Now</a>
+</div>`}
+  configYaml={`properties:
+  title:
+    selector: .title
+    transform: trim
+  price:
+    selector: .price
+    transform:
+      - 'replace("\\$", "")'
+      - trim
+      - number
+  inStock:
+    selector: .badge
+    transform: exists
+  checkoutUrl:
+    selector: a.buy
+    transform:
+      - attr(href)
+      - resolve`}
+  url="https://store.example.com/products/headphones"
+/>
+
+## Next Steps
+
+- Explore the [Getting Started](/docs/getting-started) guide to install the PureHTML SDK for your language.
+- Learn the core concepts in [Basics](/docs/basics).
+- Try your own snippets in the [Interactive Playground](/playground).

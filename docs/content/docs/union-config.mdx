@@ -1,0 +1,49 @@
+---
+title: Union Config
+description: Conditional matching and fallback pipelines with union configurations.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+## Overview
+
+A **Union Configuration** defines an ordered list of candidate sub-configurations under `union:`. The parser evaluates them from top to bottom and returns the result of the first candidate that matches.
+
+## Matching the First Valid Selector
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <p>paragraph element</p>
+</div>`}
+  configYaml={`union:
+  - selector: a # will not match
+  - selector: span # will not match
+  - selector: p # will match`}
+/>
+
+## Providing a Default Fallback Case
+
+By placing a `constant:` configuration as the final entry in a union list, you can define a guaranteed default value when none of the selector branches match:
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <p>paragraph element</p>
+</div>`}
+  configYaml={`union:
+  - selector: a # will not match
+  - selector: span # will not match
+  - constant: default value # will match`}
+/>
+
+## No Matches
+
+If no union branch matches and there is no constant fallback, the output evaluates to `null`:
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <p>paragraph element</p>
+</div>`}
+  configYaml={`union:
+  - selector: a # will not match
+  - selector: span # will not match`}
+/>

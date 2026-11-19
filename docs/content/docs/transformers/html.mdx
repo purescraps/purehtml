@@ -1,0 +1,15 @@
+---
+title: html
+description: Extract the raw inner HTML of matched elements.
+---
+
+The `html` transformer returns the `innerHTML` string of the matched element rather than its text content.
+
+## Example
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <p>Hello, <strong>world</strong>!</p>
+</div>`}
+  configYaml="{ selector: div, transform: html }"
+/>

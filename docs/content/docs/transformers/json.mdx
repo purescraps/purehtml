@@ -1,0 +1,17 @@
+---
+title: json
+description: Parse raw JSON strings into structured objects or arrays.
+---
+
+The `json` transformer parses a JSON string (such as inline script tags, Next.js hydration data, Redux store states, or JSON-LD blocks) into a parsed JavaScript object or array.
+
+## Example
+
+<PureHtmlSnippet
+  inputHtml={`<body>
+  <script id="reduxStore" type="application/json">
+    {"user": {"name": "Alice", "role": "admin"}}
+  </script>
+</body>`}
+  configYaml="{ selector: script#reduxStore, transform: json }"
+/>

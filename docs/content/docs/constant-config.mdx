@@ -1,0 +1,26 @@
+---
+title: Constant Config
+description: Return static values independent of HTML content.
+---
+
+## Overview
+
+A **Constant Configuration** specifies a static value that is returned directly without querying the DOM.
+
+This is especially powerful when used as a fallback or default case inside a [Union Config](/docs/union-config), analogous to the `default:` clause in a switch/case statement.
+
+## Simple Example
+
+<PureHtmlSnippet
+  inputHtml="<div>Sample content</div>"
+  configYaml="{ constant: constant value }"
+/>
+
+## Complex Nested Values
+
+The `constant` property accepts arbitrary structured JSON or YAML values, including nested objects and arrays:
+
+<PureHtmlSnippet
+  inputHtml="<div>Sample content</div>"
+  configYaml="{ constant: { complex: { values: ['are', 'possible'] } } }"
+/>

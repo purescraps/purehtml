@@ -1,0 +1,19 @@
+---
+title: join
+description: Join array elements into a string with a delimiter.
+---
+
+The `join` transformer joins array elements into a single string. It accepts an optional delimiter parameter (default is `""`).
+
+## Custom Delimiter
+
+<PureHtmlSnippet
+  inputHtml={`<ul>
+  <li>Apple</li>
+  <li>Banana</li>
+  <li>Cherry</li>
+</ul>`}
+  configYaml={`selector: li
+type: array
+transform: 'join(", ")'`}
+/>

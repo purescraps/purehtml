@@ -1,0 +1,33 @@
+---
+title: attr
+description: Extract element attributes as strings or objects.
+---
+
+The `attr` transformer extracts individual HTML attributes, all attributes, or a subset of attributes.
+
+## Extract a Single Attribute
+
+Pass the attribute name as an argument (e.g. `attr(data-id)` or `attr(href)`):
+
+<PureHtmlSnippet
+  inputHtml={`<div data-id="123"></div>`}
+  configYaml={`{ selector: div, transform: 'attr(data-id)' }`}
+/>
+
+## Extract All Attributes
+
+Invoke `attr` with no arguments (`attr()` or `attr`) to extract an object containing all element attributes:
+
+<PureHtmlSnippet
+  inputHtml={`<div data-id="123" data-full-name="John Doe"></div>`}
+  configYaml={`{ selector: div, transform: 'attr()' }`}
+/>
+
+## Extract a Subset of Attributes
+
+Pass multiple comma-separated attribute names:
+
+<PureHtmlSnippet
+  inputHtml={`<div data-id="123" data-first-name="John" data-last-name="Doe"></div>`}
+  configYaml={`{ selector: div, transform: 'attr(data-first-name, data-last-name)' }`}
+/>

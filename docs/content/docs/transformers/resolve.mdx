@@ -1,0 +1,21 @@
+---
+title: resolve
+description: Resolve relative URLs against the document base URL into canonical absolute URLs.
+---
+
+The `resolve` transformer converts relative links (`/about`, `../contact`, `item?id=123`) into absolute URLs using the base URL provided to `extract()`.
+
+## Example
+
+<PureHtmlSnippet
+  inputHtml={`<div>
+  <a href="/about">internal</a>
+  <a href="/articles/../help">internal - relative</a>
+  <a href="https://github.com/purescraps/purehtml">external</a>
+</div>`}
+  configYaml={`selector: a
+type: array
+items:
+  transform: ['attr(href)', resolve]`}
+  url="https://example.com/blog/post-1"
+/>

@@ -1,10 +1,5 @@
 *.tsbuildinfo
 
-/next-env.d.ts
-
-/.next
-/out
-
 # Logs
 logs
 *.log
@@ -17,6 +12,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.source
+src/pages.gen.ts
 *.local
 
 # Editor directories and files

@@ -1,0 +1,20 @@
+---
+title: trim
+description: Strip leading and trailing whitespace from strings.
+---
+
+The `trim` transformer strips all whitespace and newline characters from the start and end of strings.
+
+## Without Trim
+
+<PureHtmlSnippet
+  inputHtml="<div>     padded text    </div>"
+  configYaml="{ selector: div }"
+/>
+
+## With Trim
+
+<PureHtmlSnippet
+  inputHtml="<div>     padded text    </div>"
+  configYaml="{ selector: div, transform: trim }"
+/>
