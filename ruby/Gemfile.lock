@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    purehtml (0.1.1)
+    purehtml (0.2.0)
       nokogiri (~> 1.10, >= 1.10.0)
 
 GEM
@@ -24,8 +24,13 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.7-x86_64-linux-musl)
       racc (~> 1.4)
+    nokolexbor (0.8.0)
+    nokolexbor (0.8.0-aarch64-linux)
+    nokolexbor (0.8.0-arm64-darwin)
+    nokolexbor (0.8.0-x86_64-darwin)
+    nokolexbor (0.8.0-x86_64-linux)
     racc (1.8.1)
-    rake (12.3.3)
+    rake (13.4.2)
 
 PLATFORMS
   aarch64-linux-gnu
@@ -38,9 +43,10 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  minitest (~> 5.0)
+  minitest (>= 5.0)
+  nokolexbor (>= 0.5.0)
   purehtml!
-  rake (~> 12.0)
+  rake (>= 12.0)
 
 CHECKSUMS
   minitest (5.27.0) sha256=2d3b17f8a36fe7801c1adcffdbc38233b938eb0b4966e97a6739055a45fa77d5
@@ -52,9 +58,14 @@ CHECKSUMS
   nokogiri (1.19.7-x86_64-darwin) sha256=508e81e8c5f84aaa240dce981bf1c43faae60808726f0ce7024ee92effc5cafe
   nokogiri (1.19.7-x86_64-linux-gnu) sha256=25865ccb462f714e712fdf8906fde07849cb6704a808e3d629d75baa5af5dd3b
   nokogiri (1.19.7-x86_64-linux-musl) sha256=464d1f3dfb0d53cf54c0c6a7e23e8e91cf68ec3cafc2b27dc4a7682f2d9bf546
-  purehtml (0.1.1)
+  nokolexbor (0.8.0) sha256=efaba9f5e1d30f464f4c826cc507a2ca2f754daf99bd4a0261ec22ebfddded32
+  nokolexbor (0.8.0-aarch64-linux) sha256=6c514beeed469f0cf6aec92829f98ae7a17aacb977917ee12f76de1c19fd66fc
+  nokolexbor (0.8.0-arm64-darwin) sha256=bf450ff93f8564325f70988c23bca7ddd2d68b1e34543ed2c7806b994a6ab6d5
+  nokolexbor (0.8.0-x86_64-darwin) sha256=38b04e7bf077b41dfd7cc210deaed39a154ce408f7f4c2b41d2190720db3c135
+  nokolexbor (0.8.0-x86_64-linux) sha256=ee6ab8b313a5748101dd6f726d1d3b240243b99beefe2d2b1e122b5fdf61c04c
+  purehtml (0.2.0)
   racc (1.8.1) sha256=4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f
-  rake (12.3.3)
+  rake (13.4.2) sha256=cb825b2bd5f1f8e91ca37bddb4b9aaf345551b4731da62949be002fa89283701
 
 BUNDLED WITH
   4.0.20
