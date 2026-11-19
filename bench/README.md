@@ -1,5 +1,18 @@
 # PureHTML implementation benchmarks
 
+You can run benchmarks using `make` from either the repository root or the `bench/` directory:
+
+```bash
+make bench           # Run all benchmarks
+make bench-go        # Run Go benchmark
+make bench-ruby      # Run Ruby benchmark (alias: bench-rb)
+make bench-ts        # Run TypeScript benchmark (alias: bench-typescript)
+make bench-python    # Run Python benchmark (alias: bench-py)
+make bench-java      # Run Java benchmark (auto-builds dependencies if needed)
+```
+
+## Running Manually
+
 ### Go
 
 1. Run benchmark: `go run bench.go`
