@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "nokogiri", "~> 1.10", ">= 1.10.0"
 
-  spec.add_development_dependency "rake", ">= 12.0"
-  spec.add_development_dependency "minitest", ">= 5.0"
-  spec.add_development_dependency "nokolexbor", ">= 0.5.0"
+  spec.add_development_dependency "rake", ">= 12.0", "< 14"
+  spec.add_development_dependency "minitest", "~> 5.0"
+  spec.add_development_dependency "nokolexbor", "~> 0.5", ">= 0.5.0"
 end
