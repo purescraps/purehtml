@@ -7,7 +7,7 @@ PureHTML is a declarative HTML parsing and extraction library for Ruby. Extract 
 ## Features
 
 - **Declarative Schemas**: Simple YAML definitions for HTML data extraction.
-- **Pluggable Backends**: Built on top of [Nokogiri](https://nokogiri.org).
+- **Pluggable Backends**: Built on top of [Nokogiri](https://nokogiri.org) with optional high-performance [Nokolexbor](https://github.com/serpapi/nokolexbor) support.
 - **Extensible Transformers**: Value transformation chain (e.g. `trim`, `number`, `attr`, `html`, `json`, `jsonpath`, `split`, `join`, `replace`, etc.).
 - **Complex Structures**: Supports primitives, nested objects, arrays, unions, constants, and default values.
 
@@ -49,6 +49,36 @@ result = PureHTML.extract(config, html_string, "http://example.com")
 
 puts result.inspect
 # => ["a", "b", "c"]
+```
+
+## Backends
+
+PureHTML supports pluggable HTML parsing backends:
+
+- **Nokogiri** (default): Robust and widely compatible HTML/XML parser.
+- **Nokolexbor**: Ultra-fast HTML5 parser backed by Lexbor (significantly faster parsing and CSS selector execution).
+
+### Using Nokolexbor
+
+Add `nokolexbor` to your Gemfile:
+
+```ruby
+gem 'nokolexbor'
+```
+
+You can select the backend globally or pass it per extraction:
+
+```ruby
+# Set globally
+PureHTML.backend = :nokolexbor
+# or PureHTML.backend = PureHTML::NokolexborBackend.new
+
+# Per extraction
+PureHTML.extract(config, html_string, backend: :nokolexbor)
+
+# Or pass a pre-parsed Nokolexbor document directly
+doc = Nokolexbor::HTML(html_string)
+PureHTML.extract(config, doc)
 ```
 
 ## Configuration Types

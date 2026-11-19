@@ -43,4 +43,13 @@ jobs:
       - name: Build and Publish Gem
         run: |
           gem build purehtml.gemspec
-          gem push purehtml-*.gem
+          GEM_FILE=$(ls purehtml-*.gem | head -n 1)
+          echo "Attempting to push $GEM_FILE..."
+          output=$(gem push "$GEM_FILE" 2>&1) || {
+            if echo "$output" | grep -q "Repushing of gem versions is not allowed"; then
+              echo "Gem version is already published on RubyGems. Skipping push."
+            else
+              echo "$output"
+              exit 1
+            fi
+          }

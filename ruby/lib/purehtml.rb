@@ -19,14 +19,25 @@ require_relative "purehtml/config_factory"
 
 module PureHTML
   class << self
-    attr_writer :backend
-
     def backend
       @backend ||= NokogiriBackend.new
     end
 
+    def backend=(backend)
+      @backend = backend.nil? ? nil : resolve_backend(backend)
+    end
+
     def extract(config, html, url = "", backend: nil)
-      active_backend = backend || self.backend
+      active_backend = if backend
+        resolve_backend(backend)
+      elsif defined?(::Nokolexbor::Node) && html.is_a?(::Nokolexbor::Node)
+        NokolexborBackend.new
+      elsif defined?(::Nokogiri::XML::Node) && html.is_a?(::Nokogiri::XML::Node)
+        NokogiriBackend.new
+      else
+        self.backend
+      end
+
       doc = html.is_a?(Document) ? html : active_backend.load(html)
       params = ExtractParams.new(
         doc: doc,
@@ -37,6 +48,23 @@ module PureHTML
         element_already_matched: false
       )
       config.extract(params)
+    end
+
+    def resolve_backend(backend)
+      case backend
+      when :nokogiri, "nokogiri"
+        NokogiriBackend.new
+      when :nokolexbor, "nokolexbor"
+        NokolexborBackend.new
+      when Class
+        backend.new
+      else
+        if backend.respond_to?(:load)
+          backend
+        else
+          raise ArgumentError, "Unsupported backend: #{backend.inspect}"
+        end
+      end
     end
   end
 end

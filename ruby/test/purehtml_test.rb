@@ -133,4 +133,59 @@ class PureHTMLTest < Minitest::Test
     ]
     assert_equal expected, result
   end
+
+  def test_nokolexbor_backend
+    html = "<div><span class='title'> Hello Nokolexbor </span></div>"
+    yaml = "selector: .title\ntransform: trim"
+    config = PureHTML::ConfigFactory.from_yaml(yaml)
+
+    # Via backend parameter
+    result = PureHTML.extract(config, html, backend: :nokolexbor)
+    assert_equal "Hello Nokolexbor", result
+
+    # Via NokolexborBackend instance
+    result2 = PureHTML.extract(config, html, backend: PureHTML::NokolexborBackend.new)
+    assert_equal "Hello Nokolexbor", result2
+  end
+
+  def test_backend_switching_and_resolution
+    original_backend = PureHTML.backend
+
+    PureHTML.backend = :nokolexbor
+    assert_instance_of PureHTML::NokolexborBackend, PureHTML.backend
+
+    html = "<div><span class='item'>Apple</span></div>"
+    config = PureHTML::ConfigFactory.from_hash({ "selector" => ".item" })
+    assert_equal "Apple", PureHTML.extract(config, html)
+
+    PureHTML.backend = :nokogiri
+    assert_instance_of PureHTML::NokogiriBackend, PureHTML.backend
+
+    PureHTML.backend = nil
+    assert_instance_of PureHTML::NokogiriBackend, PureHTML.backend
+  ensure
+    PureHTML.backend = original_backend
+  end
+
+  def test_raw_document_backend_auto_detection
+    html = "<div><span class='val'>42</span></div>"
+    config = PureHTML::ConfigFactory.from_hash({ "selector" => ".val", "type" => "number" })
+
+    # Raw Nokolexbor document
+    if defined?(::Nokolexbor)
+      lexbor_doc = Nokolexbor::HTML(html)
+      assert_equal 42, PureHTML.extract(config, lexbor_doc)
+    end
+
+    # Raw Nokogiri document
+    noko_doc = Nokogiri::HTML(html)
+    assert_equal 42, PureHTML.extract(config, noko_doc)
+  end
+
+  def test_invalid_backend
+    config = PureHTML::ConfigFactory.from_hash({ "selector" => "div" })
+    assert_raises(ArgumentError) do
+      PureHTML.extract(config, "<div></div>", backend: :unsupported)
+    end
+  end
 end

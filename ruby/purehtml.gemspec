@@ -18,15 +18,15 @@ Gem::Specification.new do |spec|
   spec.metadata["source_code_uri"] = "https://github.com/purescraps/purehtml"
   spec.metadata["changelog_uri"] = "https://github.com/purescraps/purehtml/blob/master/ruby/CHANGELOG.md"
   spec.metadata["bug_tracker_uri"] = "https://github.com/purescraps/purehtml/issues"
-  spec.metadata["documentation_uri"] = spec.homepage
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     Dir.glob("{lib}/**/*") + %w[README.md LICENSE CHANGELOG.md purehtml.gemspec Rakefile]
   end
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "nokogiri", ">= 1.10.0"
+  spec.add_dependency "nokogiri", "~> 1.10", ">= 1.10.0"
 
   spec.add_development_dependency "rake", ">= 12.0"
   spec.add_development_dependency "minitest", ">= 5.0"
+  spec.add_development_dependency "nokolexbor", ">= 0.5.0"
 end
