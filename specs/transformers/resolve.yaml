@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../spec.schema.yaml
+
+description: Resolve Transformer Tests
+
+specs:
+  - description: should resolve a relative URL against the document URL
+    input: &input |
+      <div>
+        <a class="relative" href="/foo/bar?baz=1">relative</a>
+        <a class="absolute" href="https://other.example.org/foo">absolute</a>
+      </div>
+    configuration:
+      selector: .relative
+      transform: [attr(href), resolve]
+    expected: http://example.com/foo/bar?baz=1
+
+  - description: should keep an absolute URL
+    input: *input
+    configuration:
+      selector: .absolute
+      transform: [attr(href), resolve]
+    expected: https://other.example.org/foo
+
+  - description: should resolve array items
+    input: *input
+    configuration:
+      selector: a
+      type: array
+      items:
+        transform: [attr(href), resolve]
+    expected:
+      - http://example.com/foo/bar?baz=1
+      - https://other.example.org/foo
+
+  - description: should resolve inside a union
+    input: *input
+    configuration:
+      union:
+        - selector: .non-existing
+          transform: [attr(href), resolve]
+        - selector: .relative
+          transform: [attr(href), resolve]
+    expected: http://example.com/foo/bar?baz=1

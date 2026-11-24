@@ -21,6 +21,15 @@ type ConfigWithSelector interface {
 	GetTransform() []core.TransformerSpec
 }
 
+// transformParams returns the params to call a transformer with. `resolve`
+// takes its base URL as a param, so it defaults to the URL of the document.
+func transformParams(spec core.TransformerSpec, url string) []string {
+	if spec.Name == "resolve" && len(spec.Params) == 0 {
+		return []string{url}
+	}
+	return spec.Params
+}
+
 // PrimitiveValueConfig extracts a single value
 type PrimitiveValueConfig struct {
 	Selector  []string
@@ -83,7 +92,7 @@ func (c *PrimitiveValueConfig) Extract(backend core.Backend, node core.Node, url
 		}
 
 		var err error
-		currentValue, err = trans.Transform(transformInput, spec.Params)
+		currentValue, err = trans.Transform(transformInput, transformParams(spec, url))
 		if err != nil {
 			return nil, &core.InvalidParseInputError{
 				Message: err.Error(),
@@ -156,7 +165,7 @@ func (c *ObjectConfig) Extract(backend core.Backend, node core.Node, url string,
 		}
 
 		var err error
-		value, err = trans.Transform(value, spec.Params)
+		value, err = trans.Transform(value, transformParams(spec, url))
 		if err != nil {
 			return nil, &core.InvalidParseInputError{
 				Message: err.Error(),
@@ -231,7 +240,7 @@ func (c *ArrayConfig) Extract(backend core.Backend, node core.Node, url string, 
 				}
 
 				var err error
-				currentValue, err = trans.Transform(transformInput, spec.Params)
+				currentValue, err = trans.Transform(transformInput, transformParams(spec, url))
 				if err != nil {
 					return nil, &core.InvalidParseInputError{
 						Message: err.Error(),
@@ -271,7 +280,7 @@ func (c *ArrayConfig) Extract(backend core.Backend, node core.Node, url string, 
 		}
 
 		var err error
-		value, err = trans.Transform(value, spec.Params)
+		value, err = trans.Transform(value, transformParams(spec, url))
 		if err != nil {
 			return nil, &core.InvalidParseInputError{
 				Message: err.Error(),
