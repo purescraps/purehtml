@@ -15,6 +15,17 @@ PYTHON ?= $(shell \
 	elif command -v python3 >/dev/null 2>&1; then echo python3; \
 	else echo python; fi)
 
+# Benchmark inputs, see `make help`. Relative paths are resolved against
+# BENCH_CWD, which the root Makefile points at the repository root.
+BENCH_CWD ?= $(CURDIR)
+HTML ?=
+CONFIG ?=
+ITERATIONS ?=
+URL ?=
+export BENCH_CWD HTML CONFIG ITERATIONS URL
+
+RUN := sh run.sh
+
 JAVA_CP ?= ../java/target/classes:../java/target/dependency/*
 
 .PHONY: all bench bench-all \
@@ -32,23 +43,23 @@ bench-all: bench
 
 bench-go:
 	@echo "==> Running Go benchmark..."
-	$(GO) run bench.go
+	$(RUN) $(GO) run bench.go
 
 bench-ruby:
 	@echo "==> Running Ruby benchmark..."
-	$(RUBY) bench.rb
+	$(RUN) $(RUBY) bench.rb
 
 bench-rb: bench-ruby
 
 bench-ts:
 	@echo "==> Running TypeScript benchmark..."
-	$(BUN) bench.ts
+	$(RUN) $(BUN) bench.ts
 
 bench-typescript: bench-ts
 
 bench-python:
 	@echo "==> Running Python benchmark..."
-	$(PYTHON) bench.py
+	$(RUN) $(PYTHON) bench.py
 
 bench-py: bench-python
 
@@ -64,7 +75,7 @@ bench-java:
 		$(MAKE) build-java; \
 	fi
 	@echo "==> Running Java benchmark..."
-	$(JAVA) -cp "$(JAVA_CP)" bench.java
+	$(RUN) $(JAVA) -cp "$(JAVA_CP)" bench.java
 
 help:
 	@echo "PureHTML Benchmark Suite"
@@ -81,3 +92,10 @@ help:
 	@echo "  build-java        Build Java classes and copy dependencies"
 	@echo "  clean-java        Clean Java build artifacts"
 	@echo "  help              Show this help message"
+	@echo ""
+	@echo "Inputs (default: files/sample-1.html + files/sample-1.yaml):"
+	@echo "  HTML=page.html CONFIG=config.yaml   HTML/YAML pair to benchmark"
+	@echo "  ITERATIONS=N                        Extractions to run (default: 5000)"
+	@echo "  URL=https://example.com             Base URL passed to the extractor"
+	@echo ""
+	@echo "Relative paths are resolved against the directory make runs in."

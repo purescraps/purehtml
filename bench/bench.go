@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -11,53 +12,75 @@ import (
 )
 
 func main() {
-	iterations := 5000
+	iterations := flag.Int("iterations", 5000, "extractions to run")
+	url := flag.String("url", "http://example.com", "base URL passed to the extractor")
+	flag.Usage = func() {
+		fmt.Fprintln(os.Stderr, "Usage: bench.go [--iterations N] [--url URL] [HTML YAML]")
+		flag.PrintDefaults()
+	}
+	flag.Parse()
 
-	_, filename, _, ok := runtime.Caller(0)
-	dir := "."
-	if ok {
-		dir = filepath.Dir(filename)
+	files := flag.Args()
+	if len(files) == 0 {
+		dir := "."
+		if _, filename, _, ok := runtime.Caller(0); ok {
+			dir = filepath.Dir(filename)
+		}
+		files = []string{
+			filepath.Join(dir, "files/sample-1.html"),
+			filepath.Join(dir, "files/sample-1.yaml"),
+		}
+	}
+	if *iterations < 1 || len(files) != 2 {
+		flag.Usage()
+		os.Exit(2)
 	}
 
-	yamlBytes, err := os.ReadFile(filepath.Join(dir, "files/sample-1.yaml"))
+	if err := benchmark(files[0], files[1], *url, *iterations); err != nil {
+		fmt.Fprintf(os.Stderr, "%s + %s: %v\n", files[0], files[1], err)
+		os.Exit(1)
+	}
+}
+
+func benchmark(htmlPath, yamlPath, url string, iterations int) error {
+	htmlBytes, err := os.ReadFile(htmlPath)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	htmlBytes, err := os.ReadFile(filepath.Join(dir, "files/sample-1.html"))
+	yamlBytes, err := os.ReadFile(yamlPath)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	factory := purehtml.NewConfigFactory()
-	config, err := factory.FromYAML(string(yamlBytes))
+	config, err := purehtml.NewConfigFactory().FromYAML(string(yamlBytes))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	backend := purehtml.DefaultBackend
 	doc, err := backend.Load(htmlBytes)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	fmt.Printf("Running benchmark for %d iterations.\n", iterations)
+	fmt.Printf("Running benchmark for %d iterations: %s + %s\n", iterations, htmlPath, yamlPath)
 
-	res, err := purehtml.ExtractDoc(backend, doc, config, "http://example.com")
+	res, err := purehtml.ExtractDoc(backend, doc, config, url)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	fmt.Printf("extract result: %v\n", res)
 
 	start := time.Now()
 	for i := 0; i < iterations; i++ {
-		_, err = purehtml.ExtractDoc(backend, doc, config, "http://example.com")
-		if err != nil {
-			panic(err)
+		if _, err = purehtml.ExtractDoc(backend, doc, config, url); err != nil {
+			return err
 		}
 	}
 	duration := time.Since(start)
 	throughput := float64(iterations) / duration.Seconds()
 
 	fmt.Printf("Throughput: %.2f extracts/second\n", throughput)
+	return nil
 }

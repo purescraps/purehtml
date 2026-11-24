@@ -19,4 +19,4 @@ bench-ts bench-typescript \
 bench-python bench-py \
 bench-java build-java clean-java \
 help:
-	@$(MAKE) -C $(BENCH_DIR) $@
+	@$(MAKE) -C $(BENCH_DIR) BENCH_CWD="$(CURDIR)" $@
