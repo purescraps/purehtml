@@ -45,6 +45,10 @@ class ObjectConfig(ConfigWithSelector):
         if not element and self.selector:
             return None
 
+        # Without a selector at the document root there is no element to scope to;
+        # an empty list makes the properties search the whole document.
+        nodes = [element] if element else []
+
         props = self.properties
         result = {}
 
@@ -52,7 +56,7 @@ class ObjectConfig(ConfigWithSelector):
             config = props[key]
             extract_params = ExtractParams(
                 document=params.document(),
-                nodes=[element],
+                nodes=nodes,
                 url=params.url(),
                 element_already_matched=False,
             )

@@ -36,3 +36,30 @@ specs:
 
     expected:
       childDivs: ["foo", "bar", "baz"]
+
+  - description: should search the whole document when there is no selector
+    input: *input
+    configuration:
+      type: object
+      properties:
+        a: { selector: "#a" }
+        b: { selector: "#root > div", type: array, items: {} }
+        c:
+          union:
+            - selector: "#nope"
+            - selector: "#c"
+
+    expected: { a: "foo", b: ["foo", "bar", "baz"], c: "baz" }
+
+  - description: should extract an array of objects when there is no root selector
+    input: *input
+    configuration:
+      properties:
+        items:
+          selector: "#root"
+          items:
+            properties:
+              a: { selector: "#a" }
+              b: { selector: "#b" }
+
+    expected: { items: [{ a: "foo", b: "bar" }] }

@@ -44,6 +44,10 @@ public class ObjectConfig extends ConfigWithSelector {
         if ((element == null) && (this.selector != null))
             return null;
 
+        // Without a selector at the document root there is no element to scope to;
+        // an empty list makes the properties search the whole document.
+        List<PureHTMLNode> nodes = element == null ? Collections.emptyList() : Collections.singletonList(element);
+
         Map<String, Config> props = this.properties;
 
         Map<String, Object> result = new HashMap<>();
@@ -52,7 +56,7 @@ public class ObjectConfig extends ConfigWithSelector {
 
             ExtractParams extractParams = new ExtractParamsBuilder()
                     .setDocument(params.document())
-                    .setNode(new ArrayList<>(Collections.singletonList(element)))
+                    .setNode(new ArrayList<>(nodes))
                     .setUrl(params.url())
                     .setElementAlreadyMatched(params.getElementAlreadyMatched())
                     .build();
