@@ -49,6 +49,7 @@ export function Playground() {
   const [config, setConfig] = useState(storedState?.config ?? examples.basic[0].config);
   const [html, setHtml] = useState(storedState?.html ?? examples.basic[0].html);
   const [htmlFileContents, setHtmlFileContents] = useState<string | null>(null);
+  const [htmlLoadError, setHtmlLoadError] = useState<string | null>(null);
 
   const { configIsValid, result } = usePureHtml({
     inputHtml: htmlFileContents ?? html,
@@ -77,7 +78,35 @@ export function Playground() {
     setHtml(selectedExample.html);
     setConfig(selectedExample.config);
     setHtmlFileContents(null);
+
+    const { htmlUrl } = selectedExample;
+    if (!htmlUrl) return;
+
+    let cancelled = false;
+    setHtmlLoadError(null);
+    fetch(htmlUrl)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.text();
+      })
+      .then((contents) => {
+        if (!cancelled) setHtmlFileContents(contents);
+      })
+      .catch((err) => {
+        console.error('Cannot load example HTML:', err);
+        if (!cancelled) setHtmlLoadError('Cannot load the example HTML. Please try again.');
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [selectedExample]);
+
+  // Deep link from other pages: /playground?example=<name>
+  useEffect(() => {
+    const name = new URLSearchParams(window.location.search).get('example');
+    const example = name ? examples.findByName(name) : null;
+    if (example) setSelectedExample(example);
+  }, []);
 
   useEffect(() => {
     try {
@@ -128,6 +157,11 @@ export function Playground() {
                 </option>
               ))}
             </optgroup>
+            <optgroup label="Benchmark">
+              <option value={examples.benchmarkSample.name}>
+                {examples.benchmarkSample.name} (1 MB page)
+              </option>
+            </optgroup>
           </select>
         </div>
       </div>
@@ -166,9 +200,18 @@ export function Playground() {
               </div>
             </div>
 
-            {htmlFileContents ? (
+            {htmlLoadError ? (
+              <div className="p-4 bg-fd-background text-sm text-red-500">{htmlLoadError}</div>
+            ) : selectedExample?.htmlUrl && !htmlFileContents ? (
+              <div className="p-4 bg-fd-background text-sm text-fd-muted-foreground">
+                Loading sample HTML…
+              </div>
+            ) : htmlFileContents ? (
               <div className="p-4 bg-fd-background text-sm text-fd-muted-foreground font-mono">
-                HTML file loaded. Click &quot;Clear file&quot; above to re-open the interactive editor.
+                {selectedExample?.htmlUrl
+                  ? `${selectedExample.name} HTML loaded (${(htmlFileContents.length / 1024 / 1024).toFixed(1)} MB). `
+                  : 'HTML file loaded. '}
+                Click &quot;Clear file&quot; above to re-open the interactive editor.
               </div>
             ) : (
               <div className="h-[280px]">

@@ -1,6 +1,8 @@
 import { HomeLayout } from 'fumadocs-ui/layouts/home';
 import { baseOptions } from '@/lib/layout.shared';
+import { Link } from 'waku';
 import { gitConfig } from '@/lib/shared';
+import { benchmarkSample } from '@/examples/benchmark-sample';
 
 // Written by `make bench SAVE=1` (see bench/README.md). Loaded with a glob so
 // the site still builds when no results have been saved yet.
@@ -80,6 +82,46 @@ export default function BenchmarksPage() {
         {data ? <Results data={data} /> : <Empty />}
       </div>
     </HomeLayout>
+  );
+}
+
+function Sample({ data }: { data: BenchmarkData }) {
+  const { inputs } = data;
+  return (
+    <section className="p-5 rounded-xl border border-fd-border bg-fd-card/50">
+      <h2 className="font-semibold text-fd-foreground mb-1">Sample used</h2>
+      <p className="text-sm text-fd-muted-foreground mb-4">
+        Every implementation extracts the same {formatBytes(inputs.html.bytes)} search results page
+        with the config below.
+      </p>
+      <h3 className="text-sm font-medium text-fd-foreground mb-1">{inputs.config.file}</h3>
+      <pre className="p-3 rounded-lg bg-fd-muted text-xs font-mono overflow-x-auto mb-4">
+        {benchmarkSample.config}
+      </pre>
+      <div className="flex flex-wrap gap-3 text-sm">
+        <a
+          href={benchmarkSample.htmlUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="px-3 py-1.5 rounded-lg border border-fd-border bg-fd-card hover:bg-fd-muted transition-colors"
+        >
+          View {inputs.html.file}
+        </a>
+        <a
+          href={benchmarkSample.htmlUrl}
+          download={inputs.html.file}
+          className="px-3 py-1.5 rounded-lg border border-fd-border bg-fd-card hover:bg-fd-muted transition-colors"
+        >
+          Download HTML
+        </a>
+        <Link
+          to={`/playground?example=${encodeURIComponent(benchmarkSample.name)}`}
+          className="px-3 py-1.5 rounded-lg bg-fd-primary text-fd-primary-foreground font-semibold hover:opacity-90 transition-opacity"
+        >
+          Open in playground
+        </Link>
+      </div>
+    </section>
   );
 }
 
@@ -169,6 +211,8 @@ function Results({ data }: { data: BenchmarkData }) {
           <Row label="HTML SHA-256" value={inputs.html.sha256.slice(0, 12)} />
         </Card>
       </div>
+
+      <Sample data={data} />
 
       <p className="text-xs text-fd-muted-foreground">
         Recorded {new Date(data.generated_at).toISOString().slice(0, 10)} at commit{' '}
