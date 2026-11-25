@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T20:02:36Z",
+  "generated_at": "2026-11-25T20:10:07Z",
   "environment": {
     "os": {
       "name": "macOS",
@@ -15,8 +15,8 @@
     "memory_bytes": 68719476736
   },
   "git": {
-    "commit": "3cff1f3",
-    "dirty": true
+    "commit": "743ebfc",
+    "dirty": false
   },
   "benchmarks": [
     {
@@ -36,37 +36,37 @@
       },
       "results": {
         "go": {
-          "throughput_per_second": 9234.44,
+          "throughput_per_second": 9380.16,
           "iterations": 500,
           "runtime": "go version go1.27.3 darwin/arm64"
         },
         "java": {
-          "throughput_per_second": 1523.98,
+          "throughput_per_second": 1598.11,
           "iterations": 20,
           "runtime": "openjdk version \"27.0.1.1\" 2026-11-17"
         },
         "python-beautifulsoup": {
-          "throughput_per_second": 175.53,
+          "throughput_per_second": 180.77,
           "iterations": 20,
           "runtime": "Python 3.13.14"
         },
         "python-selectolax": {
-          "throughput_per_second": 8108.65,
+          "throughput_per_second": 8127.81,
           "iterations": 500,
           "runtime": "Python 3.13.14"
         },
         "ruby-nokogiri": {
-          "throughput_per_second": 977.23,
+          "throughput_per_second": 989.41,
           "iterations": 20,
           "runtime": "ruby 4.0.10 (2026-11-19 revision a704b7cd95) +PRISM [arm64-darwin25]"
         },
         "ruby-nokolexbor": {
-          "throughput_per_second": 7689.94,
+          "throughput_per_second": 7770.49,
           "iterations": 500,
           "runtime": "ruby 4.0.10 (2026-11-19 revision a704b7cd95) +PRISM [arm64-darwin25]"
         },
         "typescript": {
-          "throughput_per_second": 2473.86,
+          "throughput_per_second": 2444.07,
           "iterations": 500,
           "runtime": "1.4.4"
         }
@@ -89,37 +89,37 @@
       },
       "results": {
         "go": {
-          "throughput_per_second": 1177.03,
+          "throughput_per_second": 1178.27,
           "iterations": 500,
           "runtime": "go version go1.27.3 darwin/arm64"
         },
         "java": {
-          "throughput_per_second": 10.08,
+          "throughput_per_second": 10.07,
           "iterations": 20,
           "runtime": "openjdk version \"27.0.1.1\" 2026-11-17"
         },
         "python-beautifulsoup": {
-          "throughput_per_second": 0.71,
+          "throughput_per_second": 0.73,
           "iterations": 20,
           "runtime": "Python 3.13.14"
         },
         "python-selectolax": {
-          "throughput_per_second": 599.72,
+          "throughput_per_second": 610.37,
           "iterations": 500,
           "runtime": "Python 3.13.14"
         },
         "ruby-nokogiri": {
-          "throughput_per_second": 2.69,
+          "throughput_per_second": 2.93,
           "iterations": 20,
           "runtime": "ruby 4.0.10 (2026-11-19 revision a704b7cd95) +PRISM [arm64-darwin25]"
         },
         "ruby-nokolexbor": {
-          "throughput_per_second": 39.96,
+          "throughput_per_second": 41.4,
           "iterations": 500,
           "runtime": "ruby 4.0.10 (2026-11-19 revision a704b7cd95) +PRISM [arm64-darwin25]"
         },
         "typescript": {
-          "throughput_per_second": 448.79,
+          "throughput_per_second": 469.33,
           "iterations": 500,
           "runtime": "1.4.4"
         }
