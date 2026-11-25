@@ -23,6 +23,10 @@ export function baseOptions(): BaseLayoutProps {
         text: 'Playground',
         url: '/playground',
       },
+      {
+        text: 'Benchmarks',
+        url: '/benchmarks',
+      },
     ],
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
   };
