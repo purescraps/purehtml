@@ -1,5 +1,7 @@
 allowBuilds:
   esbuild: true
+overrides:
+  dompurify: '>=3.4.17'
 minimumReleaseAgeExclude:
   - react-router-dom@7.18.6
   - react-router@7.18.6
