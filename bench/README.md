@@ -33,6 +33,27 @@ Relative paths are resolved against the directory `make` runs in (the repository
 
 `make bench` stops at the first language that fails. Use `make -k bench` to keep going.
 
+## Saving results
+
+Add `SAVE=1` to record the results for the documentation site:
+
+```bash
+make bench SAVE=1                       # all languages
+make bench-go SAVE=1 ITERATIONS=1000    # one language, merged into the existing file
+make bench SAVE=1 SAVE_FILE=/tmp/b.json # write somewhere else
+```
+
+The results are written to `docs/src/data/benchmarks.json` with:
+
+- `results`: throughput (extracts/second) and the runtime version for each language. Ruby has one entry per backend (`ruby-nokogiri`, `ruby-nokolexbor`).
+- `environment`: OS, CPU model, core counts and memory of the machine.
+- `inputs`: iteration count, base URL, and the name, size and SHA-256 of the HTML and YAML files.
+- `git`: the commit the code was benchmarked at, and whether tracked files had uncommitted changes.
+
+Results from an earlier run are kept only when the inputs and commit are unchanged. Otherwise the file is replaced, so numbers from different inputs or code are never mixed. Logs are kept in `bench/.results/` (git-ignored).
+
+Note that `make bench --save` does not work: make rejects `--save` as an unknown option, so use `SAVE=1`.
+
 ## Running Manually
 
 Every script accepts the same arguments:

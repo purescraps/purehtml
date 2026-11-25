@@ -6,6 +6,7 @@
 #   ITERATIONS    extractions to run
 #   URL           base URL passed to the extractor
 #   BENCH_CWD     directory that relative paths are resolved against
+#   BENCH_LOG     when set, the output is also kept in this file
 #
 # Usage: run.sh COMMAND [ARG]...
 set -eu
@@ -30,6 +31,14 @@ die() {
 if [ -n "${HTML:-}" ] || [ -n "${CONFIG:-}" ]; then
   [ -n "${HTML:-}" ] && [ -n "${CONFIG:-}" ] || die "HTML and CONFIG must be set together"
   set -- "$@" "$(abspath "$HTML")" "$(abspath "$CONFIG")"
+fi
+
+if [ -n "${BENCH_LOG:-}" ]; then
+  # Keep the output for save.py while still reporting the benchmark's status.
+  status=0
+  "$@" >"$BENCH_LOG" 2>&1 || status=$?
+  cat "$BENCH_LOG"
+  exit "$status"
 fi
 
 exec "$@"

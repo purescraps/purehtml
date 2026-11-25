@@ -26,7 +26,22 @@ export BENCH_CWD HTML CONFIG ITERATIONS URL
 
 RUN := sh run.sh
 
+# SAVE=1 records the results, environment and inputs in SAVE_FILE for the docs
+# site. Results from earlier runs are kept when inputs and commit still match,
+# so a single language can be re-run without losing the others.
+SAVE ?=
+ROOT := $(abspath $(CURDIR)/..)
+SAVE_FILE ?= $(ROOT)/docs/src/data/benchmarks.json
+LOG_DIR := $(CURDIR)/.results
+
 JAVA_CP ?= ../java/target/classes:../java/target/dependency/*
+
+# $(1) language key, $(2) runtime version command, $(3) benchmark command
+define bench_language
+	$(if $(SAVE),@mkdir -p "$(LOG_DIR)")
+	$(if $(SAVE),BENCH_LOG="$(LOG_DIR)/$(1).log") $(RUN) $(3)
+	$(if $(SAVE),$(PYTHON) save.py --lang $(1) --log "$(LOG_DIR)/$(1).log" --runtime-cmd '$(2)' --out "$(SAVE_FILE)")
+endef
 
 .PHONY: all bench bench-all \
 	bench-go \
@@ -43,23 +58,23 @@ bench-all: bench
 
 bench-go:
 	@echo "==> Running Go benchmark..."
-	$(RUN) $(GO) run bench.go
+	$(call bench_language,go,$(GO) version,$(GO) run bench.go)
 
 bench-ruby:
 	@echo "==> Running Ruby benchmark..."
-	$(RUN) $(RUBY) bench.rb
+	$(call bench_language,ruby,$(RUBY) -v,$(RUBY) bench.rb)
 
 bench-rb: bench-ruby
 
 bench-ts:
 	@echo "==> Running TypeScript benchmark..."
-	$(RUN) $(BUN) bench.ts
+	$(call bench_language,typescript,$(BUN) --version,$(BUN) bench.ts)
 
 bench-typescript: bench-ts
 
 bench-python:
 	@echo "==> Running Python benchmark..."
-	$(RUN) $(PYTHON) bench.py
+	$(call bench_language,python,$(PYTHON) --version,$(PYTHON) bench.py)
 
 bench-py: bench-python
 
@@ -75,7 +90,7 @@ bench-java:
 		$(MAKE) build-java; \
 	fi
 	@echo "==> Running Java benchmark..."
-	$(RUN) $(JAVA) -cp "$(JAVA_CP)" bench.java
+	$(call bench_language,java,$(JAVA) -version,$(JAVA) -cp "$(JAVA_CP)" bench.java)
 
 help:
 	@echo "PureHTML Benchmark Suite"
@@ -97,5 +112,10 @@ help:
 	@echo "  HTML=page.html CONFIG=config.yaml   HTML/YAML pair to benchmark"
 	@echo "  ITERATIONS=N                        Extractions to run (default: 5000)"
 	@echo "  URL=https://example.com             Base URL passed to the extractor"
+	@echo ""
+	@echo "Saving results:"
+	@echo "  SAVE=1                              Record results, environment and inputs in"
+	@echo "                                      docs/src/data/benchmarks.json"
+	@echo "  SAVE_FILE=path.json                 Write to another file"
 	@echo ""
 	@echo "Relative paths are resolved against the directory make runs in."

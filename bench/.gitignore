@@ -280,3 +280,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+
+# Logs captured by make SAVE=1
+.results/
