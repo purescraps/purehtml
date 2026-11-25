@@ -149,10 +149,19 @@ def resolve(value: str, base: Path) -> Path:
     return path if path.is_absolute() else base / path
 
 
-def git_state() -> dict:
+def git_state(exclude: Path | None = None) -> dict:
     commit = run("git", "-C", str(ROOT), "rev-parse", "--short", "HEAD")
-    # Tracked changes only: untracked files do not affect the benchmarked code.
-    status = run("git", "-C", str(ROOT), "status", "--porcelain", "--untracked-files=no")
+    # Tracked changes only: untracked files and the output file itself do not
+    # affect the benchmarked code (multiple languages update --out in one run).
+    cmd = ["git", "-C", str(ROOT), "status", "--porcelain", "--untracked-files=no"]
+    if exclude is not None:
+        try:
+            rel = exclude.resolve().relative_to(ROOT.resolve())
+        except ValueError:
+            rel = None
+        if rel is not None:
+            cmd.extend(["--", ".", f":(exclude){rel.as_posix()}"])
+    status = run(*cmd)
     return {"commit": commit, "dirty": bool(status)}
 
 
@@ -181,7 +190,7 @@ def main() -> int:
         "html": file_info(html),
         "config": file_info(config),
     }
-    git = git_state()
+    git = git_state(args.out)
     runtime = first_line(run_any(args.runtime_cmd))
 
     existing = None
