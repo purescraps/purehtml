@@ -21,4 +21,5 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/purescraps/purehtml"
+Repository = "https://github.com/purescraps/purehtml"
 Issues = "https://github.com/purescraps/purehtml/issues"

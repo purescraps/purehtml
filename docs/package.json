@@ -2,6 +2,11 @@
   "name": "docs",
   "private": true,
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/purescraps/purehtml.git",
+    "directory": "docs"
+  },
   "type": "module",
   "sideEffects": false,
   "scripts": {

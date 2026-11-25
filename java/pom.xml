@@ -10,6 +10,13 @@
 
     <name>PureHTML</name>
     <description>PureHTML is an HTML parsing specification for extracting useful data from HTMLs in the JSON form. </description>
+    <url>https://github.com/purescraps/purehtml</url>
+
+    <scm>
+        <connection>scm:git:https://github.com/purescraps/purehtml.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/purescraps/purehtml.git</developerConnection>
+        <url>https://github.com/purescraps/purehtml/tree/master/java</url>
+    </scm>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

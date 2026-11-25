@@ -19,6 +19,11 @@
   "keywords": [],
   "author": "Fatih Kaya <1994274@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/purescraps/purehtml.git",
+    "directory": "typescript"
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.6.8",
     "@swc/core": "^1.16.22",
