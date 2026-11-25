@@ -49,6 +49,8 @@ const LABELS: Record<string, string> = {
   go: 'Go',
   java: 'Java',
   python: 'Python',
+  'python-beautifulsoup': 'Python (BeautifulSoup)',
+  'python-selectolax': 'Python (Selectolax)',
   typescript: 'TypeScript',
   'ruby-nokogiri': 'Ruby (Nokogiri)',
   'ruby-nokolexbor': 'Ruby (Nokolexbor)',

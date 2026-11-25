@@ -19,6 +19,9 @@ dependencies = [
   "html5lib~=1.1"
 ]
 
+[project.optional-dependencies]
+selectolax = ["selectolax>=0.3.29"]
+
 [project.urls]
 Homepage = "https://github.com/purescraps/purehtml"
 Repository = "https://github.com/purescraps/purehtml"

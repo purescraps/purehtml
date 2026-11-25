@@ -26,7 +26,7 @@ make bench-go HTML=page.html CONFIG=page.yaml ITERATIONS=500 URL=https://example
 | Variable | Description |
 | :--- | :--- |
 | `HTML`, `CONFIG` | The HTML document and YAML config. Must be set together. Paths may contain spaces. |
-| `ITERATIONS` | Extractions to run, overriding the default of every language. Defaults: `500`, except Java, Ruby nokogiri and Python, which use `20` because they are slow on heavy pages. |
+| `ITERATIONS` | Extractions to run, overriding the default of every language. Defaults: `500`, except Java, Ruby nokogiri and Python BeautifulSoup, which use `20` because they are slow on heavy pages. |
 | `URL` | Base URL passed to the extractor (default `http://example.com`). |
 
 Relative paths are resolved against the directory `make` runs in (the repository root or `bench/`).
@@ -45,7 +45,7 @@ make bench SAVE=1 SAVE_FILE=/tmp/b.json # write somewhere else
 
 The results are written to `docs/src/data/benchmarks.json` with:
 
-- `results`: throughput (extracts/second), the iterations it was measured with, and the runtime version for each language. Ruby has one entry per backend (`ruby-nokogiri`, `ruby-nokolexbor`).
+- `results`: throughput (extracts/second), the iterations it was measured with, and the runtime version for each language. Ruby and Python have one entry per backend (`ruby-nokogiri`, `ruby-nokolexbor`, `python-beautifulsoup`, `python-selectolax`).
 - `environment`: OS, CPU model, core counts and memory of the machine.
 - `inputs`: iteration override (`null` when each language used its default), base URL, and the name, size and SHA-256 of the HTML and YAML files.
 - `git`: the commit the code was benchmarked at, and whether tracked files had uncommitted changes.

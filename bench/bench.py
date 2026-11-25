@@ -5,7 +5,7 @@ from timeit import default_timer as timer
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "python"))
 
-from purehtml import BeautifulSoupBackend, ConfigFactory, extract
+from purehtml import BeautifulSoupBackend, ConfigFactory, SelectolaxBackend, extract
 
 FILES_DIR = Path(__file__).resolve().parent / "files"
 
@@ -15,11 +15,20 @@ def read(path):
     return Path(path).read_text(encoding="utf-8", errors="replace")
 
 
-def benchmark(html_path, yaml_path, url, iterations):
-    config = ConfigFactory.from_yaml(read(yaml_path))
-    doc = BeautifulSoupBackend.load(read(html_path))
+# Default extractions per backend. BeautifulSoup is slow on heavy pages, so it
+# runs fewer. --iterations overrides every backend.
+BACKENDS = {"beautifulsoup": (BeautifulSoupBackend, 20)}
+if SelectolaxBackend is not None:
+    BACKENDS["selectolax"] = (SelectolaxBackend, 500)
 
-    print(f"Running benchmark for {iterations} iterations: {html_path} + {yaml_path}")
+
+def benchmark(name, backend, html_path, yaml_path, url, iterations):
+    config = ConfigFactory.from_yaml(read(yaml_path))
+    doc = backend.load(read(html_path))
+
+    print(
+        f"Running {name} benchmark for {iterations} iterations: {html_path} + {yaml_path}"
+    )
     print(f"extract result: {extract(config, doc, url)}")
 
     start = timer()
@@ -36,21 +45,27 @@ def main():
     parser = argparse.ArgumentParser(
         usage="bench.py [--iterations N] [--url URL] [HTML YAML]"
     )
-    # Heavy pages are slow to parse with BeautifulSoup, so Python runs fewer
-    # extractions by default. --iterations overrides it.
-    parser.add_argument("--iterations", type=int, default=20)
+    parser.add_argument("--iterations", type=int)
     parser.add_argument("--url", default="http://example.com")
     parser.add_argument("files", nargs="*")
     args = parser.parse_args()
 
     files = args.files or [FILES_DIR / "sample-2.html", FILES_DIR / "sample-2.yml"]
-    if args.iterations < 1:
+    if args.iterations is not None and args.iterations < 1:
         parser.error("--iterations must be a positive integer")
     if len(files) != 2:
         parser.error("expected one HTML file and one YAML file")
 
     html_path, yaml_path = files
-    benchmark(html_path, yaml_path, args.url, args.iterations)
+    for name, (backend, default_iterations) in BACKENDS.items():
+        benchmark(
+            name,
+            backend,
+            html_path,
+            yaml_path,
+            args.url,
+            args.iterations or default_iterations,
+        )
 
 
 if __name__ == "__main__":
