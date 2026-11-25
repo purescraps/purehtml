@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=../../typescript/src/config-schema.json
+
+properties:
+  products:
+    selector: 'article:has([data-test-id^="title-"])'
+    items:
+      properties:
+        url:
+          union:
+            # sponsored cards link through an ad tracker; the product URL is in ?redirect=
+            - selector: '[data-test-id^="title-"] a[href*="adservice."][href*="redirect="]'
+              transform: [attr(href), resolve, urlQueryParam(redirect), 'replace("[?].*$", "")']
+            - selector: '[data-test-id^="title-"] a[href]'
+              transform: [attr(href), resolve]
+        title: { selector: '[data-test-id^="title-"] a', transform: trim }
+        price:
+          selector: '[data-test-id^="final-price-"]'
+          transform:
+            - 'replace("[^\d,]", "")' # "1.299,90 TL" -> "1299,90"
+            - 'replace(",", ".")'
+            - number
+        image:
+          union:
+            - selector: '[class*="hbImageViewRoot"] img[src]'
+              transform: attr(src)
+            # lazy-loaded cards: the <img> exists only as text inside <noscript>
+            - selector: '[class*="hbImageViewRoot"] noscript'
+              transform:
+                - 'replace("^.* src=\"", "")'
+                - 'replace("\".*$", "")'
+            - { constant: null }
+        rating:
+          union:
+            - selector: '[data-test-id^="rating-"] [class*="rate-module_rating__"]'
+              transform: [trim, 'replace(",", ".")', number]
+            - { constant: null }

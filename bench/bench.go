@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	iterations := flag.Int("iterations", 5000, "extractions to run")
+	iterations := flag.Int("iterations", 500, "extractions to run")
 	url := flag.String("url", "http://example.com", "base URL passed to the extractor")
 	flag.Usage = func() {
 		fmt.Fprintln(os.Stderr, "Usage: bench.go [--iterations N] [--url URL] [HTML YAML]")
@@ -27,8 +27,8 @@ func main() {
 			dir = filepath.Dir(filename)
 		}
 		files = []string{
-			filepath.Join(dir, "files/sample-1.html"),
-			filepath.Join(dir, "files/sample-1.yaml"),
+			filepath.Join(dir, "files/sample-2.html"),
+			filepath.Join(dir, "files/sample-2.yml"),
 		}
 	}
 	if *iterations < 1 || len(files) != 2 {

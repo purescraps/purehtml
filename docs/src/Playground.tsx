@@ -158,9 +158,11 @@ export function Playground() {
               ))}
             </optgroup>
             <optgroup label="Benchmark">
-              <option value={examples.benchmarkSample.name}>
-                {examples.benchmarkSample.name} (1 MB page)
-              </option>
+              {examples.benchmarkSamples.map((ex) => (
+                <option key={ex.name} value={ex.name}>
+                  {ex.name} ({ex.sizeLabel})
+                </option>
+              ))}
             </optgroup>
           </select>
         </div>

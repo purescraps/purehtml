@@ -4,7 +4,10 @@ $LOAD_PATH.unshift File.expand_path("../ruby/lib", __dir__)
 require "optparse"
 require "purehtml"
 
-iterations = 5000
+# Default extractions per backend. Nokogiri is slow on heavy pages, so it runs
+# fewer. --iterations overrides every backend.
+DEFAULT_ITERATIONS = { nokogiri: 20, nokolexbor: 500 }.freeze
+iterations = nil
 url = "http://example.com"
 
 parser = OptionParser.new do |opts|
@@ -21,10 +24,10 @@ rescue OptionParser::ParseError => e
 end
 
 if files.empty?
-  files = %w[files/sample-1.html files/sample-1.yaml].map { |f| File.expand_path(f, __dir__) }
+  files = %w[files/sample-2.html files/sample-2.yml].map { |f| File.expand_path(f, __dir__) }
 end
 
-if iterations < 1 || files.length != 2
+if (iterations && iterations < 1) || files.length != 2
   warn parser.banner
   exit 2
 end
@@ -43,16 +46,17 @@ html = File.read(html_path, encoding: "UTF-8").scrub
 
 backends.each do |name, backend|
   doc = backend.load(html)
+  count = iterations || DEFAULT_ITERATIONS.fetch(name)
 
-  puts "Running #{name} benchmark for #{iterations} iterations: #{html_path} + #{yaml_path}"
+  puts "Running #{name} benchmark for #{count} iterations: #{html_path} + #{yaml_path}"
   puts "extract result: #{PureHTML.extract(config, doc, url, backend: backend)}"
 
   start = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-  iterations.times do
+  count.times do
     PureHTML.extract(config, doc, url, backend: backend)
   end
   duration = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start
-  throughput = iterations / duration
+  throughput = count / duration
 
   puts format("Throughput: %.2f extracts/second\n\n", throughput)
 end

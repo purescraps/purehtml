@@ -36,12 +36,23 @@ LOG_DIR := $(CURDIR)/.results
 
 JAVA_CP ?= ../java/target/classes:../java/target/dependency/*
 
-# $(1) language key, $(2) runtime version command, $(3) benchmark command
-define bench_language
+# $(1) language key, $(2) runtime version command, $(3) benchmark command, $(4) sample key, $(5) html path, $(6) config path
+define bench_pair
 	$(if $(SAVE),@mkdir -p "$(LOG_DIR)")
-	$(if $(SAVE),BENCH_LOG="$(LOG_DIR)/$(1).log") $(RUN) $(3)
-	$(if $(SAVE),$(PYTHON) save.py --lang $(1) --log "$(LOG_DIR)/$(1).log" --runtime-cmd '$(2)' --out "$(SAVE_FILE)")
+	$(if $(SAVE),BENCH_LOG="$(LOG_DIR)/$(1)$(if $(4),-$(4)).log") $(if $(5),HTML="$(5)" CONFIG="$(6)") $(RUN) $(3)
+	$(if $(SAVE),$(if $(5),HTML="$(5)" CONFIG="$(6)") $(PYTHON) save.py --lang $(1) --log "$(LOG_DIR)/$(1)$(if $(4),-$(4)).log" --runtime-cmd '$(2)' --out "$(SAVE_FILE)")
 endef
+
+ifeq ($(strip $(HTML)$(CONFIG)),)
+define bench_language
+	$(call bench_pair,$(1),$(2),$(3),sample-1,$(CURDIR)/files/sample-1.html,$(CURDIR)/files/sample-1.yaml)
+	$(call bench_pair,$(1),$(2),$(3),sample-2,$(CURDIR)/files/sample-2.html,$(CURDIR)/files/sample-2.yml)
+endef
+else
+define bench_language
+	$(call bench_pair,$(1),$(2),$(3),,,)
+endef
+endif
 
 .PHONY: all bench bench-all \
 	bench-go \
@@ -108,9 +119,10 @@ help:
 	@echo "  clean-java        Clean Java build artifacts"
 	@echo "  help              Show this help message"
 	@echo ""
-	@echo "Inputs (default: files/sample-1.html + files/sample-1.yaml):"
+	@echo "Inputs (default: files/sample-1.html + files/sample-1.yaml and files/sample-2.html + files/sample-2.yml):"
 	@echo "  HTML=page.html CONFIG=config.yaml   HTML/YAML pair to benchmark"
-	@echo "  ITERATIONS=N                        Extractions to run (default: 5000)"
+	@echo "  ITERATIONS=N                        Extractions to run (default per language:"
+	@echo "                                      500; Ruby nokogiri and Python 20)"
 	@echo "  URL=https://example.com             Base URL passed to the extractor"
 	@echo ""
 	@echo "Saving results:"

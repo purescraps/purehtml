@@ -16,7 +16,7 @@ function parseCli() {
     return parseArgs({
       allowPositionals: true,
       options: {
-        iterations: { type: "string", default: "5000" },
+        iterations: { type: "string", default: "500" },
         url: { type: "string", default: "http://example.com" },
       },
     });
@@ -54,7 +54,7 @@ const iterations = Number(values.iterations);
 const files =
   positionals.length > 0
     ? positionals
-    : ["files/sample-1.html", "files/sample-1.yaml"].map((file) =>
+    : ["files/sample-2.html", "files/sample-2.yml"].map((file) =>
         resolve(currentDir, file)
       );
 

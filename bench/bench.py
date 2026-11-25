@@ -36,12 +36,14 @@ def main():
     parser = argparse.ArgumentParser(
         usage="bench.py [--iterations N] [--url URL] [HTML YAML]"
     )
-    parser.add_argument("--iterations", type=int, default=5000)
+    # Heavy pages are slow to parse with BeautifulSoup, so Python runs fewer
+    # extractions by default. --iterations overrides it.
+    parser.add_argument("--iterations", type=int, default=20)
     parser.add_argument("--url", default="http://example.com")
     parser.add_argument("files", nargs="*")
     args = parser.parse_args()
 
-    files = args.files or [FILES_DIR / "sample-1.html", FILES_DIR / "sample-1.yaml"]
+    files = args.files or [FILES_DIR / "sample-2.html", FILES_DIR / "sample-2.yml"]
     if args.iterations < 1:
         parser.error("--iterations must be a positive integer")
     if len(files) != 2:

@@ -13,7 +13,7 @@ make bench-java      # Run Java benchmark (auto-builds dependencies if needed)
 
 ## Benchmarking your own pages
 
-By default the bundled `files/sample-1.html` + `files/sample-1.yaml` pair is used.
+By default both bundled pairs (`files/sample-1.html` + `files/sample-1.yaml` and `files/sample-2.html` + `files/sample-2.yml`) are benchmarked.
 Pass any HTML document and PureHTML YAML config to benchmark them in every language:
 
 ```bash
@@ -26,7 +26,7 @@ make bench-go HTML=page.html CONFIG=page.yaml ITERATIONS=500 URL=https://example
 | Variable | Description |
 | :--- | :--- |
 | `HTML`, `CONFIG` | The HTML document and YAML config. Must be set together. Paths may contain spaces. |
-| `ITERATIONS` | Extractions to run (default `5000`). Lower it for large pages. |
+| `ITERATIONS` | Extractions to run, overriding the default of every language. Defaults: `500`, except Java, Ruby nokogiri and Python, which use `20` because they are slow on heavy pages. |
 | `URL` | Base URL passed to the extractor (default `http://example.com`). |
 
 Relative paths are resolved against the directory `make` runs in (the repository root or `bench/`).
@@ -45,9 +45,9 @@ make bench SAVE=1 SAVE_FILE=/tmp/b.json # write somewhere else
 
 The results are written to `docs/src/data/benchmarks.json` with:
 
-- `results`: throughput (extracts/second) and the runtime version for each language. Ruby has one entry per backend (`ruby-nokogiri`, `ruby-nokolexbor`).
+- `results`: throughput (extracts/second), the iterations it was measured with, and the runtime version for each language. Ruby has one entry per backend (`ruby-nokogiri`, `ruby-nokolexbor`).
 - `environment`: OS, CPU model, core counts and memory of the machine.
-- `inputs`: iteration count, base URL, and the name, size and SHA-256 of the HTML and YAML files.
+- `inputs`: iteration override (`null` when each language used its default), base URL, and the name, size and SHA-256 of the HTML and YAML files.
 - `git`: the commit the code was benchmarked at, and whether tracked files had uncommitted changes.
 
 Results from an earlier run are kept only when the inputs and commit are unchanged. Otherwise the file is replaced, so numbers from different inputs or code are never mixed. Logs are kept in `bench/.results/` (git-ignored).

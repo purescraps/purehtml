@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../../typescript/src/config-schema.json
 selector: div.g.Ww4FFb
 type: array
 items:

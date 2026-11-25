@@ -14,7 +14,7 @@ import java.util.List;
 
 class Bench {
     public static void main(String[] args) throws Exception {
-        int iterations = 5000;
+        int iterations = 20;
         String url = "http://example.com";
         List<Path> files = new ArrayList<>();
 
@@ -47,8 +47,8 @@ class Bench {
 
         if (files.isEmpty()) {
             Path dir = getScriptDir();
-            files.add(dir.resolve("files/sample-1.html"));
-            files.add(dir.resolve("files/sample-1.yaml"));
+            files.add(dir.resolve("files/sample-2.html"));
+            files.add(dir.resolve("files/sample-2.yml"));
         }
         if (files.size() != 2) {
             usage("expected one HTML file and one YAML file");
@@ -103,12 +103,12 @@ class Bench {
                 Bench.class.getProtectionDomain().getCodeSource().getLocation().toURI()
             );
             if (Files.isDirectory(codeSourcePath)) {
-                if (Files.exists(codeSourcePath.resolve("files/sample-1.yaml"))) {
+                if (Files.exists(codeSourcePath.resolve("files/sample-2.yml"))) {
                     return codeSourcePath;
                 }
             } else {
                 Path parent = codeSourcePath.getParent();
-                if (parent != null && Files.exists(parent.resolve("files/sample-1.yaml"))) {
+                if (parent != null && Files.exists(parent.resolve("files/sample-2.yml"))) {
                     return parent;
                 }
             }
@@ -116,10 +116,10 @@ class Bench {
         }
 
         Path current = Paths.get("").toAbsolutePath();
-        if (Files.exists(current.resolve("files/sample-1.yaml"))) {
+        if (Files.exists(current.resolve("files/sample-2.yml"))) {
             return current;
         }
-        if (Files.exists(current.resolve("bench/files/sample-1.yaml"))) {
+        if (Files.exists(current.resolve("bench/files/sample-2.yml"))) {
             return current.resolve("bench");
         }
         return current;

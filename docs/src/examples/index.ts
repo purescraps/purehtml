@@ -1,6 +1,6 @@
 import { advanced } from './advanced';
 import { basic } from './basic';
-import { benchmarkSample } from './benchmark-sample';
+import { benchmarkSamples } from './benchmark-sample';
 import type { Example } from './example';
 export type { Example } from './example';
 
@@ -20,9 +20,9 @@ function findByName(name: string | null): Example | null {
   return (
     basic.find((e) => e.name === name) ??
     advanced.find((e) => e.name === name) ??
-    (benchmarkSample.name === name ? benchmarkSample : null) ??
+    benchmarkSamples.find((e) => e.name === name) ??
     null
   );
 }
 
-export const examples = { advanced, basic, benchmarkSample, findByName };
+export const examples = { advanced, basic, benchmarkSamples, findByName };

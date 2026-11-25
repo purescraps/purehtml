@@ -25,30 +25,37 @@ from pathlib import Path
 
 BENCH_DIR = Path(__file__).resolve().parent
 ROOT = BENCH_DIR.parent
-DEFAULT_HTML = str(BENCH_DIR / "files" / "sample-1.html")
-DEFAULT_CONFIG = str(BENCH_DIR / "files" / "sample-1.yaml")
-DEFAULT_ITERATIONS = 5000
+DEFAULT_HTML = str(BENCH_DIR / "files" / "sample-2.html")
+DEFAULT_CONFIG = str(BENCH_DIR / "files" / "sample-2.yml")
 DEFAULT_URL = "http://example.com"
 
 # "Running benchmark for ..." (Go, Python, TypeScript, Java) or
 # "Running nokogiri benchmark for ..." (Ruby, one line per backend).
-HEADER = re.compile(r"^Running (?:(\w+) )?benchmark for ")
+HEADER = re.compile(r"^Running (?:(\w+) )?benchmark for (\d+) iterations")
 THROUGHPUT = re.compile(r"^Throughput: ([\d.]+) extracts/second")
 
 
-def parse_results(log: str, lang: str) -> dict[str, float]:
-    results: dict[str, float] = {}
+def parse_results(log: str, lang: str) -> dict[str, tuple[float, int]]:
+    """Map each result key to (throughput, iterations) from the benchmark output.
+
+    Iteration counts differ per language and backend, so each one is read from
+    the header that the benchmark printed for it.
+    """
+    results: dict[str, tuple[float, int]] = {}
     variant: str | None = None
+    iterations: int | None = None
     for line in log.splitlines():
         header = HEADER.match(line)
         if header:
             variant = header.group(1)
+            iterations = int(header.group(2))
             continue
         match = THROUGHPUT.match(line)
-        if match:
+        if match and iterations is not None:
             key = lang if variant is None else f"{lang}-{variant}"
-            results[key] = float(match.group(1))
+            results[key] = (float(match.group(1)), iterations)
             variant = None
+            iterations = None
     return results
 
 
@@ -167,8 +174,9 @@ def main() -> int:
     html = resolve(os.environ.get("HTML") or DEFAULT_HTML, base)
     config = resolve(os.environ.get("CONFIG") or DEFAULT_CONFIG, base)
 
+    # Unset means each language ran its own default; the per-result count is in results.
     inputs = {
-        "iterations": int(os.environ.get("ITERATIONS") or DEFAULT_ITERATIONS),
+        "iterations": to_int(os.environ.get("ITERATIONS")),
         "url": os.environ.get("URL") or DEFAULT_URL,
         "html": file_info(html),
         "config": file_info(config),
@@ -179,21 +187,39 @@ def main() -> int:
     existing = None
     if args.out.exists():
         existing = json.loads(args.out.read_text(encoding="utf-8"))
-    kept: dict = {}
-    if existing and existing.get("inputs") == inputs and existing.get("git", {}).get("commit") == git["commit"]:
-        kept = existing.get("results", {})
-    elif existing and existing.get("results"):
-        print(f"save: inputs or commit changed, replacing previous results in {args.out}")
 
-    for key, throughput in results.items():
-        kept[key] = {"throughput_per_second": throughput, "runtime": runtime}
+    existing_benchmarks: list[dict] = []
+    if existing and existing.get("git", {}).get("commit") == git["commit"]:
+        if isinstance(existing.get("benchmarks"), list):
+            existing_benchmarks = existing["benchmarks"]
+    elif existing and (existing.get("benchmarks") or existing.get("results")):
+        print(f"save: commit changed, replacing previous results in {args.out}")
+
+    kept: dict = {}
+    remaining: list[dict] = []
+    for entry in existing_benchmarks:
+        entry_inputs = entry.get("inputs")
+        if entry_inputs == inputs:
+            kept = dict(entry.get("results", {}))
+        elif entry_inputs and entry_inputs.get("html", {}).get("file") == inputs["html"]["file"]:
+            print(f"save: inputs changed for {inputs['html']['file']}, replacing previous results")
+        else:
+            remaining.append(entry)
+
+    for key, (throughput, iterations) in results.items():
+        kept[key] = {"throughput_per_second": throughput, "iterations": iterations, "runtime": runtime}
+
+    remaining.append({
+        "inputs": inputs,
+        "results": dict(sorted(kept.items())),
+    })
+    remaining.sort(key=lambda b: b.get("inputs", {}).get("html", {}).get("file", ""))
 
     payload = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "environment": machine_environment(),
         "git": git,
-        "inputs": inputs,
-        "results": dict(sorted(kept.items())),
+        "benchmarks": remaining,
     }
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
