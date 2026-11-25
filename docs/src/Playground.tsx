@@ -49,6 +49,7 @@ export function Playground() {
   const [config, setConfig] = useState(storedState?.config ?? examples.basic[0].config);
   const [html, setHtml] = useState(storedState?.html ?? examples.basic[0].html);
   const [htmlFileContents, setHtmlFileContents] = useState<string | null>(null);
+  const [isLoadingHtml, setIsLoadingHtml] = useState(false);
   const [htmlLoadError, setHtmlLoadError] = useState<string | null>(null);
 
   const { configIsValid, result } = usePureHtml({
@@ -78,12 +79,16 @@ export function Playground() {
     setHtml(selectedExample.html);
     setConfig(selectedExample.config);
     setHtmlFileContents(null);
+    setHtmlLoadError(null);
 
     const { htmlUrl } = selectedExample;
-    if (!htmlUrl) return;
+    if (!htmlUrl) {
+      setIsLoadingHtml(false);
+      return;
+    }
 
     let cancelled = false;
-    setHtmlLoadError(null);
+    setIsLoadingHtml(true);
     fetch(htmlUrl)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -95,6 +100,9 @@ export function Playground() {
       .catch((err) => {
         console.error('Cannot load example HTML:', err);
         if (!cancelled) setHtmlLoadError('Cannot load the example HTML. Please try again.');
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoadingHtml(false);
       });
     return () => {
       cancelled = true;
@@ -204,7 +212,7 @@ export function Playground() {
 
             {htmlLoadError ? (
               <div className="p-4 bg-fd-background text-sm text-red-500">{htmlLoadError}</div>
-            ) : selectedExample?.htmlUrl && !htmlFileContents ? (
+            ) : isLoadingHtml ? (
               <div className="p-4 bg-fd-background text-sm text-fd-muted-foreground">
                 Loading sample HTML…
               </div>
